@@ -7,3 +7,7 @@ build-backend = "setuptools.build_meta"
 # For smarter version schemes and other configuration options,
 # check out https://github.com/pypa/setuptools_scm
 version_scheme = "no-guess-dev"
+
+[tool.dagster]
+module_name = "OpenStudioLandscapes.Kitsu.definitions"
+code_location_name = "OpenStudioLandscapes-Kitsu"
