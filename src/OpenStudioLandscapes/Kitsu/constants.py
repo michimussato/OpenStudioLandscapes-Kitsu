@@ -1,0 +1,6 @@
+__all__ = [
+    "KITSUDB_INSIDE_CONTAINER",
+]
+
+
+KITSUDB_INSIDE_CONTAINER = False

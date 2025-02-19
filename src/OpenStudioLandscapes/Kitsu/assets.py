@@ -28,6 +28,8 @@ from OpenStudioLandscapes.engine.utils import *
 from OpenStudioLandscapes.engine.base.ops import op_docker_compose_graph
 from OpenStudioLandscapes.engine.base.ops import op_group_out
 
+from OpenStudioLandscapes.Kitsu.constants import *
+
 """
 # cat /opt/zou/init_zou.sh
 #!/bin/bash
