@@ -1,5 +1,4 @@
 import copy
-import json
 import pathlib
 import shutil
 import subprocess
@@ -68,14 +67,8 @@ zou upgrade_db
 """
 
 
-GROUP = "Kitsu"
-KEY = "Kitsu"
-
-asset_header = {"group_name": GROUP, "key_prefix": [KEY], "compute_kind": "python"}
-
-
 @asset(
-    **asset_header,
+    **ASSET_HEADER,
     ins={
         "group_in": AssetIn(
             AssetKey([KEY_BASE, "group_out"])
@@ -90,7 +83,9 @@ def env(
     env_in = copy.deepcopy(group_in["env"])
 
     # @formatter:off
-    _env = {
+    # Todo
+    #  - [ ] Move to constants.py
+    ENVIRONMENT_KITSU = {
         # Todo:
         #  - [ ] These have no effect yet
         # "KITSU_ADMIN_USER": "admin@example.com",
@@ -145,26 +140,7 @@ def env(
     }
     # @formatter:on
 
-    env_in.update(_env)
-
-    env_json = pathlib.Path(
-        env_in["DOT_LANDSCAPES"],
-        env_in.get("LANDSCAPE", "default"),
-        "third_party",
-        *context.asset_key.path,
-        f"{'__'.join(context.asset_key.path)}.json",
-    )
-
-    env_json.parent.mkdir(parents=True, exist_ok=True)
-
-    with open(env_json, "w") as fw:
-        json.dump(
-            obj=_env.copy(),
-            fp=fw,
-            indent=2,
-            ensure_ascii=True,
-            sort_keys=True,
-        )
+    env_in.update(ENVIRONMENT_KITSU)
 
     yield Output(env_in)
 
@@ -172,13 +148,14 @@ def env(
         asset_key=context.asset_key,
         metadata={
             "__".join(context.asset_key.path): MetadataValue.json(env_in),
-            "json": MetadataValue.path(env_json),
+            "ENVIRONMENT_KITSU": MetadataValue.json(ENVIRONMENT_KITSU),
+            # "ENVIRONMENT": MetadataValue.json(ENVIRONMENT),
         },
     )
 
 
 @asset(
-    **asset_header,
+    **ASSET_HEADER,
 )
 def apt_packages(
     context: AssetExecutionContext,
@@ -203,7 +180,7 @@ def apt_packages(
 
 
 @asset(
-    **asset_header,
+    **ASSET_HEADER,
     ins={
         "env": AssetIn(
             AssetKey([KEY, "env"]),
@@ -322,7 +299,7 @@ def build_docker_image(
 
 
 @asset(
-    **asset_header,
+    **ASSET_HEADER,
     ins={
         "env": AssetIn(
             AssetKey([KEY, "env"]),
@@ -420,7 +397,7 @@ def script_prepare_db(
 
 
 @asset(
-    **asset_header,
+    **ASSET_HEADER,
     ins={
         "env": AssetIn(
             AssetKey([KEY, "env"]),
@@ -510,7 +487,7 @@ def prepare_db(
 
 
 @asset(
-    **asset_header,
+    **ASSET_HEADER,
     ins={
         "env": AssetIn(
             AssetKey([KEY, "env"]),
@@ -573,7 +550,7 @@ def script_init_zou(
 
 
 @asset(
-    **asset_header,
+    **ASSET_HEADER,
     ins={
         "env": AssetIn(
             AssetKey([KEY, "env"]),
