@@ -4,7 +4,11 @@ __all__ = [
     "GROUP",
     "KEY",
     "ASSET_HEADER",
+    "ENVIRONMENT",
 ]
+
+import pathlib
+from OpenStudioLandscapes.engine.utils import *
 
 
 DOCKER_USE_CACHE = False
@@ -19,3 +23,13 @@ ASSET_HEADER = {
     "key_prefix": [KEY],
     "compute_kind": "python",
 }
+
+# @formatter:off
+ENVIRONMENT = {
+    "CONFIGS_ROOT": pathlib.Path(
+        get_git_root(pathlib.Path(__file__)),
+        "configs",
+        KEY,
+    ).as_posix(),
+}
+# @formatter:on
