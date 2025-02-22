@@ -71,7 +71,7 @@ zou upgrade_db
     **ASSET_HEADER,
     ins={
         "group_in": AssetIn(
-            AssetKey([KEY_BASE, "group_out"])
+            AssetKey([*KEY_BASE, "group_out"])
         ),
     },
 )
@@ -104,6 +104,7 @@ def env(
             "default": pathlib.Path(
                 env_in["DOT_LANDSCAPES"],
                 env_in.get("LANDSCAPE", "default"),
+                f"{GROUP}__{'__'.join(KEY)}",
                 "data",
                 "kitsu",
             ).as_posix(),
@@ -126,6 +127,7 @@ def env(
         f"KITSU_INIT_ZOU": pathlib.Path(
             env_in["DOT_LANDSCAPES"],
             env_in.get("LANDSCAPE", "default"),
+            f"{GROUP}__{'__'.join(KEY)}",
             "configs",
             "kitsu",
             "init_zou.sh",
@@ -133,7 +135,13 @@ def env(
         .expanduser()
         .as_posix(),
         f"KITSU_TEMPLATE_DB_14": pathlib.Path(
-            env_in["CONFIGS_ROOT"], "kitsu", "postgres", "template_dbs", "14", "main"
+            get_git_root(pathlib.Path(__file__)),
+            "data",
+            "__".join(KEY),
+            "postgres",
+            "template_dbs",
+            "14",
+            "main"
         )
         .expanduser()
         .as_posix(),
@@ -183,10 +191,10 @@ def apt_packages(
     **ASSET_HEADER,
     ins={
         "env": AssetIn(
-            AssetKey([KEY, "env"]),
+            AssetKey([*KEY, "env"]),
         ),
         "apt_packages": AssetIn(
-            AssetKey([KEY, "apt_packages"]),
+            AssetKey([*KEY, "apt_packages"]),
         ),
     },
 )
@@ -200,7 +208,7 @@ def build_docker_image(
     docker_file = pathlib.Path(
         env["DOT_LANDSCAPES"],
         env.get("LANDSCAPE", "default"),
-        KEY,
+        f"{GROUP}__{'__'.join(KEY)}",
         "__".join(context.asset_key.path),
         "Dockerfiles",
         "Dockerfile",
@@ -302,7 +310,7 @@ def build_docker_image(
     **ASSET_HEADER,
     ins={
         "env": AssetIn(
-            AssetKey([KEY, "env"]),
+            AssetKey([*KEY, "env"]),
         ),
     },
 )
@@ -400,10 +408,10 @@ def script_prepare_db(
     **ASSET_HEADER,
     ins={
         "env": AssetIn(
-            AssetKey([KEY, "env"]),
+            AssetKey([*KEY, "env"]),
         ),
         "script_prepare_db": AssetIn(
-            AssetKey([KEY, "script_prepare_db"]),
+            AssetKey([*KEY, "script_prepare_db"]),
         ),
     },
 )
@@ -420,6 +428,8 @@ def prepare_db(
 
     if not KITSUDB_INSIDE_CONTAINER:
 
+        kitsu_db_template = env.get("KITSU_TEMPLATE_DB_14")
+
         kitsu_db_dir_host = (
             pathlib.Path(env.get("KITSU_DATABASE_INSTALL_DESTINATION"))
             / "postgresql"
@@ -427,8 +437,6 @@ def prepare_db(
             / "main"
         )
         kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
-
-        kitsu_db_template = env.get("KITSU_TEMPLATE_DB_14")
 
         try:
             empty = not any(kitsu_db_dir_host.iterdir())
@@ -490,7 +498,7 @@ def prepare_db(
     **ASSET_HEADER,
     ins={
         "env": AssetIn(
-            AssetKey([KEY, "env"]),
+            AssetKey([*KEY, "env"]),
         ),
     },
 )
@@ -553,17 +561,17 @@ def script_init_zou(
     **ASSET_HEADER,
     ins={
         "env": AssetIn(
-            AssetKey([KEY, "env"]),
+            AssetKey([*KEY, "env"]),
         ),
         "script_init_zou": AssetIn(
-            AssetKey([KEY, "script_init_zou"]),
+            AssetKey([*KEY, "script_init_zou"]),
         ),
         "build": AssetIn(
-            AssetKey([KEY, "build_docker_image"]),
+            AssetKey([*KEY, "build_docker_image"]),
         ),
     },
     deps=[
-        AssetKey([KEY, "prepare_db"]),
+        AssetKey([*KEY, "prepare_db"]),
     ],
 )
 def compose(
@@ -713,10 +721,10 @@ group_out = AssetsDefinition.from_op(
     key_prefix=KEY,
     keys_by_input_name={
         "compose": AssetKey(
-            [KEY, "compose"]
+            [*KEY, "compose"]
         ),
         "env": AssetKey(
-            [KEY, "env"]
+            [*KEY, "env"]
         ),
     },
 )
@@ -728,7 +736,7 @@ docker_compose_graph = AssetsDefinition.from_op(
     key_prefix=KEY,
     keys_by_input_name={
         "group_out": AssetKey(
-            [KEY, "group_out"]
+            [*KEY, "group_out"]
         ),
     },
 )
