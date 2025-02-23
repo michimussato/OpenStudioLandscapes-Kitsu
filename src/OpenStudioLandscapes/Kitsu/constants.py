@@ -27,6 +27,7 @@ ASSET_HEADER = {
 
 # @formatter:off
 ENVIRONMENT = {
+    "DOCKER_USE_CACHE": DOCKER_USE_CACHE,
     "CONFIGS_ROOT": pathlib.Path(
         get_git_root(pathlib.Path(__file__)),
         "configs",
