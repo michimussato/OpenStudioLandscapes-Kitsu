@@ -82,73 +82,12 @@ def env(
 
     env_in = copy.deepcopy(group_in["env"])
 
-    # @formatter:off
-    # Todo
-    #  - [ ] Move to constants.py
-    ENVIRONMENT_KITSU = {
-        # Todo:
-        #  - [ ] These have no effect yet
-        # "KITSU_ADMIN_USER": "admin@example.com",
-        # "KITSU_ADMIN_PASSWORD": "mysecretpassword",
-        "KITSU_PORT_HOST": "4545",
-        "KITSU_PORT_CONTAINER": "80",
-        "KITSU_DATABASE_INSTALL_DESTINATION": {
-            #################################################################
-            # Kitsu Postgresql DB will be created in (hardcoded):
-            # "KITSU_DATABASE_INSTALL_DESTINATION" / "postgresql" / "14" / "main"
-            # Kitsu Previews folder will be created in (hardcoded):
-            # "KITSU_DATABASE_INSTALL_DESTINATION" / "previews"
-            #################################################################
-            #################################################################
-            # Inside Landscape:
-            "default": pathlib.Path(
-                env_in["DOT_LANDSCAPES"],
-                env_in.get("LANDSCAPE", "default"),
-                f"{GROUP}__{'__'.join(KEY)}",
-                "data",
-                "kitsu",
-            ).as_posix(),
-            #################################################################
-            # Prod DB:
-            "prod_db": pathlib.Path(
-                env_in["NFS_ENTRY_POINT"],
-                "services",
-                "kitsu",
-            ).as_posix(),
-            #################################################################
-            # Test DB:
-            "test_db": pathlib.Path(
-                env_in["NFS_ENTRY_POINT"],
-                "test_data",
-                "10.2",
-                "kitsu",
-            ).as_posix(),
-        }["default"],
-        f"KITSU_INIT_ZOU": pathlib.Path(
-            env_in["DOT_LANDSCAPES"],
-            env_in.get("LANDSCAPE", "default"),
-            f"{GROUP}__{'__'.join(KEY)}",
-            "configs",
-            "kitsu",
-            "init_zou.sh",
-        )
-        .expanduser()
-        .as_posix(),
-        f"KITSU_TEMPLATE_DB_14": pathlib.Path(
-            get_git_root(pathlib.Path(__file__)),
-            "data",
-            "__".join(KEY),
-            "postgres",
-            "template_dbs",
-            "14",
-            "main"
-        )
-        .expanduser()
-        .as_posix(),
-    }
-    # @formatter:on
+    # expanding variables in OpenStudioLandscapes.Kitsu.constants.ENVIRONMENT
+    for k, v in ENVIRONMENT.items():
+        if isinstance(v, str):
+            ENVIRONMENT[k] = v.format(**env_in)
 
-    env_in.update(ENVIRONMENT_KITSU)
+    env_in.update(ENVIRONMENT)
 
     yield Output(env_in)
 
@@ -156,8 +95,7 @@ def env(
         asset_key=context.asset_key,
         metadata={
             "__".join(context.asset_key.path): MetadataValue.json(env_in),
-            "ENVIRONMENT_KITSU": MetadataValue.json(ENVIRONMENT_KITSU),
-            # "ENVIRONMENT": MetadataValue.json(ENVIRONMENT),
+            "ENVIRONMENT": MetadataValue.json(ENVIRONMENT),
         },
     )
 
