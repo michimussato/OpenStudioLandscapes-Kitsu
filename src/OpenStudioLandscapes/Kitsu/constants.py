@@ -78,15 +78,5 @@ ENVIRONMENT = {
             "kitsu",
         ).as_posix(),
     }["default"],
-    f"KITSU_INIT_ZOU": pathlib.Path(
-        "{DOT_LANDSCAPES}",
-        "{LANDSCAPE}",
-        f"{GROUP}__{'__'.join(KEY)}",
-        "configs",
-        "kitsu",
-        "init_zou.sh",
-    )
-    .expanduser()
-    .as_posix(),
 }
 # @formatter:on
