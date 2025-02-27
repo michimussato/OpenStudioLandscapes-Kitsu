@@ -1,7 +1,6 @@
 import copy
 import pathlib
 import shutil
-import subprocess
 import textwrap
 import time
 import urllib.parse
@@ -28,43 +27,6 @@ from OpenStudioLandscapes.engine.base.ops import op_docker_compose_graph
 from OpenStudioLandscapes.engine.base.ops import op_group_out
 
 from OpenStudioLandscapes.Kitsu.constants import *
-
-"""
-# cat /opt/zou/init_zou.sh
-#!/bin/bash
-export LC_ALL=C.UTF-8
-export LANG=C.UTF-8
-
-service postgresql start
-service redis-server start
-
-. /opt/zou/env/bin/activate
-
-zou upgrade-db
-zou init-data
-zou create-admin admin@example.com --password mysecretpassword
-
-service postgresql stop
-service redis-server stop
-
-
-
-/opt/zou# cat start_zou.sh
-#!/bin/bash
-
-# create /var/run/postgresql
-. /usr/share/postgresql-common/init.d-functions
-create_socket_directory
-
-echo Running Zou...
-supervisord -c /etc/supervisord.conf
-
-
-
-
-# Upgrade DB
-zou upgrade_db
-"""
 
 
 @asset(
@@ -96,64 +58,6 @@ def env(
         metadata={
             "__".join(context.asset_key.path): MetadataValue.json(env_in),
             "ENVIRONMENT": MetadataValue.json(ENVIRONMENT),
-        },
-    )
-
-
-@asset(
-    **ASSET_HEADER,
-    ins={
-        "env": AssetIn(
-            AssetKey([*KEY, "env"])
-        ),
-    },
-)
-def zou_env(
-    context: AssetExecutionContext,
-    env: dict,  # pylint: disable=redefined-outer-name
-) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
-
-    zou_env_file = pathlib.Path(
-        env["DOT_LANDSCAPES"],
-        env.get("LANDSCAPE", "default"),
-        f"{GROUP}__{'__'.join(KEY)}",
-        "__".join(context.asset_key.path),
-        "zou.env",
-    )
-
-    zou_env_file.parent.mkdir(parents=True, exist_ok=True)
-
-    zou_env_script = str()
-
-    zou_env_script += "# https://zou.cg-wire.com/\n"
-    # zou_env_script += f"DB_PASSWORD={env.get('KITSU_ADMIN_PASSWORD', 'mysecretpassword')}\n"
-    zou_env_script += "DB_PASSWORD=mysecretpassword\n"
-    zou_env_script += f"SECRET_KEY=yourrandomsecretkey\n"
-    zou_env_script += f"PREVIEW_FOLDER=/opt/zou/previews\n"
-    zou_env_script += f"TMP_DIR=/opt/zou/tmp\n"
-    zou_env_script += "\n"
-    zou_env_script += "# If you add variables above, add the exports below\n"
-    zou_env_script += "export DB_PASSWORD\n"
-    zou_env_script += "export SECRET_KEY\n"
-    zou_env_script += "export PREVIEW_FOLDER\n"
-    zou_env_script += "export TMP_DIR\n"
-    zou_env_script += "\n"
-
-    with open(
-        file=zou_env_file,
-        mode="w",
-    ) as fw:
-        fw.write(zou_env_script)
-
-    # env_in.update(_zou_env)
-
-    yield Output(zou_env_file)
-
-    yield AssetMaterialization(
-        asset_key=context.asset_key,
-        metadata={
-            "__".join(context.asset_key.path): MetadataValue.path(zou_env_file),
-            "zou.env": MetadataValue.md(f"```shell\n{zou_env_script}\n```"),
         },
     )
 
@@ -193,23 +97,19 @@ def apt_packages(
         "apt_packages": AssetIn(
             AssetKey([*KEY, "apt_packages"]),
         ),
-        "zou_env": AssetIn(
-            AssetKey([*KEY, "zou_env"]),
+        "script_zou_launcher": AssetIn(
+            AssetKey([*KEY, "script_zou_launcher"]),
         ),
-        # "script_launch_zou": AssetIn(
-        #     AssetKey([*KEY, "script_launch_zou"]),
-        # ),
-        # "script_init_db": AssetIn(
-        #     AssetKey([*KEY, "script_init_db"]),
-        # ),
+        "script_init_db": AssetIn(
+            AssetKey([*KEY, "script_init_db"]),
+        ),
     },
 )
 def build_docker_image(
     context: AssetExecutionContext,
     env: dict,  # pylint: disable=redefined-outer-name
     apt_packages: dict[str, list[str]],  # pylint: disable=redefined-outer-name
-    zou_env: pathlib.Path,  # pylint: disable=redefined-outer-name
-    # script_launch_zou: pathlib.Path,  # pylint: disable=redefined-outer-name
+    script_zou_launcher: pathlib.Path,  # pylint: disable=redefined-outer-name
     script_init_db: pathlib.Path,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[str] | AssetMaterialization, None, None]:
     """ """
@@ -239,8 +139,7 @@ def build_docker_image(
     script_init_db_dir.mkdir(parents=True, exist_ok=True)
 
     for script in [
-        zou_env,
-        # script_launch_zou,
+        script_zou_launcher,
         script_init_db,
     ]:
 
@@ -264,6 +163,13 @@ def build_docker_image(
 
         ENV CONTAINER_TIMEZONE={TIMEZONE}
         ENV SET_CONTAINER_TIMEZONE=true
+        
+        ENV DB_ADMIN={KITSU_ADMIN_USER}
+        ENV DB_PASSWORD={KITSU_DB_PASSWORD}
+        ENV PGPORT={KITSU_PGPORT}
+        ENV SECRET_KEY={KITSU_SECRET_KEY}
+        ENV PREVIEW_FOLDER={KITSU_PREVIEW_FOLDER}
+        ENV TMP_DIR={KITSU_TMP_DIR}
 
         RUN apt-get update && apt-get upgrade -y
 
@@ -271,13 +177,9 @@ def build_docker_image(
 
         RUN apt-get clean
         
-        WORKDIR /etc/zou
-
-        COPY --chmod=0755 ./scripts/zou.env .
-
         WORKDIR /opt/zou
 
-        # COPY --chmod=0755 ./scripts/launch_zou.sh .
+        COPY --chmod=0755 ./scripts/zou_launcher.sh .
         COPY --chmod=0755 ./scripts/init_db.sh .
 
         ENTRYPOINT []
@@ -342,204 +244,6 @@ def build_docker_image(
             AssetKey([*KEY, "env"]),
         ),
     },
-)
-def script_prepare_db(
-    context: AssetExecutionContext,
-    env: dict,  # pylint: disable=redefined-outer-name
-) -> Generator[Output[dict[str, str]] | AssetMaterialization, None, None]:
-
-    ret = dict()
-
-    ret["exe"] = shutil.which("bash")
-    ret["script"] = str()
-
-    kitsu_db_dir_host = pathlib.Path(
-        env.get("KITSU_DATABASE_INSTALL_DESTINATION"),
-        "postgresql",
-        "14",
-        "main",
-    )
-
-    # sudo chown 105:105 KitsuPostgres
-    # Concept: /usr/bin/sshpass -eENV_VAR /usr/bin/ssh "echo $ENV_VAR | sudo -S <cmd>"
-    # Because shutil.chown cannot sudo
-    # Requirements:
-    # 2025-01-20 11:00:01.316 UTC [98] FATAL:  data directory "/var/lib/postgresql/14/main" has invalid permissions
-    # 2025-01-20 11:00:01.316 UTC [98] DETAIL:  Permissions should be u=rwx (0700) or u=rwx,g=rx (0750).
-
-    kitsu_postgres_uid: int = 105
-    kitsu_postgres_gid: int = 105
-    kitsu_postgres_chmod: int = [700, 750][1]
-
-    """
-    Reference Script:
-
-    #!/bin/bash
-
-    echo $SSH_PASS;
-    echo $SSH_PASS;
-
-    /usr/bin/sshpass -eSSH_PASS ssh -tt -oStrictHostKeyChecking=no michael@localhost << EOF
-    echo ${SSH_PASS} | \
-    sudo -S chown -R 105:105 /home/michael/git/repos/studio-landscapes/.landscapes/2025-01-27_09-38-08__98308581e4744378ae2972dadc88af1c/data/kitsu/postgresql/14/main && \
-    sudo -S chmod 0750 /home/michael/git/repos/studio-landscapes/.landscapes/2025-01-27_09-38-08__98308581e4744378ae2972dadc88af1c/data/kitsu/postgresql/14/main && \
-    exit 0;
-    EOF
-
-    echo $SSH_PASS;
-    echo Success;
-    exit 0;
-    """
-
-    # Todo:
-    #  - [ ] ideally over SSH but it seems to be a PITA
-
-    # @formatter:off
-    ret["script"] += "#!/bin/bash\n"
-    ret["script"] += "\n"
-    # ret["script"] += "echo $SSH_PASS;\n"
-    # ret["script"] += "echo $SSH_PASS;\n"
-    # ret["script"] += "\n"
-    # ret["script"] += f"{shutil.which('sshpass')} -eSSH_PASS ssh -tt -oStrictHostKeyChecking=no {env['SSH_USER']}@{env['SSH_HOST']} << 'EOF'\n"
-    # ret["script"] += f"{shutil.which('sshpass')} -eSSH_PASS ssh -tt -oStrictHostKeyChecking=no {env['SSH_USER']}@{env['SSH_HOST']} << EOF\n"
-    ret[
-        "script"
-    ] += f"echo $SUDO_PASS | sudo -S -k /usr/bin/chown -R {kitsu_postgres_uid}:{kitsu_postgres_gid} {kitsu_db_dir_host.as_posix()};\n"
-    ret[
-        "script"
-    ] += f"echo $SUDO_PASS | sudo -S -k /usr/bin/chmod {str(kitsu_postgres_chmod).zfill(4)} {kitsu_db_dir_host.as_posix()};\n"
-    # ret["script"] += f"sudo -S chmod {str(kitsu_postgres_chmod).zfill(4)} {kitsu_db_dir_host.as_posix()} && \\\n"
-    # ret["script"] += "exit 0;\n"
-    # ret["script"] += "EOF\n"
-
-    # ret["script"] += f"{shutil.which('sshpass')} -eSSH_PASS ssh -tt -oStrictHostKeyChecking=no {env['SSH_USER']}@{env['SSH_HOST']} \"echo $SSH_PASS | sudo -S chown -R {kitsu_postgres_uid}:{kitsu_postgres_gid} {kitsu_db_dir_host.as_posix()} && exit 0;\";\n"
-    # # ret["script"] += f"{shutil.which('sshpass')} -eSSH_PASS ssh -tt -oStrictHostKeyChecking=no {env['SSH_USER']}@{env['SSH_HOST']} \"echo $SSH_PASS | sudo -S touch {kitsu_db_dir_host.as_posix()}/hello &>/dev/null && echo $? || echo 1;\";\n"
-    # ret["script"] += f"{shutil.which('sshpass')} -eSSH_PASS ssh -tt -oStrictHostKeyChecking=no {env['SSH_USER']}@{env['SSH_HOST']} \"echo $SSH_PASS | sudo -S chmod {str(kitsu_postgres_chmod).zfill(4)} {kitsu_db_dir_host.as_posix()} &>/dev/null && echo $? || echo 1; exit;;\";\n"
-    ret["script"] += "\n"
-    # ret["script"] += "echo $SSH_PASS;\n"
-    ret["script"] += "echo Success;\n"
-    ret["script"] += "exit 0;\n"
-    # @formatter:on
-
-    yield Output(ret)
-
-    yield AssetMaterialization(
-        asset_key=context.asset_key,
-        metadata={
-            "__".join(context.asset_key.path): MetadataValue.json(ret),
-            "script_prepare_db": MetadataValue.md(f"```shell\n{ret['script']}\n```"),
-            "env": MetadataValue.json(env),
-        },
-    )
-
-
-# @asset(
-#     **ASSET_HEADER,
-#     ins={
-#         "env": AssetIn(
-#             AssetKey([*KEY, "env"]),
-#         ),
-#         "build_docker_image": AssetIn(
-#             AssetKey([*KEY, "build_docker_image"]),
-#         ),
-#     },
-# )
-# def build_docker_image_init_db(
-#     context: AssetExecutionContext,
-#     env: dict,  # pylint: disable=redefined-outer-name
-#     build_docker_image: str,  # pylint: disable=redefined-outer-name
-# ) -> Generator[Output[str] | AssetMaterialization, None, None]:
-#     """ """
-#
-#     docker_file = pathlib.Path(
-#         env["DOT_LANDSCAPES"],
-#         env.get("LANDSCAPE", "default"),
-#         f"{GROUP}__{'__'.join(KEY)}",
-#         "__".join(context.asset_key.path),
-#         "Dockerfiles",
-#         "Dockerfile",
-#     )
-#
-#     shutil.rmtree(docker_file.parent, ignore_errors=True)
-#
-#     docker_file.parent.mkdir(parents=True, exist_ok=True)
-#
-#     tags = [
-#         f"{env.get('IMAGE_PREFIX')}/{'__'.join(context.asset_key.path).lower()}:latest",
-#         f"{env.get('IMAGE_PREFIX')}/{'__'.join(context.asset_key.path).lower()}:{env.get('LANDSCAPE', str(time.time()))}",
-#     ]
-#
-#     # @formatter:off
-#     docker_file_str = textwrap.dedent(
-#         """
-#         # {auto_generated}
-#         # {dagster_url}
-#         FROM {parent_image} AS {image_name}
-#         LABEL authors="{AUTHOR}"
-#
-#         SHELL ["/bin/bash", "-c"]
-#
-#         WORKDIR /
-#
-#         ENTRYPOINT []
-#     """
-#     ).format(
-#         auto_generated=f"AUTO-GENERATED by Dagster Asset {'__'.join(context.asset_key.path)}",
-#         dagster_url=urllib.parse.quote(
-#             f"http://localhost:3000/asset-groups/{'%2F'.join(context.asset_key.path)}",
-#             safe=":/%",
-#         ),
-#         image_name="__".join(context.asset_key.path).lower(),
-#         parent_image=build_docker_image,
-#         **env,
-#     )
-#     # @formatter:on
-#
-#     with open(docker_file, "w") as fw:
-#         fw.write(docker_file_str)
-#
-#     with open(docker_file, "r") as fr:
-#         docker_file_content = fr.read()
-#
-#     stream = docker.build(
-#         context_path=docker_file.parent.as_posix(),
-#         cache=DOCKER_USE_CACHE,
-#         tags=tags,
-#         stream_logs=True,
-#     )
-#
-#     log: str = ""
-#
-#     for msg in stream:
-#         context.log.debug(msg)
-#         log += msg
-#
-#     cmds_docker = compile_cmds(
-#         docker_file=docker_file,
-#         tag=tags[1],
-#     )
-#
-#     yield Output(tags[1])
-#
-#     yield AssetMaterialization(
-#         asset_key=context.asset_key,
-#         metadata={
-#             "__".join(context.asset_key.path): MetadataValue.path(tags[1]),
-#             "docker_file": MetadataValue.md(f"```shell\n{docker_file_content}\n```"),
-#             **cmds_docker,
-#             "build_logs": MetadataValue.md(f"```shell\n{log}\n```"),
-#             "env_10_2": MetadataValue.json(env),
-#         },
-#     )
-
-
-@asset(
-    **ASSET_HEADER,
-    ins={
-        "env": AssetIn(
-            AssetKey([*KEY, "env"]),
-        ),
-    },
     description="",
 )
 def script_init_db(
@@ -555,15 +259,25 @@ def script_init_db(
 
     # Source:
     # /opt/zou/init_zou.sh
-    # kitsu_admin_user = env.get("KITSU_ADMIN_USER", "admin@example.com")
-    # kitsu_admin_password = env.get("KITSU_ADMIN_PASSWORD", "mysecretpassword")
-    kitsu_admin_user = "admin@example.com"
-    kitsu_admin_password = "mysecretpassword"
+    kitsu_admin_user = env.get("KITSU_ADMIN_USER", "admin@example.com")
+    kitsu_admin_password = env.get("KITSU_DB_PASSWORD", "mysecretpassword")
+    kitsu_pgport = env.get("KITSU_PGPORT", "5432")
+    kitsu_secret_key = env.get("SECRET_KEY", "yourrandomsecretkey")
+    kitsu_preview_folder = env.get("KITSU_PREVIEW_FOLDER", "/opt/zou/previews")
+    kitsu_tmp_dir = env.get("KITSU_TMP_DIR", "/opt/zou/tmp")
 
     # https://github.com/michimussato/kitsu-setup/blob/main/README_KITSU.md
     init_db["script"] += "#!/bin/bash\n"
     init_db["script"] += "export LC_ALL=C.UTF-8\n"
     init_db["script"] += "export LANG=C.UTF-8\n"
+    init_db["script"] += "\n"
+    init_db["script"] += "# https://zou.cg-wire.com/\n"
+    init_db["script"] += f"export KITSU_ADMIN={kitsu_admin_user}\n"
+    init_db["script"] += f"export DB_PASSWORD={kitsu_admin_password}\n"
+    init_db["script"] += f"export PGPORT={kitsu_pgport}\n"
+    init_db["script"] += f"export SECRET_KEY={kitsu_secret_key}\n"
+    init_db["script"] += f"export PREVIEW_FOLDER={kitsu_preview_folder}\n"
+    init_db["script"] += f"export TMP_DIR={kitsu_tmp_dir}\n"
     init_db["script"] += "\n"
     init_db["script"] += "# Default encoding without specifying it is SQL_ASCII\n"
     init_db["script"] += "# psql zoudb -c 'SHOW SERVER_ENCODING'\n"
@@ -572,28 +286,29 @@ def script_init_db(
     init_db["script"] += "service postgresql start\n"
     init_db["script"] += "service redis-server start\n"
     init_db["script"] += "\n"
-    init_db["script"] += "source /etc/zou/zou.env\n"
-    init_db["script"] += "\n"
     init_db["script"] += "sudo -u postgres psql -U postgres -c 'create user root;'\n"
     init_db["script"] += "sudo -u postgres psql -U postgres -c 'create database zoudb;'\n"
-    init_db["script"] += f"sudo -u postgres psql -U postgres -d postgres -c \"alter user postgres with password '{kitsu_admin_password}';\"\n"
+    init_db["script"] += "sudo -u postgres psql -U postgres -d postgres -c \"alter user postgres with password '${DB_PASSWORD}';\"\n"
     init_db["script"] += "\n"
     init_db["script"] += "source /opt/zou/env/bin/activate\n"
-    init_db["script"] += "source /etc/zou/zou.env\n"
+    # init_db["script"] += "source /etc/zou/zou.env\n"
     init_db["script"] += "\n"
     init_db["script"] += "zou init-db\n"
     init_db["script"] += "zou init-data\n"
     init_db["script"] += "\n"
-    init_db["script"] += "mkdir -p $TMP_DIR\n"
-    init_db["script"] += "chown -R postgres: $TMP_DIR\n"
+    init_db["script"] += "mkdir -p ${TMP_DIR}\n"
+    init_db["script"] += "chown -R postgres:postgres ${TMP_DIR}\n"
     init_db["script"] += "\n"
-    init_db["script"] += f"zou create-admin {kitsu_admin_user} --password {kitsu_admin_password}\n"
+    init_db["script"] += "zou create-admin ${KITSU_ADMIN} --password ${DB_PASSWORD}\n"
     init_db["script"] += "\n"
     init_db["script"] += "service postgresql stop\n"
     init_db["script"] += "service redis-server stop\n"
+    # init_db["script"] += "sleep 3\n"
+    init_db["script"] += "\n"
     init_db["script"] += "# service redis-server is down but process seems to persist\n"
     init_db["script"] += "# for some reason\n"
     init_db["script"] += "pkill redis\n"
+    # init_db["script"] += "sleep 3\n"
     init_db["script"] += "\n"
     init_db["script"] += "exit 0\n"
 
@@ -634,7 +349,7 @@ def script_init_db(
     },
     description="",
 )
-def script_launch_zou(
+def script_zou_launcher(
     context: AssetExecutionContext,
     env: dict,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
@@ -645,135 +360,65 @@ def script_launch_zou(
     script_dict["exe"] = shutil.which("bash")
     script_dict["script"] = str()
 
+    kitsu_admin_user = env.get("KITSU_ADMIN_USER", "admin@example.com")
+    kitsu_admin_password = env.get("KITSU_DB_PASSWORD", "mysecretpassword")
+    kitsu_pgport = env.get("KITSU_PGPORT", "5432")
+    kitsu_secret_key = env.get("SECRET_KEY", "yourrandomsecretkey")
+    kitsu_preview_folder = env.get("KITSU_PREVIEW_FOLDER", "/opt/zou/previews")
+    kitsu_tmp_dir = env.get("KITSU_TMP_DIR", "/opt/zou/tmp")
+
     # https://github.com/michimussato/kitsu-setup/blob/main/README_KITSU.md
     script_dict["script"] += f"#!{script_dict['exe']}\n"
     script_dict["script"] += "export LC_ALL=C.UTF-8\n"
     script_dict["script"] += "export LANG=C.UTF-8\n"
     script_dict["script"] += "\n"
-    script_dict["script"] += "if [ ! -d /var/lib/postgresql/14/main ]; then\n"
+    script_dict["script"] += "# https://zou.cg-wire.com/\n"
+    script_dict["script"] += f"export KITSU_ADMIN={kitsu_admin_user}\n"
+    script_dict["script"] += f"export DB_PASSWORD={kitsu_admin_password}\n"
+    script_dict["script"] += f"export PGPORT={kitsu_pgport}\n"
+    script_dict["script"] += f"export SECRET_KEY={kitsu_secret_key}\n"
+    script_dict["script"] += f"export PREVIEW_FOLDER={kitsu_preview_folder}\n"
+    script_dict["script"] += f"export TMP_DIR={kitsu_tmp_dir}\n"
+    script_dict["script"] += "\n"
+    script_dict["script"] += "if [[ -d /var/lib/postgresql/14/main && -z \"$( ls -A '/var/lib/postgresql/14/main')\" ]]; then\n"
+    script_dict["script"] += "    echo /var/lib/postgresql/14/main empty\n"
+    script_dict["script"] += "    echo Initializing...\n"
+    script_dict["script"] += "    bash init_db.sh\n"
+    script_dict["script"] += "elif [[ ! -d /var/lib/postgresql/14/main ]]; then\n"
+    script_dict["script"] += "    echo /var/lib/postgresql/14/main not found\n"
+    script_dict["script"] += "    echo Initializing...\n"
     script_dict["script"] += "    bash init_db.sh\n"
     script_dict["script"] += "fi;\n"
     script_dict["script"] += "\n"
-    script_dict["script"] += "bash init_db.sh\n"
-    script_dict["script"] += "\n"
-    script_dict["script"] += "bash start_zou.sh\n"
+    script_dict["script"] += "bash start_zou.sh &\n"
+    # script_dict["script"] += "bash start_zou.sh\n"
     script_dict["script"] += "\n"
     script_dict["script"] += "exit 0\n"
 
-    init_db_script = pathlib.Path(
+    zou_launcher_script = pathlib.Path(
         env["DOT_LANDSCAPES"],
         env.get("LANDSCAPE", "default"),
         f"{GROUP}__{'__'.join(KEY)}",
         "__".join(context.asset_key.path),
-        "launch_zou.sh",
+        "zou_launcher.sh",
     )
 
-    init_db_script.parent.mkdir(parents=True, exist_ok=True)
+    zou_launcher_script.parent.mkdir(parents=True, exist_ok=True)
 
     with open(
-        file=init_db_script,
+        file=zou_launcher_script,
         mode="w",
     ) as sh_init_zou:
         sh_init_zou.write(script_dict["script"])
 
-    yield Output(init_db_script)
+    yield Output(zou_launcher_script)
 
     yield AssetMaterialization(
         asset_key=context.asset_key,
         metadata={
-            "__".join(context.asset_key.path): MetadataValue.path(init_db_script),
-            "dict_launch_zou": MetadataValue.json(script_dict),
-            "script_launch_zou": MetadataValue.md(f"```shell\n{script_dict['script']}\n```"),
-        },
-    )
-
-
-@asset(
-    **ASSET_HEADER,
-    ins={
-        "env": AssetIn(
-            AssetKey([*KEY, "env"]),
-        ),
-        "script_prepare_db": AssetIn(
-            AssetKey([*KEY, "script_prepare_db"]),
-        ),
-    },
-)
-def prepare_db(
-    context: AssetExecutionContext,
-    env: dict,  # pylint: disable=redefined-outer-name
-    script_prepare_db: dict[str, str],  # pylint: disable=redefined-outer-name
-):
-
-    stdout_stderr = {
-        "stdout": MetadataValue.md(f"```shell\nNone\n```"),
-        "stderr": MetadataValue.md(f"```shell\nNone\n```"),
-    }
-
-    if not KITSUDB_INSIDE_CONTAINER:
-
-        kitsu_db_template = env.get("KITSU_TEMPLATE_DB_14")
-
-        kitsu_db_dir_host = (
-            pathlib.Path(env.get("KITSU_DATABASE_INSTALL_DESTINATION"))
-            / "postgresql"
-            / "14"
-            / "main"
-        )
-        kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
-
-        try:
-            empty = not any(kitsu_db_dir_host.iterdir())
-        except PermissionError as e:
-            context.log.warning(
-                f"Database folder {kitsu_db_dir_host} already "
-                f"exists and/or is not writable: "
-                f"{e}"
-            )
-            empty = False
-
-        if empty:
-            shutil.copytree(
-                src=kitsu_db_template,
-                dst=kitsu_db_dir_host,
-                dirs_exist_ok=True,
-            )
-
-        if bool(script_prepare_db["script"]):
-
-            context.log.info(f"Setting ownership of {kitsu_db_dir_host.as_posix()}...")
-
-            proc = subprocess.Popen(
-                script_prepare_db["exe"],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                stdin=subprocess.PIPE,
-                env={
-                    "SUDO_PASS": env["SUDO_PASS"],
-                },
-            )
-
-            stdout, stderr = proc.communicate(
-                input=script_prepare_db["script"].encode(),
-            )
-
-            stdout_stderr = {
-                "stdout": MetadataValue.md(
-                    f"```shell\n{stdout.decode(encoding='utf-8')}\n```"
-                ),
-                "stderr": MetadataValue.md(
-                    f"```shell\n{stderr.decode(encoding='utf-8')}\n```"
-                ),
-            }
-
-            # Todo:
-            #  - [ ] implement reliable verification whether successful or not
-
-    return MaterializeResult(
-        asset_key=context.asset_key,
-        metadata={
-            **stdout_stderr,
-            "env": MetadataValue.json(env),
+            "__".join(context.asset_key.path): MetadataValue.path(zou_launcher_script),
+            "dict_zou_launcher": MetadataValue.json(script_dict),
+            "script_zou_launcher": MetadataValue.md(f"```shell\n{script_dict['script']}\n```"),
         },
     )
 
@@ -788,9 +433,6 @@ def prepare_db(
             AssetKey([*KEY, "build_docker_image"]),
         ),
     },
-    deps=[
-        AssetKey([*KEY, "prepare_db"]),
-    ],
 )
 def compose(
     context: AssetExecutionContext,
@@ -822,6 +464,7 @@ def compose(
             / "14"
             / "main"
         )
+        kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
 
         volumes.insert(
             0,
@@ -858,8 +501,8 @@ def compose(
                 # },
                 "command": [
                     "bash",
-                    "/opt/zou/start_zou.sh",
-                    # "/opt/zou/launch_zou.sh",
+                    # "/opt/zou/start_zou.sh",
+                    "/opt/zou/zou_launcher.sh",
                 ],
                 "ports": [
                     f"{env.get('KITSU_PORT_HOST')}:{env.get('KITSU_PORT_CONTAINER')}",

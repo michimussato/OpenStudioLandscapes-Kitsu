@@ -30,8 +30,13 @@ ENVIRONMENT = {
     "DOCKER_USE_CACHE": DOCKER_USE_CACHE,
     # Todo:
     #  - [ ] These have no effect yet
-    # "KITSU_ADMIN_USER": "admin@example.com",
-    # "KITSU_ADMIN_PASSWORD": "mysecretpassword",
+    "KITSU_ADMIN_USER": "michimussato@gmail.com",
+    "KITSU_DB_PASSWORD": "myp4ssword",
+    # /etc/postgresql/14/main/postgresql.conf
+    "KITSU_PGPORT": "5432",
+    "KITSU_SECRET_KEY": "yourrandomsecretkey",
+    "KITSU_PREVIEW_FOLDER": "/opt/zou/previews",
+    "KITSU_TMP_DIR": "/opt/zou/tmp",
     "KITSU_PORT_HOST": "4545",
     "KITSU_PORT_CONTAINER": "80",
     f"KITSU_TEMPLATE_DB_14": pathlib.Path(
@@ -63,20 +68,20 @@ ENVIRONMENT = {
             "kitsu",
         ).as_posix(),
         #################################################################
-        # Prod DB:
-        "prod_db": pathlib.Path(
-            "{NFS_ENTRY_POINT}",
-            "services",
-            "kitsu",
-        ).as_posix(),
-        #################################################################
-        # Test DB:
-        "test_db": pathlib.Path(
-            "{NFS_ENTRY_POINT}",
-            "test_data",
-            "10.2",
-            "kitsu",
-        ).as_posix(),
+        # # Prod DB:
+        # "prod_db": pathlib.Path(
+        #     "{NFS_ENTRY_POINT}",
+        #     "services",
+        #     "kitsu",
+        # ).as_posix(),
+        # #################################################################
+        # # Test DB:
+        # "test_db": pathlib.Path(
+        #     "{NFS_ENTRY_POINT}",
+        #     "test_data",
+        #     "10.2",
+        #     "kitsu",
+        # ).as_posix(),
     }["default"],
 }
 # @formatter:on
