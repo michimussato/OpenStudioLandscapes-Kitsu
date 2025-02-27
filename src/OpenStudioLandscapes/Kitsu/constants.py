@@ -32,13 +32,24 @@ ENVIRONMENT = {
     #  - [ ] These have no effect yet
     "KITSU_ADMIN_USER": "michimussato@gmail.com",
     "KITSU_DB_PASSWORD": "myp4ssword",
-    # /etc/postgresql/14/main/postgresql.conf
-    "KITSU_PGPORT": "5432",
     "KITSU_SECRET_KEY": "yourrandomsecretkey",
     "KITSU_PREVIEW_FOLDER": "/opt/zou/previews",
     "KITSU_TMP_DIR": "/opt/zou/tmp",
     "KITSU_PORT_HOST": "4545",
     "KITSU_PORT_CONTAINER": "80",
+    # /etc/postgresql/14/main/postgresql.conf
+    f"KITSU_POSTGRES_CONF": pathlib.Path(
+        get_git_root(pathlib.Path(__file__)),
+        "configs",
+        "__".join(KEY),
+        "etc",
+        "postgresql",
+        "14",
+        "main",
+        "postgresql.conf",
+    )
+    .expanduser()
+    .as_posix(),
     f"KITSU_TEMPLATE_DB_14": pathlib.Path(
         get_git_root(pathlib.Path(__file__)),
         "data",
