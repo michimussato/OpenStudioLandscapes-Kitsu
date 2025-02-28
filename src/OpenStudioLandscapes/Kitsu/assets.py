@@ -25,7 +25,7 @@ from dagster import (
 
 from docker_compose_graph.utils import *
 
-from OpenStudioLandscapes.engine.base.assets import KEY as KEY_BASE
+from OpenStudioLandscapes.engine.base.assets import KEY_BASE
 from OpenStudioLandscapes.engine.constants import *
 from OpenStudioLandscapes.engine.utils import *
 from OpenStudioLandscapes.engine.base.ops import op_docker_compose_graph
@@ -41,6 +41,9 @@ from OpenStudioLandscapes.Kitsu.constants import *
             AssetKey([*KEY_BASE, "group_out"])
         ),
     },
+    deps=[
+        AssetKey([*ASSET_HEADER['key_prefix'], f"constants_{ASSET_HEADER['group_name']}"])
+    ],
 )
 def env(
     context: AssetExecutionContext,
