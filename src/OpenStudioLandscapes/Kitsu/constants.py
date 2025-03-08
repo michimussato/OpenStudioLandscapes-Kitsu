@@ -60,17 +60,17 @@ ENVIRONMENT = {
     )
     .expanduser()
     .as_posix(),
-    f"KITSU_TEMPLATE_DB_14": pathlib.Path(
-        get_git_root(pathlib.Path(__file__)),
-        "data",
-        "__".join(KEY),
-        "postgres",
-        "template_dbs",
-        "14",
-        "main"
-    )
-    .expanduser()
-    .as_posix(),
+    # f"KITSU_TEMPLATE_DB_14": pathlib.Path(
+    #     get_git_root(pathlib.Path(__file__)),
+    #     "data",
+    #     "__".join(KEY),
+    #     "postgres",
+    #     "template_dbs",
+    #     "14",
+    #     "main"
+    # )
+    # .expanduser()
+    # .as_posix(),
 
     "KITSU_DATABASE_INSTALL_DESTINATION": {
         #################################################################
