@@ -5,6 +5,7 @@ __all__ = [
     "KEY",
     "ASSET_HEADER",
     "ENVIRONMENT",
+    "COMPOSE_SCOPE",
 ]
 
 import pathlib
@@ -19,7 +20,7 @@ from dagster import (
 )
 
 from OpenStudioLandscapes.engine.utils import *
-from OpenStudioLandscapes.engine.constants import DOCKER_USE_CACHE_GLOBAL
+from OpenStudioLandscapes.engine.constants import DOCKER_USE_CACHE_GLOBAL, THIRD_PARTY
 
 
 DOCKER_USE_CACHE = DOCKER_USE_CACHE_GLOBAL or False
@@ -106,6 +107,21 @@ ENVIRONMENT = {
     }["default"],
 }
 # @formatter:on
+
+# Todo
+#  - [ ] This is a bit hacky
+_module = __name__
+_parent = '.'.join(_module.split('.')[:-1])
+_definitions = '.'.join([_parent, "definitions"])
+
+COMPOSE_SCOPE = None
+for i in THIRD_PARTY:
+    if i["module"] == _definitions:
+        COMPOSE_SCOPE = i["compose_scope"]
+        break
+
+if COMPOSE_SCOPE is None:
+    raise Exception("No compose_scope found for module '%s'" % _module)
 
 
 @asset(

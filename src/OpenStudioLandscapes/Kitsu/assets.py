@@ -59,6 +59,12 @@ def env(
 
     env_in.update(ENVIRONMENT)
 
+    env_in.update(
+        {
+            "COMPOSE_SCOPE": COMPOSE_SCOPE,
+        },
+    )
+
     yield Output(env_in)
 
     yield AssetMaterialization(
