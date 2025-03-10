@@ -616,9 +616,6 @@ def compose_init_db(
     )
 
 
-
-
-
 group_out = AssetsDefinition.from_op(
     op_group_out,
     group_name=GROUP,
