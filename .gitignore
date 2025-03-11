@@ -53,3 +53,6 @@ MANIFEST
 .conda*/
 .python-version
 /data/Kitsu/postgres/
+
+.payload/data/
+.payload/bin/
