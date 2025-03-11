@@ -39,6 +39,13 @@ ASSET_HEADER = {
 # @formatter:off
 ENVIRONMENT = {
     "DOCKER_USE_CACHE": DOCKER_USE_CACHE,
+    # "CONFIGS_ROOT": pathlib.Path(
+    #     get_git_root(pathlib.Path(__file__)),
+    #     ".payload",
+    #     "config",
+    # )
+    # .expanduser()
+    # .as_posix(),
     # Todo:
     #  - [ ] These have no effect yet
     "KITSU_ADMIN_USER": "michimussato@gmail.com",
@@ -48,11 +55,9 @@ ENVIRONMENT = {
     "KITSU_TMP_DIR": "/opt/zou/tmp",
     "KITSU_PORT_HOST": "4545",
     "KITSU_PORT_CONTAINER": "80",
-    # /etc/postgresql/14/main/postgresql.conf
     f"KITSU_POSTGRES_CONF": pathlib.Path(
-        get_git_root(pathlib.Path(__file__)),
-        "configs",
-        "__".join(KEY),
+        # /etc/postgresql/14/main/postgresql.conf
+        get_configs_root(pathlib.Path(__file__)),
         "etc",
         "postgresql",
         "14",
@@ -61,17 +66,6 @@ ENVIRONMENT = {
     )
     .expanduser()
     .as_posix(),
-    # f"KITSU_TEMPLATE_DB_14": pathlib.Path(
-    #     get_git_root(pathlib.Path(__file__)),
-    #     "data",
-    #     "__".join(KEY),
-    #     "postgres",
-    #     "template_dbs",
-    #     "14",
-    #     "main"
-    # )
-    # .expanduser()
-    # .as_posix(),
 
     "KITSU_DATABASE_INSTALL_DESTINATION": {
         #################################################################
@@ -88,7 +82,9 @@ ENVIRONMENT = {
             f"{GROUP}__{'__'.join(KEY)}",
             "data",
             "kitsu",
-        ).as_posix(),
+        )
+        .expanduser()
+        .as_posix(),
         #################################################################
         # # Prod DB:
         # "prod_db": pathlib.Path(
