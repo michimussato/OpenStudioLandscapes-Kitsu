@@ -10,6 +10,7 @@ from functools import reduce
 from typing import Generator, MutableMapping
 
 import yaml
+from docker_compose_graph.utils import *
 from python_on_whales import docker
 
 from dagster import (
@@ -23,8 +24,6 @@ from dagster import (
     asset,
     AssetsDefinition,
 )
-
-from docker_compose_graph.utils import *
 
 from OpenStudioLandscapes.engine.base.assets import KEY_BASE
 from OpenStudioLandscapes.engine.constants import *
