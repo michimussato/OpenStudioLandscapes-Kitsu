@@ -1,4 +1,5 @@
 import copy
+import json
 import pathlib
 import shutil
 import textwrap
@@ -27,6 +28,8 @@ from docker_compose_graph.utils import *
 
 from OpenStudioLandscapes.engine.base.assets import KEY_BASE
 from OpenStudioLandscapes.engine.constants import *
+
+from OpenStudioLandscapes.engine.enums import *
 from OpenStudioLandscapes.engine.utils import *
 from OpenStudioLandscapes.engine.base.ops import op_docker_compose_graph
 from OpenStudioLandscapes.engine.base.ops import op_group_out
@@ -72,6 +75,53 @@ def env(
         metadata={
             "__".join(context.asset_key.path): MetadataValue.json(env_in),
             "ENVIRONMENT": MetadataValue.json(ENVIRONMENT),
+        },
+    )
+
+
+@asset(
+    **ASSET_HEADER,
+)
+def compose_networks(
+    context: AssetExecutionContext,
+) -> Generator[
+    Output[dict[str, dict[str, dict[str, str]]]] | AssetMaterialization, None, None]:
+
+    compose_network_mode = ComposeNetworkMode.DEFAULT
+
+    if compose_network_mode == ComposeNetworkMode.DEFAULT:
+        docker_dict = {
+            "networks": {
+                # "mongodb": {
+                #     "name": "network_mongodb-10-2",
+                # },
+                "kitsu": {
+                    "name": "network_kitsu",
+                },
+                # "ayon": {
+                #     "name": "network_ayon-10-2",
+                # },
+            },
+        }
+
+    else:
+        docker_dict = {
+            "network_mode": compose_network_mode.value,
+        }
+
+    docker_yaml = yaml.dump(docker_dict)
+
+    yield Output(docker_dict)
+
+    yield AssetMaterialization(
+        asset_key=context.asset_key,
+        metadata={
+            "__".join(context.asset_key.path): MetadataValue.json(docker_dict),
+            "compose_network_mode": MetadataValue.text(compose_network_mode.value),
+            "docker_dict": MetadataValue.md(
+                f"```json\n{json.dumps(docker_dict, indent=2)}\n```"
+            ),
+            "docker_yaml": MetadataValue.md(f"```shell\n{docker_yaml}\n```"),
         },
     )
 
@@ -389,14 +439,36 @@ def script_init_db(
         "build": AssetIn(
             AssetKey([*KEY, "build_docker_image"]),
         ),
+        "compose_networks": AssetIn(
+            AssetKey([*KEY, "compose_networks"]),
+        ),
     },
 )
 def compose_kitsu(
     context: AssetExecutionContext,
     env: dict,  # pylint: disable=redefined-outer-name
     build: str,  # pylint: disable=redefined-outer-name
+    compose_networks: dict,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[dict] | AssetMaterialization, None, None]:
     """ """
+
+    if "networks" in compose_networks:
+        network_dict = {
+            "networks": list(compose_networks.get("networks", {}).keys())
+        }
+        ports_dict = {
+            "ports": [
+                f"{env.get('KITSU_PORT_HOST')}:{env.get('KITSU_PORT_CONTAINER')}",
+            ]
+        }
+    elif "network_mode" in compose_networks:
+        network_dict = {
+            "network_mode": compose_networks.get("network_mode")
+        }
+        ports_dict = {}
+    else:
+        network_dict = {}
+        ports_dict = {}
 
     cmd_docker_run = [
         shutil.which("docker"),
@@ -473,9 +545,7 @@ def compose_kitsu(
                     "bash",
                     "/opt/zou/start_zou.sh",
                 ],
-                "ports": [
-                    f"{env.get('KITSU_PORT_HOST')}:{env.get('KITSU_PORT_CONTAINER')}",
-                ],
+                **copy.deepcopy(ports_dict),
             },
         },
     }
@@ -503,6 +573,9 @@ def compose_kitsu(
         "compose_init_db": AssetIn(
             AssetKey([*KEY, "compose_init_db"]),
         ),
+        "compose_networks": AssetIn(
+            AssetKey([*KEY, "compose_networks"]),
+        ),
     },
     # tags={
     #     "stage": "third_party/deadline/v10_2",
@@ -513,10 +586,17 @@ def compose(
     context: AssetExecutionContext,
     compose_kitsu: dict,  # pylint: disable=redefined-outer-name
     compose_init_db: dict,  # pylint: disable=redefined-outer-name
+    compose_networks: dict,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
     """ """
 
+    if "networks" in compose_networks:
+        network_dict = copy.deepcopy(compose_networks)
+    else:
+        network_dict = {}
+
     docker_chainmap = ChainMap(
+        network_dict,
         compose_kitsu,
         compose_init_db,
     )
@@ -546,6 +626,9 @@ def compose(
         "build_docker_image": AssetIn(
             AssetKey([*KEY, "build_docker_image"]),
         ),
+        # "compose_networks": AssetIn(
+        #     AssetKey([*KEY, "compose_networks"]),
+        # ),
     },
     deps=[
         AssetKey([*KEY, "script_init_db"]),
@@ -561,8 +644,26 @@ def compose_init_db(
     context: AssetExecutionContext,
     env: dict,  # pylint: disable=redefined-outer-name
     build_docker_image: str,  # pylint: disable=redefined-outer-name
+    # compose_networks: dict,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
     """ """
+
+    # if "networks" in compose_networks:
+    #     network_dict = {
+    #         "networks": list(compose_networks.get("networks", {}).keys())
+    #     }
+    #     ports_dict = {
+    #         "ports": [
+    #         ]
+    #     }
+    # elif "network_mode" in compose_networks:
+    #     network_dict = {
+    #         "network_mode": compose_networks.get("network_mode")
+    #     }
+    #     ports_dict = {}
+    # else:
+    #     network_dict = {}
+    #     ports_dict = {}
 
     kitsu_db_dir_host = (
         pathlib.Path(env.get("KITSU_DATABASE_INSTALL_DESTINATION"))
