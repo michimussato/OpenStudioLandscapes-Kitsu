@@ -9,7 +9,6 @@ from typing import Generator, MutableMapping
 
 import yaml
 from docker_compose_graph.utils import *
-from python_on_whales import docker
 
 from dagster import (
     AssetExecutionContext,
@@ -28,6 +27,7 @@ from OpenStudioLandscapes.engine.constants import *
 
 from OpenStudioLandscapes.engine.enums import *
 from OpenStudioLandscapes.engine.utils import *
+from OpenStudioLandscapes.engine.docker import *
 from OpenStudioLandscapes.engine.base.ops import (
     op_compose,
     op_docker_compose_graph,
@@ -268,18 +268,14 @@ def build_docker_image(
     with open(docker_file, "r") as fr:
         docker_file_content = fr.read()
 
-    stream = docker.build(
-        context_path=docker_file.parent.as_posix(),
-        cache=DOCKER_USE_CACHE,
+    log: str = docker_build(
+        context=context,
+        context_path=docker_file.parent,
         tags=tags,
-        stream_logs=True,
+        docker_use_cache=DOCKER_USE_CACHE,
+        cache_dir=pathlib.Path(env.get('DOCKER_CACHE_DIR')),
+        images_dir=pathlib.Path(env.get('DOCKER_IMAGES_DIR')),
     )
-
-    log: str = ""
-
-    for msg in stream:
-        context.log.debug(msg)
-        log += msg
 
     cmds_docker = compile_cmds(
         docker_file=docker_file,
