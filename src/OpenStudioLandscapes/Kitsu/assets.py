@@ -23,6 +23,7 @@ from dagster import (
 )
 
 from OpenStudioLandscapes.engine.base.assets import KEY_BASE
+from python_on_whales import Builder
 from OpenStudioLandscapes.engine.constants import *
 
 from OpenStudioLandscapes.engine.enums import *
@@ -158,6 +159,9 @@ def apt_packages(
         "env": AssetIn(
             AssetKey([*KEY, "env"]),
         ),
+        "group_in": AssetIn(
+            AssetKey([*KEY_BASE, "group_out"])
+        ),
         "apt_packages": AssetIn(
             AssetKey([*KEY, "apt_packages"]),
         ),
@@ -172,11 +176,18 @@ def apt_packages(
 def build_docker_image(
     context: AssetExecutionContext,
     env: dict,  # pylint: disable=redefined-outer-name
+    group_in: dict,  # pylint: disable=redefined-outer-name
     apt_packages: dict[str, list[str]],  # pylint: disable=redefined-outer-name
     script_init_db: pathlib.Path,  # pylint: disable=redefined-outer-name
     inject_postgres_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
-) -> Generator[Output[str] | AssetMaterialization, None, None]:
+) -> Generator[Output[dict] | AssetMaterialization, None, None]:
     """ """
+
+    build_base_image_data: dict = group_in["docker_image"]
+    build_base_docker_config: DockerConfig = group_in["docker_config"]
+    build_base_parent_image_name: str = build_base_image_data["image_name"]
+
+    docker_builder: Builder = group_in["docker_builder"]
 
     docker_file = pathlib.Path(
         env["DOT_LANDSCAPES"],
@@ -187,12 +198,17 @@ def build_docker_image(
         "Dockerfile",
     )
 
+    image_name = get_image_name(context=context)
+    image_path = parse_docker_image_path(
+        image_name=image_name,
+        docker_config=build_base_docker_config,
+    )
+
     shutil.rmtree(docker_file.parent, ignore_errors=True)
     docker_file.parent.mkdir(parents=True, exist_ok=True)
 
     tags = [
-        f"{env.get('IMAGE_PREFIX')}/{'__'.join(context.asset_key.path).lower()}:latest",
-        f"{env.get('IMAGE_PREFIX')}/{'__'.join(context.asset_key.path).lower()}:{env.get('LANDSCAPE', str(time.time()))}",
+        f"{env.get('LANDSCAPE', str(time.time()))}",
     ]
 
     apt_install_str_base: str = get_apt_install_str(
@@ -254,7 +270,12 @@ def build_docker_image(
             f"http://localhost:3000/asset-groups/{'%2F'.join(context.asset_key.path)}",
             safe=":/%",
         ),
-        image_name="__".join(context.asset_key.path).lower(),
+        image_name=image_name,
+        # parent_image=parse_docker_image_path(
+        #     image_name=build_base_parent_image_name,
+        #     docker_config=build_base_docker_config,
+        #     tag=tags[-1],
+        # ),
         **env,
     )
     # @formatter:on
@@ -268,28 +289,29 @@ def build_docker_image(
     with open(docker_file, "r") as fr:
         docker_file_content = fr.read()
 
+    image_data = {
+        "image_name": image_name,
+        "image_path": image_path,
+        "image_tags": tags,
+        "image_parent": copy.deepcopy(build_base_image_data),
+    }
+
     log: str = docker_build(
         context=context,
+        docker_config=build_base_docker_config,
         context_path=docker_file.parent,
-        tags=tags,
         docker_use_cache=DOCKER_USE_CACHE,
-        cache_dir=pathlib.Path(env.get('DOCKER_CACHE_DIR')),
-        images_dir=pathlib.Path(env.get('DOCKER_IMAGES_DIR')),
+        builder=docker_builder,
+        image_data=image_data,
     )
 
-    cmds_docker = compile_cmds(
-        docker_file=docker_file,
-        tag=tags[1],
-    )
-
-    yield Output(tags[1])
+    yield Output(image_data)
 
     yield AssetMaterialization(
         asset_key=context.asset_key,
         metadata={
-            "__".join(context.asset_key.path): MetadataValue.path(tags[1]),
+            "__".join(context.asset_key.path): MetadataValue.json(image_data),
             "docker_file": MetadataValue.md(f"```shell\n{docker_file_content}\n```"),
-            **cmds_docker,
             "build_logs": MetadataValue.md(f"```shell\n{log}\n```"),
             "env": MetadataValue.json(env),
         },
@@ -443,7 +465,7 @@ def script_init_db(
 def compose_kitsu(
     context: AssetExecutionContext,
     env: dict,  # pylint: disable=redefined-outer-name
-    build: str,  # pylint: disable=redefined-outer-name
+    build: dict,  # pylint: disable=redefined-outer-name
     compose_networks: dict,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[dict] | AssetMaterialization, None, None]:
     """ """
@@ -465,16 +487,6 @@ def compose_kitsu(
     else:
         network_dict = {}
         ports_dict = {}
-
-    cmd_docker_run = [
-        shutil.which("docker"),
-        "run",
-        "--rm",
-        "--interactive",
-        "--tty",
-        build,
-        "/bin/bash",
-    ]
 
     volumes = [
         f"{env.get('NFS_ENTRY_POINT')}:{env.get('NFS_ENTRY_POINT')}",
@@ -521,7 +533,7 @@ def compose_kitsu(
                     "PREVIEW_FOLDER": env.get("KITSU_PREVIEW_FOLDER", "/opt/zou/previews"),
                     "TMP_DIR": env.get("KITSU_TMP_DIR", "/opt/zou/tmp"),
                 },
-                "image": build,
+                "image": f"{build['image_path']}:{build['image_tags'][-1]}",
                 "volumes": volumes,
                 "depends_on": {
                     "kitsu-init-db": {
@@ -554,8 +566,11 @@ def compose_kitsu(
         asset_key=context.asset_key,
         metadata={
             "__".join(context.asset_key.path): MetadataValue.json(docker_dict),
+            "docker_dict": MetadataValue.md(
+                f"```json\n{json.dumps(docker_dict, indent=2)}\n```"
+            ),
             "docker_yaml": MetadataValue.md(f"```yaml\n{docker_yaml}\n```"),
-            "cmd_docker_run": MetadataValue.path(cmd_list_to_str(cmd_docker_run)),
+            "env": MetadataValue.json(env),
         },
     )
 
@@ -566,7 +581,7 @@ def compose_kitsu(
         "env": AssetIn(
             AssetKey([*KEY, "env"]),
         ),
-        "build_docker_image": AssetIn(
+        "build": AssetIn(
             AssetKey([*KEY, "build_docker_image"]),
         ),
         # "compose_networks": AssetIn(
@@ -586,7 +601,7 @@ def compose_kitsu(
 def compose_init_db(
     context: AssetExecutionContext,
     env: dict,  # pylint: disable=redefined-outer-name
-    build_docker_image: str,  # pylint: disable=redefined-outer-name
+    build: dict,  # pylint: disable=redefined-outer-name
     # compose_networks: dict,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
     """ """
@@ -637,7 +652,7 @@ def compose_init_db(
                     "TMP_DIR": env.get("KITSU_TMP_DIR", "/opt/zou/tmp"),
                 },
                 "restart": "no",
-                "image": build_docker_image,
+                "image": f"{build['image_path']}:{build['image_tags'][-1]}",
                 "command": [
                     "/usr/bin/bash",
                     "/opt/zou/init_db.sh",
@@ -655,7 +670,11 @@ def compose_init_db(
         asset_key=context.asset_key,
         metadata={
             "__".join(context.asset_key.path): MetadataValue.json(docker_dict),
+            "docker_dict": MetadataValue.md(
+                f"```json\n{json.dumps(docker_dict, indent=2)}\n```"
+            ),
             "docker_yaml": MetadataValue.md(f"```yaml\n{docker_yaml}\n```"),
+            "env": MetadataValue.json(env),
         },
     )
 
@@ -726,6 +745,9 @@ group_out = AssetsDefinition.from_op(
         ),
         "env": AssetKey(
             [*KEY, "env"]
+        ),
+        "group_in": AssetKey(
+            [*KEY_BASE, "group_out"]
         ),
     },
 )
