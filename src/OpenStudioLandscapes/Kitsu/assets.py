@@ -193,8 +193,6 @@ def build_docker_image(
     build_base_parent_image_name: str = build_base_image_data["image_name"]
     build_base_parent_image_tags: list = build_base_image_data["image_tags"]
 
-    # docker_builder: Builder = group_in["docker_builder"]
-
     docker_file = pathlib.Path(
         env["DOT_LANDSCAPES"],
         env.get("LANDSCAPE", "default"),
@@ -215,9 +213,6 @@ def build_docker_image(
         docker_config=build_base_docker_config,
         prepend_registry=True,
     )
-
-    shutil.rmtree(docker_file.parent, ignore_errors=True)
-    docker_file.parent.mkdir(parents=True, exist_ok=True)
 
     tags = [
         env.get('LANDSCAPE', str(time.time())),
