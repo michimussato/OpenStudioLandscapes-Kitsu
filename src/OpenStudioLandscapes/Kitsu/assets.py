@@ -480,6 +480,9 @@ def compose_kitsu(
 ) -> Generator[Output[dict] | AssetMaterialization, None, None]:
     """ """
 
+    network_dict = {}
+    ports_dict = {}
+
     if "networks" in compose_networks:
         network_dict = {
             "networks": list(compose_networks.get("networks", {}).keys())
@@ -493,15 +496,13 @@ def compose_kitsu(
         network_dict = {
             "network_mode": compose_networks.get("network_mode")
         }
-        ports_dict = {}
-    else:
-        network_dict = {}
-        ports_dict = {}
 
-    volumes = [
-        f"{env.get('NFS_ENTRY_POINT')}:{env.get('NFS_ENTRY_POINT')}",
-        f"{env.get('NFS_ENTRY_POINT')}:{env.get('NFS_ENTRY_POINT_LNS')}",
-    ]
+    volumes_dict = {
+        "volumes": [
+            f"{env.get('NFS_ENTRY_POINT')}:{env.get('NFS_ENTRY_POINT')}",
+            f"{env.get('NFS_ENTRY_POINT')}:{env.get('NFS_ENTRY_POINT_LNS')}",
+        ]
+    }
 
     if not KITSUDB_INSIDE_CONTAINER:
 
@@ -511,7 +512,7 @@ def compose_kitsu(
         )
         kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
 
-        volumes.insert(
+        volumes_dict["volumes"].insert(
             0,
             f"{kitsu_db_dir_host.as_posix()}:/var/lib/postgresql",
         )
@@ -521,7 +522,7 @@ def compose_kitsu(
         )
         kitsu_previews_host.mkdir(parents=True, exist_ok=True)
 
-        volumes.insert(
+        volumes_dict["volumes"].insert(
             1,
             f"{kitsu_previews_host}:/opt/zou/previews",
         )
@@ -544,7 +545,8 @@ def compose_kitsu(
                     "TMP_DIR": env.get("KITSU_TMP_DIR", "/opt/zou/tmp"),
                 },
                 "image": f"{build['image_prefix_full']}{build['image_name']}:{build['image_tags'][0]}",
-                "volumes": volumes,
+                **copy.deepcopy(volumes_dict),
+                **copy.deepcopy(network_dict),
                 "depends_on": {
                     "kitsu-init-db": {
                         "condition": "service_completed_successfully",
@@ -616,6 +618,9 @@ def compose_init_db(
 ) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
     """ """
 
+    # network_dict = {}
+    # ports_dict = {}
+    #
     # if "networks" in compose_networks:
     #     network_dict = {
     #         "networks": list(compose_networks.get("networks", {}).keys())
@@ -639,11 +644,13 @@ def compose_init_db(
     )
     kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
 
-    volumes = [
-        f"{kitsu_db_dir_host.as_posix()}:/var/lib/postgresql",
-        f"{env.get('NFS_ENTRY_POINT')}:{env.get('NFS_ENTRY_POINT')}",
-        f"{env.get('NFS_ENTRY_POINT')}:{env.get('NFS_ENTRY_POINT_LNS')}",
-    ]
+    volumes_dict = {
+        "volumes": [
+            f"{kitsu_db_dir_host.as_posix()}:/var/lib/postgresql",
+            f"{env.get('NFS_ENTRY_POINT')}:{env.get('NFS_ENTRY_POINT')}",
+            f"{env.get('NFS_ENTRY_POINT')}:{env.get('NFS_ENTRY_POINT_LNS')}",
+        ]
+    }
 
     docker_dict = {
         "services": {
@@ -667,7 +674,7 @@ def compose_init_db(
                     "/usr/bin/bash",
                     "/opt/zou/init_db.sh",
                 ],
-                "volumes": volumes,
+                **copy.deepcopy(volumes_dict),
             },
         },
     }
