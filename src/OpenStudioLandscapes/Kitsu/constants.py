@@ -121,10 +121,7 @@ if COMPOSE_SCOPE is None:
 
 
 @asset(
-    name=f"constants_{GROUP}",
-    group_name="Constants",
-    key_prefix=KEY,
-    compute_kind="python",
+    **ASSET_HEADER,
     description="",
 )
 def constants(

@@ -45,7 +45,7 @@ from OpenStudioLandscapes.Kitsu.constants import *
         ),
     },
     deps=[
-        AssetKey([*ASSET_HEADER['key_prefix'], f"constants_{ASSET_HEADER['group_name']}"])
+        AssetKey([*ASSET_HEADER['key_prefix'], "constants"])
     ],
 )
 def env(
