@@ -527,11 +527,15 @@ def compose_kitsu(
             f"{kitsu_previews_host}:/opt/zou/previews",
         )
 
+    service_name = "kitsu"
+    container_name = service_name
+    host_name = ".".join([service_name, env["ROOT_DOMAIN"]])
+
     docker_dict = {
         "services": {
             "kitsu": {
-                "container_name": "kitsu",
-                "hostname": "kitsu",
+                "container_name": container_name,
+                "hostname":  host_name,
                 "domainname": env.get("ROOT_DOMAIN"),
                 "restart": "always",
                 "environment": {
@@ -652,11 +656,15 @@ def compose_init_db(
         ]
     }
 
+    service_name = "kitsu-init-db"
+    container_name = service_name
+    host_name = ".".join([service_name, env["ROOT_DOMAIN"]])
+
     docker_dict = {
         "services": {
             "kitsu-init-db": {
-                "container_name": "kitsu-init-db",
-                "hostname": "kitsu-init-db",
+                "container_name": container_name,
+                "hostname":  host_name,
                 "domainname": env.get("ROOT_DOMAIN"),
                 "environment": {
                     # https://zou.cg-wire.com/
