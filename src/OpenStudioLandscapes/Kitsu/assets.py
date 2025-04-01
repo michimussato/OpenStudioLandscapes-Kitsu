@@ -8,14 +8,12 @@ import urllib.parse
 from typing import Generator, MutableMapping
 
 import yaml
-from docker_compose_graph.utils import *
 
 from dagster import (
     AssetExecutionContext,
     AssetIn,
     AssetKey,
     AssetMaterialization,
-    MaterializeResult,
     MetadataValue,
     Output,
     asset,
@@ -55,6 +53,8 @@ def env(
 
     env_in = copy.deepcopy(group_in["env"])
 
+    # Todo
+    #  - [ ] externalize
     # expanding variables in OpenStudioLandscapes.Kitsu.constants.ENVIRONMENT
     for k, v in ENVIRONMENT.items():
         if isinstance(v, str):
@@ -511,6 +511,7 @@ def compose_kitsu(
             / "postgresql"
         )
         kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
+        context.log.info(f"Directory {kitsu_db_dir_host.as_posix()} created.")
 
         volumes_dict["volumes"].insert(
             0,
@@ -521,6 +522,7 @@ def compose_kitsu(
             pathlib.Path(env.get("KITSU_DATABASE_INSTALL_DESTINATION")) / "previews"
         )
         kitsu_previews_host.mkdir(parents=True, exist_ok=True)
+        context.log.info(f"Directory {kitsu_previews_host.as_posix()} created.")
 
         volumes_dict["volumes"].insert(
             1,

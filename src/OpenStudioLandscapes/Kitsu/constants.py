@@ -70,9 +70,6 @@ ENVIRONMENT = {
     "KITSU_DATABASE_INSTALL_DESTINATION": {
         #################################################################
         # Kitsu Postgresql DB will be created in (hardcoded):
-        # "KITSU_DATABASE_INSTALL_DESTINATION" / "postgresql" / "14" / "main"
-        # Kitsu Previews folder will be created in (hardcoded):
-        # "KITSU_DATABASE_INSTALL_DESTINATION" / "previews"
         #################################################################
         #################################################################
         # Inside Landscape:
