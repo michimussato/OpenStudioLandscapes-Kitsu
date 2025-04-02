@@ -182,6 +182,62 @@ def build_docker_image(
 ) -> Generator[Output[dict] | AssetMaterialization, None, None]:
     """ """
 
+    # Todo:
+    """
+dagster._core.errors.DagsterExecutionStepExecutionError: Error occurred while executing op "Kitsu__build_docker_image":
+  File "/home/michael/git/repos/OpenStudioLandscapes/.venv/lib/python3.11/site-packages/dagster/_core/execution/plan/execute_plan.py", line 245, in dagster_event_sequence_for_step
+    yield from check.generator(step_events)
+  File "/home/michael/git/repos/OpenStudioLandscapes/.venv/lib/python3.11/site-packages/dagster/_core/execution/plan/execute_step.py", line 501, in core_dagster_event_sequence_for_step
+    for user_event in _step_output_error_checked_user_event_sequence(
+  File "/home/michael/git/repos/OpenStudioLandscapes/.venv/lib/python3.11/site-packages/dagster/_core/execution/plan/execute_step.py", line 184, in _step_output_error_checked_user_event_sequence
+    for user_event in user_event_sequence:
+  File "/home/michael/git/repos/OpenStudioLandscapes/.venv/lib/python3.11/site-packages/dagster/_core/execution/plan/execute_step.py", line 88, in _process_asset_results_to_events
+    for user_event in user_event_sequence:
+  File "/home/michael/git/repos/OpenStudioLandscapes/.venv/lib/python3.11/site-packages/dagster/_core/execution/plan/compute.py", line 190, in execute_core_compute
+    for step_output in _yield_compute_results(step_context, inputs, compute_fn, compute_context):
+  File "/home/michael/git/repos/OpenStudioLandscapes/.venv/lib/python3.11/site-packages/dagster/_core/execution/plan/compute.py", line 159, in _yield_compute_results
+    for event in iterate_with_context(
+  File "/home/michael/git/repos/OpenStudioLandscapes/.venv/lib/python3.11/site-packages/dagster/_utils/__init__.py", line 478, in iterate_with_context
+    with context_fn():
+  File "/usr/lib/python3.11/contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/home/michael/git/repos/OpenStudioLandscapes/.venv/lib/python3.11/site-packages/dagster/_core/execution/plan/utils.py", line 86, in op_execution_error_boundary
+    raise error_cls(
+The above exception was caused by the following exception:
+python_on_whales.exceptions.DockerException: The command executed was `/usr/bin/docker build --quiet --pull --file /home/michael/git/repos/OpenStudioLandscapes/.landscapes/2025-04-02-01-43-52-f91bf05993fa4bbc86eeebcf293e84bd/Kitsu__Kitsu/Kitsu__build_docker_image/Dockerfiles/Dockerfile --tag openstudiolandscapes/kitsu_build_docker_image:2025-04-02-01-43-52-f91bf05993fa4bbc86eeebcf293e84bd --tag harbor.farm.evil:80/openstudiolandscapes/kitsu_build_docker_image:2025-04-02-01-43-52-f91bf05993fa4bbc86eeebcf293e84bd /home/michael/git/repos/OpenStudioLandscapes/.landscapes/2025-04-02-01-43-52-f91bf05993fa4bbc86eeebcf293e84bd/Kitsu__Kitsu/Kitsu__build_docker_image/Dockerfiles`.
+It returned with code 1
+The content of stdout is ''
+The content of stderr is 'Dockerfile:5
+--------------------
+   3 |     # http://localhost:3000/asset-groups/Kitsu%2Fbuild_docker_image
+   4 |     # https://hub.docker.com/r/cgwire/cgwire
+   5 | >>> FROM cgwire/cgwire:latest AS kitsu_build_docker_image
+   6 |     LABEL authors="michimussato@gmail.com"
+   7 |     
+--------------------
+ERROR: failed to solve: cgwire/cgwire:latest: failed to resolve source metadata for docker.io/cgwire/cgwire:latest: failed to authorize: failed to fetch anonymous token: Get "https://auth.docker.io/token?scope=repository%3Acgwire%2Fcgwire%3Apull&service=registry.docker.io": net/http: TLS handshake timeout
+'
+
+  File "/home/michael/git/repos/OpenStudioLandscapes/.venv/lib/python3.11/site-packages/dagster/_core/execution/plan/utils.py", line 56, in op_execution_error_boundary
+    yield
+  File "/home/michael/git/repos/OpenStudioLandscapes/.venv/lib/python3.11/site-packages/dagster/_utils/__init__.py", line 480, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/home/michael/git/repos/OpenStudioLandscapes-Kitsu/src/OpenStudioLandscapes/Kitsu/assets.py", line 309, in build_docker_image
+    tags_list: list = docker_build(
+                      ^^^^^^^^^^^^^
+  File "/home/michael/git/repos/OpenStudioLandscapes/src/OpenStudioLandscapes/engine/utils/docker/whales.py", line 133, in docker_build
+    raise e
+  File "/home/michael/git/repos/OpenStudioLandscapes/src/OpenStudioLandscapes/engine/utils/docker/whales.py", line 109, in docker_build
+    image: Image = docker_client.legacy_build(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/michael/git/repos/OpenStudioLandscapes/.venv/lib/python3.11/site-packages/python_on_whales/components/image/cli_wrapper.py", line 279, in legacy_build
+    image_id = run(full_cmd).splitlines()[-1].strip()
+               ^^^^^^^^^^^^^
+  File "/home/michael/git/repos/OpenStudioLandscapes/.venv/lib/python3.11/site-packages/python_on_whales/utils.py", line 220, in run
+    raise DockerException(
+    """
+
     build_base_image_data: dict = group_in["docker_image"]
     build_base_docker_config: DockerConfig = group_in["docker_config"]
 
