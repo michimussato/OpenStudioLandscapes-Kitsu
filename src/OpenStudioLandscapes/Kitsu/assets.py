@@ -587,7 +587,7 @@ def compose_kitsu(
 
     service_name = "kitsu"
     container_name = service_name
-    host_name = ".".join([service_name, env["ROOT_DOMAIN"]])
+    host_name = ".".join([env["KITSU_HOSTNAME"], env["ROOT_DOMAIN"]])
 
     docker_dict = {
         "services": {

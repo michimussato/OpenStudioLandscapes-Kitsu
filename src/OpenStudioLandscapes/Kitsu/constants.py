@@ -48,6 +48,7 @@ ENVIRONMENT = {
     # .as_posix(),
     # Todo:
     #  - [ ] These have no effect yet
+    "KITSU_HOSTNAME": "kitsu",
     "KITSU_ADMIN_USER": "michimussato@gmail.com",
     "KITSU_DB_PASSWORD": "myp4ssword",
     "KITSU_SECRET_KEY": "yourrandomsecretkey",
