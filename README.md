@@ -124,11 +124,14 @@ We create the following SBOMs:
 
 SBOMs for the different Python interpreters defined in [`.noxfile.VERSIONS`](https://github.com/michimussato/OpenStudioLandscapes-Kitsu/tree/main/noxfile.py) will be created in [`.sbom`](https://github.com/michimussato/OpenStudioLandscapes-Kitsu/tree/main/.sbom)
 
-Currently, the following Python interpreters are enabled for testing:
-
 - `cyclone-dx`
 - `pipdeptree` (Dot)
 - `pipdeptree` (Mermaid)
+
+Currently, the following Python interpreters are enabled for testing:
+
+- `python3.11`
+- `python3.12`
 
 ## Variables
 
