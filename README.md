@@ -12,6 +12,8 @@
    5. [Variables](#variables)
       1. [Environment](#environment)
    6. [Community](#community)
+      1. [Discord](#discord)
+      2. [Slack](#slack)
 
 ***
 
@@ -153,5 +155,12 @@ The following variables are being declared in [`OpenStudioLandscapes.Kitsu.const
 
 ## Community
 
-- [Discord](https://discord.com/channels/1357343453364748419/1357343454065328202)
-- [Slack](https://openstudiolandscapes.slack.com)
+### Discord
+
+- [Discord OpenStudioLandscapes-General](https://discord.com/channels/1357343453364748419/1357343454065328202)
+- [Discord OpenStudioLandscapes-Kitsu](https://discord.com/channels/1357343453364748419/1357638253632688231)
+
+### Slack
+
+- [Slack OpenStudioLandscapes-General](https://app.slack.com/client/C08LK80NBFF)
+- [Slack OpenStudioLandscapes-Kitsu](https://app.slack.com/client/C08L6M70ZB9)
