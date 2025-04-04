@@ -176,12 +176,12 @@ The following variables are being declared in [`OpenStudioLandscapes.Kitsu.const
 
 ### Discord
 
-- [OpenStudioLandscapes-General](https://discord.com/channels/1357343453364748419/1357343454065328202)
+- [# openstudiolandscapes-general](https://discord.com/channels/1357343453364748419/1357343454065328202)
 - [# openstudiolandscapes-ayon](https://discord.com/channels/1357343453364748419/1357722468336271411)
-- [OpenStudioLandscapes-Kitsu](https://discord.com/channels/1357343453364748419/1357638253632688231)
+- [# openstudiolandscapes-kitsu](https://discord.com/channels/1357343453364748419/1357638253632688231)
 
 ### Slack
 
-- [OpenStudioLandscapes-General](https://app.slack.com/client/T08L6M6L0S3/C08LK80NBFF)
+- [# openstudiolandscapes-general](https://app.slack.com/client/T08L6M6L0S3/C08LK80NBFF)
 - [# openstudiolandscapes-ayon](https://app.slack.com/client/T08L6M6L0S3/C08LLBC7CB0)
-- [OpenStudioLandscapes-Kitsu](https://app.slack.com/client/T08L6M6L0S3/C08L6M70ZB9)
+- [# openstudiolandscapes-kitsu](https://app.slack.com/client/T08L6M6L0S3/C08L6M70ZB9)
