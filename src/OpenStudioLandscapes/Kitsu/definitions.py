@@ -6,7 +6,6 @@ from dagster import (
 import OpenStudioLandscapes.Kitsu.assets
 import OpenStudioLandscapes.Kitsu.constants
 
-
 assets = load_assets_from_modules(
     modules=[OpenStudioLandscapes.Kitsu.assets],
 )
