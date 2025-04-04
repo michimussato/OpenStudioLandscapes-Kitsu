@@ -1,3 +1,7 @@
+[![ Logo OpenStudioLandscapes ](https://github.com/michimussato/OpenStudioLandscapes/raw/main/_images/logo128.png)](https://github.com/michimussato/OpenStudioLandscapes)
+
+***
+
 1. [OpenStudioLandscapes-Kitsu](#openstudiolandscapes-kitsu)
    1. [Brief](#brief)
    2. [Requirements](#requirements)
@@ -22,8 +26,6 @@
 # OpenStudioLandscapes-Kitsu
 
 ## Brief
-
-[![ Logo OpenStudioLandscapes ](https://github.com/michimussato/OpenStudioLandscapes/raw/main/_images/logo128.png)](https://github.com/michimussato/OpenStudioLandscapes)
 
 This is an extension to the OpenStudioLandscapes ecosystem. The full documentation of OpenStudioLandscapes is available [here](https://github.com/michimussato/OpenStudioLandscapes).
 
