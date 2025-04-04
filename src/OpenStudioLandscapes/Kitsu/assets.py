@@ -8,29 +8,26 @@ import urllib.parse
 from typing import Generator, MutableMapping
 
 import yaml
-
 from dagster import (
     AssetExecutionContext,
     AssetIn,
     AssetKey,
     AssetMaterialization,
+    AssetsDefinition,
     MetadataValue,
     Output,
     asset,
-    AssetsDefinition,
 )
-
 from OpenStudioLandscapes.engine.base.assets import KEY_BASE
-from OpenStudioLandscapes.engine.constants import *
-
-from OpenStudioLandscapes.engine.enums import *
-from OpenStudioLandscapes.engine.utils import *
-from OpenStudioLandscapes.engine.utils.docker.whales import *
 from OpenStudioLandscapes.engine.base.ops import (
     op_compose,
     op_docker_compose_graph,
     op_group_out,
 )
+from OpenStudioLandscapes.engine.constants import *
+from OpenStudioLandscapes.engine.enums import *
+from OpenStudioLandscapes.engine.utils import *
+from OpenStudioLandscapes.engine.utils.docker.whales import *
 
 from OpenStudioLandscapes.Kitsu.constants import *
 
@@ -38,13 +35,9 @@ from OpenStudioLandscapes.Kitsu.constants import *
 @asset(
     **ASSET_HEADER,
     ins={
-        "group_in": AssetIn(
-            AssetKey([*KEY_BASE, "group_out"])
-        ),
+        "group_in": AssetIn(AssetKey([*KEY_BASE, "group_out"])),
     },
-    deps=[
-        AssetKey([*ASSET_HEADER['key_prefix'], "constants"])
-    ],
+    deps=[AssetKey([*ASSET_HEADER["key_prefix"], "constants"])],
 )
 def env(
     context: AssetExecutionContext,
@@ -85,7 +78,8 @@ def env(
 def compose_networks(
     context: AssetExecutionContext,
 ) -> Generator[
-    Output[dict[str, dict[str, dict[str, str]]]] | AssetMaterialization, None, None]:
+    Output[dict[str, dict[str, dict[str, str]]]] | AssetMaterialization, None, None
+]:
 
     compose_network_mode = ComposeNetworkMode.DEFAULT
 
@@ -158,9 +152,7 @@ def apt_packages(
         "env": AssetIn(
             AssetKey([*KEY, "env"]),
         ),
-        "group_in": AssetIn(
-            AssetKey([*KEY_BASE, "group_out"])
-        ),
+        "group_in": AssetIn(AssetKey([*KEY_BASE, "group_out"])),
         "apt_packages": AssetIn(
             AssetKey([*KEY, "apt_packages"]),
         ),
@@ -213,7 +205,7 @@ The content of stderr is 'Dockerfile:5
    4 |     # https://hub.docker.com/r/cgwire/cgwire
    5 | >>> FROM cgwire/cgwire:latest AS kitsu_build_docker_image
    6 |     LABEL authors="michimussato@gmail.com"
-   7 |     
+   7 |
 --------------------
 ERROR: failed to solve: cgwire/cgwire:latest: failed to resolve source metadata for docker.io/cgwire/cgwire:latest: failed to authorize: failed to fetch anonymous token: Get "https://auth.docker.io/token?scope=repository%3Acgwire%2Fcgwire%3Apull&service=registry.docker.io": net/http: TLS handshake timeout
 '
@@ -244,7 +236,9 @@ ERROR: failed to solve: cgwire/cgwire:latest: failed to resolve source metadata 
     if build_base_docker_config.value["docker_push"]:
         build_base_parent_image_prefix: str = build_base_image_data["image_prefix_full"]
     else:
-        build_base_parent_image_prefix: str = build_base_image_data["image_prefix_local"]
+        build_base_parent_image_prefix: str = build_base_image_data[
+            "image_prefix_local"
+        ]
 
     build_base_parent_image_name: str = build_base_image_data["image_name"]
     build_base_parent_image_tags: list = build_base_image_data["image_tags"]
@@ -271,7 +265,7 @@ ERROR: failed to solve: cgwire/cgwire:latest: failed to resolve source metadata 
     )
 
     tags = [
-        env.get('LANDSCAPE', str(time.time())),
+        env.get("LANDSCAPE", str(time.time())),
     ]
 
     apt_install_str_base: str = get_apt_install_str(
@@ -306,21 +300,21 @@ ERROR: failed to solve: cgwire/cgwire:latest: failed to resolve source metadata 
 
         ENV CONTAINER_TIMEZONE={TIMEZONE}
         ENV SET_CONTAINER_TIMEZONE=true
-        
+
         ENV LC_ALL=C.UTF-8
         ENV LANG=C.UTF-8
-        
+
         RUN apt-get update && apt-get upgrade -y
 
         {apt_install_str_base}
 
         RUN apt-get clean
-        
+
         WORKDIR /etc/postgresql/14/main
-        
+
         COPY ./scripts/postgresql.conf .
         RUN chmod 0755 postgresql.conf
-        
+
         WORKDIR /opt/zou
 
         COPY ./scripts/init_db.sh .
@@ -415,7 +409,9 @@ def inject_postgres_conf(
         asset_key=context.asset_key,
         metadata={
             "__".join(context.asset_key.path): MetadataValue.path(postgres_conf),
-            "postgres_conf": MetadataValue.md(f"```shell\n{postgres_conf_content}\n```"),
+            "postgres_conf": MetadataValue.md(
+                f"```shell\n{postgres_conf_content}\n```"
+            ),
         },
     )
 
@@ -458,14 +454,20 @@ def script_init_db(
     init_db["script"] += "\n"
     init_db["script"] += "# Default encoding without specifying it is SQL_ASCII\n"
     init_db["script"] += "# psql zoudb -c 'SHOW SERVER_ENCODING'\n"
-    init_db["script"] += "su - postgres -c '/usr/lib/postgresql/14/bin/initdb --pgdata=/var/lib/postgresql/14/main --auth=trust --encoding=UTF8'\n"
+    init_db[
+        "script"
+    ] += "su - postgres -c '/usr/lib/postgresql/14/bin/initdb --pgdata=/var/lib/postgresql/14/main --auth=trust --encoding=UTF8'\n"
     init_db["script"] += "\n"
     init_db["script"] += "service postgresql start\n"
     init_db["script"] += "service redis-server start\n"
     init_db["script"] += "\n"
     init_db["script"] += "sudo -u postgres psql -U postgres -c 'create user root;'\n"
-    init_db["script"] += "sudo -u postgres psql -U postgres -c 'create database zoudb;'\n"
-    init_db["script"] += "sudo -u postgres psql -U postgres -d postgres -c \"alter user postgres with password '${DB_PASSWORD}';\"\n"
+    init_db[
+        "script"
+    ] += "sudo -u postgres psql -U postgres -c 'create database zoudb;'\n"
+    init_db[
+        "script"
+    ] += "sudo -u postgres psql -U postgres -d postgres -c \"alter user postgres with password '${DB_PASSWORD}';\"\n"
     init_db["script"] += "\n"
     init_db["script"] += "source /opt/zou/env/bin/activate\n"
     init_db["script"] += "\n"
@@ -540,18 +542,14 @@ def compose_kitsu(
     ports_dict = {}
 
     if "networks" in compose_networks:
-        network_dict = {
-            "networks": list(compose_networks.get("networks", {}).keys())
-        }
+        network_dict = {"networks": list(compose_networks.get("networks", {}).keys())}
         ports_dict = {
             "ports": [
                 f"{env.get('KITSU_PORT_HOST')}:{env.get('KITSU_PORT_CONTAINER')}",
             ]
         }
     elif "network_mode" in compose_networks:
-        network_dict = {
-            "network_mode": compose_networks.get("network_mode")
-        }
+        network_dict = {"network_mode": compose_networks.get("network_mode")}
 
     volumes_dict = {
         "volumes": [
@@ -563,8 +561,7 @@ def compose_kitsu(
     if not KITSUDB_INSIDE_CONTAINER:
 
         kitsu_db_dir_host = (
-            pathlib.Path(env.get("KITSU_DATABASE_INSTALL_DESTINATION"))
-            / "postgresql"
+            pathlib.Path(env.get("KITSU_DATABASE_INSTALL_DESTINATION")) / "postgresql"
         )
         kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
         context.log.info(f"Directory {kitsu_db_dir_host.as_posix()} created.")
@@ -593,7 +590,7 @@ def compose_kitsu(
         "services": {
             "kitsu": {
                 "container_name": container_name,
-                "hostname":  host_name,
+                "hostname": host_name,
                 "domainname": env.get("ROOT_DOMAIN"),
                 "restart": "always",
                 "environment": {
@@ -603,7 +600,9 @@ def compose_kitsu(
                     "KITSU_ADMIN": env.get("KITSU_ADMIN_USER", "admin@example.com"),
                     "DB_PASSWORD": env.get("KITSU_DB_PASSWORD", "mysecretpassword"),
                     "SECRET_KEY": env.get("SECRET_KEY", "yourrandomsecretkey"),
-                    "PREVIEW_FOLDER": env.get("KITSU_PREVIEW_FOLDER", "/opt/zou/previews"),
+                    "PREVIEW_FOLDER": env.get(
+                        "KITSU_PREVIEW_FOLDER", "/opt/zou/previews"
+                    ),
                     "TMP_DIR": env.get("KITSU_TMP_DIR", "/opt/zou/tmp"),
                 },
                 "image": f"{build['image_prefix_full']}{build['image_name']}:{build['image_tags'][0]}",
@@ -701,8 +700,7 @@ def compose_init_db(
     #     ports_dict = {}
 
     kitsu_db_dir_host = (
-        pathlib.Path(env.get("KITSU_DATABASE_INSTALL_DESTINATION"))
-        / "postgresql"
+        pathlib.Path(env.get("KITSU_DATABASE_INSTALL_DESTINATION")) / "postgresql"
     )
     kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
 
@@ -722,7 +720,7 @@ def compose_init_db(
         "services": {
             "kitsu-init-db": {
                 "container_name": container_name,
-                "hostname":  host_name,
+                "hostname": host_name,
                 "domainname": env.get("ROOT_DOMAIN"),
                 "environment": {
                     # https://zou.cg-wire.com/
@@ -731,7 +729,9 @@ def compose_init_db(
                     "KITSU_ADMIN": env.get("KITSU_ADMIN_USER", "admin@example.com"),
                     "DB_PASSWORD": env.get("KITSU_DB_PASSWORD", "mysecretpassword"),
                     "SECRET_KEY": env.get("SECRET_KEY", "yourrandomsecretkey"),
-                    "PREVIEW_FOLDER": env.get("KITSU_PREVIEW_FOLDER", "/opt/zou/previews"),
+                    "PREVIEW_FOLDER": env.get(
+                        "KITSU_PREVIEW_FOLDER", "/opt/zou/previews"
+                    ),
                     "TMP_DIR": env.get("KITSU_TMP_DIR", "/opt/zou/tmp"),
                 },
                 "restart": "no",
@@ -802,12 +802,8 @@ compose = AssetsDefinition.from_op(
     group_name=GROUP,
     key_prefix=KEY,
     keys_by_input_name={
-        "compose_networks": AssetKey(
-            [*KEY, "compose_networks"]
-        ),
-        "compose_maps": AssetKey(
-            [*KEY, "compose_maps"]
-        ),
+        "compose_networks": AssetKey([*KEY, "compose_networks"]),
+        "compose_maps": AssetKey([*KEY, "compose_maps"]),
     },
 )
 
@@ -823,15 +819,9 @@ group_out = AssetsDefinition.from_op(
     },
     key_prefix=KEY,
     keys_by_input_name={
-        "compose": AssetKey(
-            [*KEY, "compose"]
-        ),
-        "env": AssetKey(
-            [*KEY, "env"]
-        ),
-        "group_in": AssetKey(
-            [*KEY_BASE, "group_out"]
-        ),
+        "compose": AssetKey([*KEY, "compose"]),
+        "env": AssetKey([*KEY, "env"]),
+        "group_in": AssetKey([*KEY_BASE, "group_out"]),
     },
 )
 
@@ -841,11 +831,7 @@ docker_compose_graph = AssetsDefinition.from_op(
     group_name=GROUP,
     key_prefix=KEY,
     keys_by_input_name={
-        "group_out": AssetKey(
-            [*KEY, "group_out"]
-        ),
-        "compose_project_name": AssetKey(
-            [*KEY, "compose_project_name"]
-        ),
+        "group_out": AssetKey([*KEY, "group_out"]),
+        "compose_project_name": AssetKey([*KEY, "compose_project_name"]),
     },
 )

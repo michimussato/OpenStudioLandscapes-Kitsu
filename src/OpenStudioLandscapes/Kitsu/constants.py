@@ -9,19 +9,17 @@ __all__ = [
 ]
 
 import pathlib
-from typing import Generator, MutableMapping
+from typing import Dict, Generator, MutableMapping
 
 from dagster import (
-    asset,
-    Output,
+    AssetExecutionContext,
     AssetMaterialization,
     MetadataValue,
-    AssetExecutionContext,
+    Output,
+    asset,
 )
-
-from OpenStudioLandscapes.engine.utils import *
 from OpenStudioLandscapes.engine.constants import DOCKER_USE_CACHE_GLOBAL, THIRD_PARTY
-
+from OpenStudioLandscapes.engine.utils import *
 
 DOCKER_USE_CACHE = DOCKER_USE_CACHE_GLOBAL or False
 KITSUDB_INSIDE_CONTAINER = False
@@ -37,7 +35,7 @@ ASSET_HEADER = {
 }
 
 # @formatter:off
-ENVIRONMENT = {
+ENVIRONMENT: Dict = {
     "DOCKER_USE_CACHE": DOCKER_USE_CACHE,
     # "CONFIGS_ROOT": pathlib.Path(
     #     get_git_root(pathlib.Path(__file__)),
@@ -67,7 +65,6 @@ ENVIRONMENT = {
     )
     .expanduser()
     .as_posix(),
-
     "KITSU_DATABASE_INSTALL_DESTINATION": {
         #################################################################
         # Kitsu Postgresql DB will be created in (hardcoded):
@@ -105,8 +102,8 @@ ENVIRONMENT = {
 # Todo
 #  - [ ] This is a bit hacky
 _module = __name__
-_parent = '.'.join(_module.split('.')[:-1])
-_definitions = '.'.join([_parent, "definitions"])
+_parent = ".".join(_module.split(".")[:-1])
+_definitions = ".".join([_parent, "definitions"])
 
 COMPOSE_SCOPE = None
 for i in THIRD_PARTY:
