@@ -1,4 +1,4 @@
-1. [Kitsu](#kitsu)
+1. [OpenStudioLandscapes-Kitsu](#openstudiolandscapes-kitsu)
    1. [Brief](#brief)
    2. [Install](#install)
       1. [From Github directly](#from-github-directly)
@@ -17,7 +17,7 @@
 
 ***
 
-# Kitsu
+# OpenStudioLandscapes-Kitsu
 
 ## Brief
 
