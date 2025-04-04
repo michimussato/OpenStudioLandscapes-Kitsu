@@ -17,9 +17,6 @@
    6. [Variables](#variables)
       1. [Environment](#environment)
    7. [Community](#community)
-      1. [Github](#github)
-      2. [Discord](#discord)
-      3. [Slack](#slack)
 
 ***
 
@@ -168,20 +165,8 @@ The following variables are being declared in [`OpenStudioLandscapes.Kitsu.const
 
 ## Community
 
-### Github
-
-- [OpenStudioLandscapes](https://github.com/michimussato/OpenStudioLandscapes)
-- [OpenStudioLandscapes-Ayon](https://github.com/michimussato/OpenStudioLandscapes-Ayon)
-- [OpenStudioLandscapes-Kitsu](https://github.com/michimussato/OpenStudioLandscapes-Kitsu)
-
-### Discord
-
-- [# openstudiolandscapes-general](https://discord.com/channels/1357343453364748419/1357343454065328202)
-- [# openstudiolandscapes-ayon](https://discord.com/channels/1357343453364748419/1357722468336271411)
-- [# openstudiolandscapes-kitsu](https://discord.com/channels/1357343453364748419/1357638253632688231)
-
-### Slack
-
-- [# openstudiolandscapes-general](https://app.slack.com/client/T08L6M6L0S3/C08LK80NBFF)
-- [# openstudiolandscapes-ayon](https://app.slack.com/client/T08L6M6L0S3/C08LLBC7CB0)
-- [# openstudiolandscapes-kitsu](https://app.slack.com/client/T08L6M6L0S3/C08L6M70ZB9)
+| GitHub                                                                                   | Discord                                                                                                | Slack                                                                                  |
+| ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- |
+| [OpenStudioLandscapes](https://github.com/michimussato/OpenStudioLandscapes)             | [# openstudiolandscapes-general](https://discord.com/channels/1357343453364748419/1357343454065328202) | [# openstudiolandscapes-general](https://app.slack.com/client/T08L6M6L0S3/C08LK80NBFF) |
+| [OpenStudioLandscapes-Ayon](https://github.com/michimussato/OpenStudioLandscapes-Ayon)   | [# openstudiolandscapes-ayon](https://discord.com/channels/1357343453364748419/1357722468336271411)    | [# openstudiolandscapes-ayon](https://app.slack.com/client/T08L6M6L0S3/C08LLBC7CB0)    |
+| [OpenStudioLandscapes-Kitsu](https://github.com/michimussato/OpenStudioLandscapes-Kitsu) | [# openstudiolandscapes-kitsu](https://discord.com/channels/1357343453364748419/1357638253632688231)   | [# openstudiolandscapes-kitsu](https://app.slack.com/client/T08L6M6L0S3/C08L6M70ZB9)   |
