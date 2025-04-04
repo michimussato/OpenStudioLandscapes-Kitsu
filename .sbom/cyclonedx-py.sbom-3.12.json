@@ -126,7 +126,7 @@
       "version": "3.0.2"
     },
     {
-      "bom-ref": "OpenStudioLandscapes-Kitsu==0.0.post1.dev44+g158c1fb.d20250404",
+      "bom-ref": "OpenStudioLandscapes-Kitsu==0.0.post1.dev45+ga0fdb86.d20250404",
       "description": "Add a short description here!",
       "externalReferences": [
         {
@@ -148,12 +148,12 @@
         }
       ],
       "name": "OpenStudioLandscapes-Kitsu",
-      "purl": "pkg:pypi/openstudiolandscapes-kitsu@0.0.post1.dev44%2Bg158c1fb.d20250404",
+      "purl": "pkg:pypi/openstudiolandscapes-kitsu@0.0.post1.dev45%2Bga0fdb86.d20250404",
       "type": "library",
-      "version": "0.0.post1.dev44+g158c1fb.d20250404"
+      "version": "0.0.post1.dev45+ga0fdb86.d20250404"
     },
     {
-      "bom-ref": "BomRef.17719765305607238.412993602119089",
+      "bom-ref": "BomRef.8748994321781249.19799424508877705",
       "description": "Add a short description here!",
       "externalReferences": [
         {
@@ -181,7 +181,7 @@
       ],
       "name": "OpenStudioLandscapes-Kitsu",
       "type": "library",
-      "version": "0.0.post1.dev44+g158c1fb.d20250404"
+      "version": "0.0.post1.dev45+ga0fdb86.d20250404"
     },
     {
       "bom-ref": "PyYAML==6.0.2",
@@ -2842,7 +2842,7 @@
         "python-on-whales==0.76.1",
         "setuptools==78.1.0"
       ],
-      "ref": "OpenStudioLandscapes-Kitsu==0.0.post1.dev44+g158c1fb.d20250404"
+      "ref": "OpenStudioLandscapes-Kitsu==0.0.post1.dev45+ga0fdb86.d20250404"
     },
     {
       "ref": "PyYAML==6.0.2"
@@ -3258,7 +3258,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2025-04-04T08:12:35.351227+00:00",
+    "timestamp": "2025-04-04T08:36:49.285338+00:00",
     "tools": {
       "components": [
         {
@@ -3360,7 +3360,7 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:96273246-adc9-469b-9fac-59a3d82fb29f",
+  "serialNumber": "urn:uuid:2716efb5-3411-492e-ba02-69e76a44a64c",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.5.schema.json",
   "bomFormat": "CycloneDX",
