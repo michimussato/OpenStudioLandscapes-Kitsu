@@ -13,8 +13,9 @@
    6. [Variables](#variables)
       1. [Environment](#environment)
    7. [Community](#community)
-      1. [Discord](#discord)
-      2. [Slack](#slack)
+      1. [Github](#github)
+      2. [Discord](#discord)
+      3. [Slack](#slack)
 
 ***
 
@@ -164,6 +165,11 @@ The following variables are being declared in [`OpenStudioLandscapes.Kitsu.const
 | `KITSU_DATABASE_INSTALL_DESTINATION` | `str`  |
 
 ## Community
+
+### Github
+
+- [OpenStudioLandscapes](https://github.com/michimussato/OpenStudioLandscapes)
+- [OpenStudioLandscapes-Kitsu](https://github.com/michimussato/OpenStudioLandscapes-Kitsu)
 
 ### Discord
 
