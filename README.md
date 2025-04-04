@@ -28,9 +28,9 @@ This is an extension to the OpenStudioLandscapes ecosystem. The full documentati
 
 ## Requirements
 
-## Install
-
 - `python-3.11`
+
+## Install
 
 ### From Github directly
 
