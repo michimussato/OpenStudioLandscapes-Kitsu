@@ -21,7 +21,7 @@ digraph {
 	"openstudiolandscapes-kitsu" -> "python-on-whales" [label=any]
 	"openstudiolandscapes-kitsu" -> dagster [label="==1.9.11"]
 	"openstudiolandscapes-kitsu" -> pyyaml [label=any]
-	"openstudiolandscapes-kitsu" [label="OpenStudioLandscapes-Kitsu\n0.0.post1.dev62+g20bebfa.d20250404"]
+	"openstudiolandscapes-kitsu" [label="OpenStudioLandscapes-Kitsu\n0.0.post1.dev69+gb52d518.d20250404"]
 	"pydantic-core" -> "typing-extensions" [label=">=4.6.0,!=4.7.0"]
 	"pydantic-core" [label="pydantic_core\n2.33.1"]
 	"python-dotenv" [label="python-dotenv\n1.1.0"]
