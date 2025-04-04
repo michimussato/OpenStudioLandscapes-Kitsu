@@ -11,6 +11,7 @@
       4. [SBOM](#sbom)
    5. [Variables](#variables)
       1. [Environment](#environment)
+   6. [Community](#community)
 
 ***
 
@@ -149,3 +150,8 @@ The following variables are being declared in [`OpenStudioLandscapes.Kitsu.const
 | `KITSU_PORT_CONTAINER`               | `str`  |
 | `KITSU_POSTGRES_CONF`                | `str`  |
 | `KITSU_DATABASE_INSTALL_DESTINATION` | `str`  |
+
+## Community
+
+- [Discord](https://discord.com/channels/1357343453364748419/1357343454065328202)
+- [Slack](https://openstudiolandscapes.slack.com)
