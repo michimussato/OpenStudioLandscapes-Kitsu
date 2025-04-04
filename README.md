@@ -26,6 +26,8 @@
 
 This is an extension to the OpenStudioLandscapes ecosystem. The full documentation of OpenStudioLandscapes is available [here](https://github.com/michimussato/OpenStudioLandscapes).
 
+You feel like writing your own module? Go and check out the [OpenStudioLandscapes-Template](https://github.com/michimussato/OpenStudioLandscapes-Template).
+
 ## Requirements
 
 - `python-3.11`
