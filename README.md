@@ -1,9 +1,16 @@
 1. [Kitsu](#kitsu)
    1. [Brief](#brief)
    2. [Install](#install)
+      1. [From Github directly](#from-github-directly)
+      2. [From local Repo](#from-local-repo)
    3. [Add to OpenStudioLandscapes](#add-to-openstudiolandscapes)
    4. [Testing](#testing)
+      1. [pre-commit](#pre-commit)
+      2. [nox](#nox)
+      3. [pylint](#pylint)
+      4. [SBOM](#sbom)
    5. [Variables](#variables)
+      1. [Environment](#environment)
 
 ***
 
