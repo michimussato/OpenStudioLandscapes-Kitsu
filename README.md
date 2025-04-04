@@ -1,17 +1,18 @@
 1. [OpenStudioLandscapes-Kitsu](#openstudiolandscapes-kitsu)
    1. [Brief](#brief)
-   2. [Install](#install)
+   2. [Requirements](#requirements)
+   3. [Install](#install)
       1. [From Github directly](#from-github-directly)
       2. [From local Repo](#from-local-repo)
-   3. [Add to OpenStudioLandscapes](#add-to-openstudiolandscapes)
-   4. [Testing](#testing)
+   4. [Add to OpenStudioLandscapes](#add-to-openstudiolandscapes)
+   5. [Testing](#testing)
       1. [pre-commit](#pre-commit)
       2. [nox](#nox)
       3. [pylint](#pylint)
       4. [SBOM](#sbom)
-   5. [Variables](#variables)
+   6. [Variables](#variables)
       1. [Environment](#environment)
-   6. [Community](#community)
+   7. [Community](#community)
       1. [Discord](#discord)
       2. [Slack](#slack)
 
@@ -25,7 +26,11 @@
 
 This is an extension to the OpenStudioLandscapes ecosystem. The full documentation of OpenStudioLandscapes is available [here](https://github.com/michimussato/OpenStudioLandscapes).
 
+## Requirements
+
 ## Install
+
+- `python-3.11`
 
 ### From Github directly
 
