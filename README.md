@@ -162,5 +162,5 @@ The following variables are being declared in [`OpenStudioLandscapes.Kitsu.const
 
 ### Slack
 
-- [Slack OpenStudioLandscapes-General](https://app.slack.com/client/C08LK80NBFF)
-- [Slack OpenStudioLandscapes-Kitsu](https://app.slack.com/client/C08L6M70ZB9)
+- [Slack OpenStudioLandscapes-General](https://app.slack.com/client/T08L6M6L0S3/C08LK80NBFF)
+- [Slack OpenStudioLandscapes-Kitsu](https://app.slack.com/client/T08L6M6L0S3/C08L6M70ZB9)
