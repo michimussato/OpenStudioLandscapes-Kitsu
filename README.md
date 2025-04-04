@@ -26,7 +26,7 @@ This is an extension to the OpenStudioLandscapes ecosystem. The full documentati
 
 ### From Github directly
 
-This does not work as expected yet.
+WIP: This does not work as expected yet.
 
 For more info see [VCS Support of pip](https://pip.pypa.io/en/stable/topics/vcs-support/).
 
@@ -136,16 +136,16 @@ The following variables are being declared in [`OpenStudioLandscapes.Kitsu.const
 
 ### Environment
 
-| Variable                             | Type   | Value                                                                                                       |
-| :----------------------------------- | :----- | :---------------------------------------------------------------------------------------------------------- |
-| `DOCKER_USE_CACHE`                   | `bool` | `True`                                                                                                      |
-| `KITSU_HOSTNAME`                     | `str`  | `kitsu`                                                                                                     |
-| `KITSU_ADMIN_USER`                   | `str`  | `michimussato@gmail.com`                                                                                    |
-| `KITSU_DB_PASSWORD`                  | `str`  | `myp4ssword`                                                                                                |
-| `KITSU_SECRET_KEY`                   | `str`  | `yourrandomsecretkey`                                                                                       |
-| `KITSU_PREVIEW_FOLDER`               | `str`  | `/opt/zou/previews`                                                                                         |
-| `KITSU_TMP_DIR`                      | `str`  | `/opt/zou/tmp`                                                                                              |
-| `KITSU_PORT_HOST`                    | `str`  | `4545`                                                                                                      |
-| `KITSU_PORT_CONTAINER`               | `str`  | `80`                                                                                                        |
-| `KITSU_POSTGRES_CONF`                | `str`  | `/home/michael/git/repos/OpenStudioLandscapes-Kitsu/.payload/config/etc/postgresql/14/main/postgresql.conf` |
-| `KITSU_DATABASE_INSTALL_DESTINATION` | `str`  | `{DOT_LANDSCAPES}/{LANDSCAPE}/Kitsu__Kitsu/data/kitsu`                                                      |
+| Variable                             | Type   |
+| :----------------------------------- | :----- |
+| `DOCKER_USE_CACHE`                   | `bool` |
+| `KITSU_HOSTNAME`                     | `str`  |
+| `KITSU_ADMIN_USER`                   | `str`  |
+| `KITSU_DB_PASSWORD`                  | `str`  |
+| `KITSU_SECRET_KEY`                   | `str`  |
+| `KITSU_PREVIEW_FOLDER`               | `str`  |
+| `KITSU_TMP_DIR`                      | `str`  |
+| `KITSU_PORT_HOST`                    | `str`  |
+| `KITSU_PORT_CONTAINER`               | `str`  |
+| `KITSU_POSTGRES_CONF`                | `str`  |
+| `KITSU_DATABASE_INSTALL_DESTINATION` | `str`  |
