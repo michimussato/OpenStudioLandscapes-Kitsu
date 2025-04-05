@@ -54,6 +54,22 @@ MANIFEST
 .conda*/
 .python-version
 
+# Dagster
+.dagster/*/
+.dagster-postgres/*/
+tmp*/
+
+.landscapes/*/
+!.landscapes/.harbor/
+
+.landscapes/.harbor/data/*
+!.landscapes/.harbor/data/.gitkeep
+
+.landscapes/.harbor/bin/*
+!.landscapes/.harbor/bin/.gitkeep
+!.landscapes/.harbor/bin/harbor.yml
+!.landscapes/.harbor/bin/docker-compose.yml
+
 .payload/data/
 .payload/bin/
 
@@ -61,3 +77,7 @@ MANIFEST
 .obsidian/hotkeys.json
 .obsidian/workspace.json
 .obsidian/workspaces.json
+
+# Registry
+.registry/*/
+.registry/registry.env
