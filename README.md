@@ -57,7 +57,7 @@ Create venv, activate it and upgrade:
 
 python3.11 -m venv .venv
 source .venv/bin/activate
-pip install setuptools --upgrade
+pip install --upgrade pip setuptools
 
 ```
 
