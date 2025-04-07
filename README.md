@@ -135,7 +135,7 @@ Currently, the following Python interpreters are enabled for testing:
 
 ## Variables
 
-The following variables are being declared in [`OpenStudioLandscapes.Kitsu.constants`](https://github.com/michimussato/OpenStudioLandscapes-Kitsu/tree/main/src/OpenStudioLandscapes/Kitsu/constants.py) published throuout the `OpenStudioLandscapes-Kitsu` package.
+The following variables are being declared in [`OpenStudioLandscapes.Kitsu.constants`](https://github.com/michimussato/OpenStudioLandscapes-Kitsu/tree/main/src/OpenStudioLandscapes/Kitsu/constants.py) published throughout the `OpenStudioLandscapes-Kitsu` package.
 
 | Variable                   | Type           |
 | :------------------------- | :------------- |
