@@ -12,8 +12,6 @@
    5. [Testing](#testing)
       1. [pre-commit](#pre-commit)
       2. [nox](#nox)
-      3. [pylint](#pylint)
-      4. [SBOM](#sbom)
    6. [Variables](#variables)
       1. [Environment](#environment)
    7. [Community](#community)
@@ -100,21 +98,51 @@ pre-commit install
 
 ### nox
 
+#### Generate Report
+
 ```shell
 
 nox --no-error-on-missing-interpreters --report .nox/nox-report.json
 
 ```
 
-### pylint
+#### Re-Generate this README
 
-#### pylint: disable=redefined-outer-name
+```shell
+
+nox --session readme
+
+```
+
+#### Generate Sphinx Documentation
+
+```shell
+
+nox --session docs
+
+```
+
+#### pylint
+
+```shell
+
+nox --session lint
+
+```
+
+##### pylint: disable=redefined-outer-name
 
 - [`W0621`](https://pylint.pycqa.org/en/latest/user_guide/messages/warning/redefined-outer-name.html): Due to Dagsters way of piping arguments into assets.
 
-### SBOM
+#### SBOM
 
 Acronym for Software Bill of Materials
+
+```shell
+
+nox --session sbom
+
+```
 
 We create the following SBOMs:
 
@@ -122,7 +150,7 @@ We create the following SBOMs:
 - [`pipdeptree`](https://pypi.org/project/pipdeptree/) (Dot)
 - [`pipdeptree`](https://pypi.org/project/pipdeptree/) (Mermaid)
 
-SBOMs for the different Python interpreters defined in [`.noxfile.VERSIONS`](https://github.com/michimussato/OpenStudioLandscapes-Kitsu/tree/main/noxfile.py) will be created in [`.sbom`](https://github.com/michimussato/OpenStudioLandscapes-Kitsu/tree/main/.sbom)
+SBOMs for the different Python interpreters defined in [`.noxfile.VERSIONS`](https://github.com/michimussato/OpenStudioLandscapes-Kitsu/tree/main/noxfile.py) will be created in the [`.sbom`](https://github.com/michimussato/OpenStudioLandscapes-Kitsu/tree/main/.sbom) directory of this repository.
 
 - `cyclone-dx`
 - `pipdeptree` (Dot)
