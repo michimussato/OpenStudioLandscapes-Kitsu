@@ -56,7 +56,8 @@ ENVIRONMENT: Dict = {
     "KITSU_PORT_CONTAINER": "80",
     f"KITSU_POSTGRES_CONF": pathlib.Path(
         # /etc/postgresql/14/main/postgresql.conf
-        get_configs_root(pathlib.Path(__file__)),
+        # get_configs_root(pathlib.Path(__file__)),
+        pathlib.Path(__file__).parent.parent.parent.parent / ".payload" / "config",
         "etc",
         "postgresql",
         "14",
