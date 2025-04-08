@@ -242,13 +242,13 @@
       "version": "3.0.2"
     },
     {
-      "bom-ref": "OpenStudioLandscapes==0.0.post1.dev564+g5e56f51",
+      "bom-ref": "OpenStudioLandscapes==0.0.post1.dev572+g0f1f924",
       "description": "A Toolkit to create dynamic Animation and VFX studio pipelines.",
       "externalReferences": [
         {
           "comment": "PackageSource: VCS 'git'",
           "type": "vcs",
-          "url": "https://github.com/michimussato/OpenStudioLandscapes#5e56f510b2dd76e4bedc1087543b8ae51f3176f1"
+          "url": "https://github.com/michimussato/OpenStudioLandscapes#0f1f92486092ca38b7bccc81f5d2c98c348cbd92"
         }
       ],
       "licenses": [
@@ -262,19 +262,19 @@
       "properties": [
         {
           "name": "cdx:python:package:source:vcs:commit_id",
-          "value": "5e56f510b2dd76e4bedc1087543b8ae51f3176f1"
+          "value": "0f1f92486092ca38b7bccc81f5d2c98c348cbd92"
         },
         {
           "name": "cdx:python:package:source:vcs:requested_revision",
           "value": "main"
         }
       ],
-      "purl": "pkg:pypi/openstudiolandscapes@0.0.post1.dev564%2Bg5e56f51?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes%405e56f510b2dd76e4bedc1087543b8ae51f3176f1",
+      "purl": "pkg:pypi/openstudiolandscapes@0.0.post1.dev572%2Bg0f1f924?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes%400f1f92486092ca38b7bccc81f5d2c98c348cbd92",
       "type": "library",
-      "version": "0.0.post1.dev564+g5e56f51"
+      "version": "0.0.post1.dev572+g0f1f924"
     },
     {
-      "bom-ref": "OpenStudioLandscapes-Kitsu==0.0.post1.dev85+g53b4de5.d20250406",
+      "bom-ref": "OpenStudioLandscapes-Kitsu==0.0.post1.dev91+g802bbbc.d20250407",
       "description": "Add a short description here!",
       "externalReferences": [
         {
@@ -296,12 +296,12 @@
         }
       ],
       "name": "OpenStudioLandscapes-Kitsu",
-      "purl": "pkg:pypi/openstudiolandscapes-kitsu@0.0.post1.dev85%2Bg53b4de5.d20250406",
+      "purl": "pkg:pypi/openstudiolandscapes-kitsu@0.0.post1.dev91%2Bg802bbbc.d20250407",
       "type": "library",
-      "version": "0.0.post1.dev85+g53b4de5.d20250406"
+      "version": "0.0.post1.dev91+g802bbbc.d20250407"
     },
     {
-      "bom-ref": "BomRef.8000792537385956.8808266224506138",
+      "bom-ref": "BomRef.49291355979152585.5195887323726803",
       "description": "Add a short description here!",
       "externalReferences": [
         {
@@ -329,7 +329,7 @@
       ],
       "name": "OpenStudioLandscapes-Kitsu",
       "type": "library",
-      "version": "0.0.post1.dev85+g53b4de5.d20250406"
+      "version": "0.0.post1.dev91+g802bbbc.d20250407"
     },
     {
       "bom-ref": "PyScaffold==4.6",
@@ -618,6 +618,57 @@
       "purl": "pkg:pypi/antlr4-python3-runtime@4.13.2",
       "type": "library",
       "version": "4.13.2"
+    },
+    {
+      "bom-ref": "argcomplete==3.6.2",
+      "description": "Bash tab completion for argparse",
+      "externalReferences": [
+        {
+          "comment": "from packaging metadata Project-URL: Documentation",
+          "type": "documentation",
+          "url": "https://kislyuk.github.io/argcomplete"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Issue Tracker",
+          "type": "issue-tracker",
+          "url": "https://github.com/kislyuk/argcomplete/issues"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Source Code",
+          "type": "other",
+          "url": "https://github.com/kislyuk/argcomplete"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Change Log",
+          "type": "release-notes",
+          "url": "https://github.com/kislyuk/argcomplete/blob/develop/Changes.rst"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Homepage",
+          "type": "website",
+          "url": "https://github.com/kislyuk/argcomplete"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "License :: OSI Approved :: Apache Software License"
+          }
+        },
+        {
+          "license": {
+            "name": "declared license of 'argcomplete'",
+            "text": {
+              "content": "Apache Software License",
+              "contentType": "text/plain"
+            }
+          }
+        }
+      ],
+      "name": "argcomplete",
+      "purl": "pkg:pypi/argcomplete@3.6.2",
+      "type": "library",
+      "version": "3.6.2"
     },
     {
       "bom-ref": "arrow==1.3.0",
@@ -932,6 +983,37 @@
       "purl": "pkg:pypi/coloredlogs@14.0",
       "type": "library",
       "version": "14.0"
+    },
+    {
+      "bom-ref": "colorlog==6.9.0",
+      "description": "Add colours to the output of Python's logging module.",
+      "externalReferences": [
+        {
+          "comment": "from packaging metadata: Home-page",
+          "type": "website",
+          "url": "https://github.com/borntyping/python-colorlog"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        },
+        {
+          "license": {
+            "name": "declared license of 'colorlog'",
+            "text": {
+              "content": "MIT License",
+              "contentType": "text/plain"
+            }
+          }
+        }
+      ],
+      "name": "colorlog",
+      "purl": "pkg:pypi/colorlog@6.9.0",
+      "type": "library",
+      "version": "6.9.0"
     },
     {
       "bom-ref": "cyclonedx-bom==5.3.0",
@@ -1268,6 +1350,73 @@
       "purl": "pkg:pypi/defusedxml@0.7.1",
       "type": "library",
       "version": "0.7.1"
+    },
+    {
+      "bom-ref": "dependency-groups==1.3.0",
+      "description": "A tool for resolving PEP 735 Dependency Group data",
+      "externalReferences": [
+        {
+          "comment": "from packaging metadata Project-URL: documentation",
+          "type": "documentation",
+          "url": "https://dependency-groups.readthedocs.io/"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: source",
+          "type": "other",
+          "url": "https://github.com/sirosen/dependency-groups"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: changelog",
+          "type": "release-notes",
+          "url": "https://github.com/sirosen/dependency-groups/blob/main/CHANGELOG.rst"
+        }
+      ],
+      "name": "dependency-groups",
+      "purl": "pkg:pypi/dependency-groups@1.3.0",
+      "type": "library",
+      "version": "1.3.0"
+    },
+    {
+      "bom-ref": "distlib==0.3.9",
+      "description": "Distribution utilities",
+      "externalReferences": [
+        {
+          "comment": "from packaging metadata Project-URL: Documentation",
+          "type": "documentation",
+          "url": "https://distlib.readthedocs.io/"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Tracker",
+          "type": "issue-tracker",
+          "url": "https://github.com/pypa/distlib/issues"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Source",
+          "type": "other",
+          "url": "https://github.com/pypa/distlib"
+        },
+        {
+          "comment": "from packaging metadata: Home-page",
+          "type": "website",
+          "url": "https://github.com/pypa/distlib"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "PSF-2.0"
+          }
+        },
+        {
+          "license": {
+            "id": "Python-2.0"
+          }
+        }
+      ],
+      "name": "distlib",
+      "purl": "pkg:pypi/distlib@0.3.9",
+      "type": "library",
+      "version": "0.3.9"
     },
     {
       "bom-ref": "docker==7.1.0",
@@ -2076,6 +2225,48 @@
       "purl": "pkg:pypi/mdurl@0.1.2",
       "type": "library",
       "version": "0.1.2"
+    },
+    {
+      "bom-ref": "nox==2025.2.9",
+      "description": "Flexible test automation.",
+      "externalReferences": [
+        {
+          "comment": "from packaging metadata Project-URL: documentation",
+          "type": "documentation",
+          "url": "https://nox.thea.codes"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: bug-tracker",
+          "type": "issue-tracker",
+          "url": "https://github.com/wntrblm/nox/issues"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: repository",
+          "type": "vcs",
+          "url": "https://github.com/wntrblm/nox"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: homepage",
+          "type": "website",
+          "url": "https://github.com/wntrblm/nox"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        },
+        {
+          "license": {
+            "name": "License :: OSI Approved :: Apache Software License"
+          }
+        }
+      ],
+      "name": "nox",
+      "purl": "pkg:pypi/nox@2025.2.9",
+      "type": "library",
+      "version": "2025.2.9"
     },
     {
       "bom-ref": "packageurl-python==0.16.0",
@@ -3570,6 +3761,43 @@
       "version": "2.3.0"
     },
     {
+      "bom-ref": "virtualenv==20.30.0",
+      "description": "Virtual Python Environment builder",
+      "externalReferences": [
+        {
+          "comment": "from packaging metadata Project-URL: Documentation",
+          "type": "documentation",
+          "url": "https://virtualenv.pypa.io"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Tracker",
+          "type": "issue-tracker",
+          "url": "https://github.com/pypa/virtualenv/issues"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Source",
+          "type": "other",
+          "url": "https://github.com/pypa/virtualenv"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Homepage",
+          "type": "website",
+          "url": "https://github.com/pypa/virtualenv"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "name": "virtualenv",
+      "purl": "pkg:pypi/virtualenv@20.30.0",
+      "type": "library",
+      "version": "20.30.0"
+    },
+    {
       "bom-ref": "watchdog==5.0.3",
       "description": "Filesystem events monitoring",
       "externalReferences": [
@@ -3803,16 +4031,17 @@
     },
     {
       "dependsOn": [
-        "OpenStudioLandscapes==0.0.post1.dev564+g5e56f51",
+        "OpenStudioLandscapes==0.0.post1.dev572+g0f1f924",
         "PyYAML==6.0.2",
         "cyclonedx-bom==5.3.0",
         "dagster==1.9.11",
         "graphviz==0.20.3",
+        "nox==2025.2.9",
         "pipdeptree==2.26.0",
         "python-on-whales==0.76.1",
         "setuptools==78.1.0"
       ],
-      "ref": "OpenStudioLandscapes-Kitsu==0.0.post1.dev85+g53b4de5.d20250406"
+      "ref": "OpenStudioLandscapes-Kitsu==0.0.post1.dev91+g802bbbc.d20250407"
     },
     {
       "dependsOn": [
@@ -3827,12 +4056,13 @@
         "docker-compose-graph==0.0.post1.dev176+gbc4b36e",
         "docker==7.1.0",
         "graphviz==0.20.3",
+        "nox==2025.2.9",
         "pipdeptree==2.26.0",
         "pydot==3.0.4",
         "python-on-whales==0.76.1",
         "setuptools==78.1.0"
       ],
-      "ref": "OpenStudioLandscapes==0.0.post1.dev564+g5e56f51"
+      "ref": "OpenStudioLandscapes==0.0.post1.dev572+g0f1f924"
     },
     {
       "dependsOn": [
@@ -3842,7 +4072,8 @@
         "platformdirs==4.3.7",
         "setuptools-scm==8.2.0",
         "setuptools==78.1.0",
-        "tomlkit==0.13.2"
+        "tomlkit==0.13.2",
+        "virtualenv==20.30.0"
       ],
       "ref": "PyScaffold==4.6"
     },
@@ -3876,6 +4107,9 @@
     },
     {
       "ref": "antlr4-python3-runtime==4.13.2"
+    },
+    {
+      "ref": "argcomplete==3.6.2"
     },
     {
       "dependsOn": [
@@ -3913,6 +4147,9 @@
       "ref": "coloredlogs==14.0"
     },
     {
+      "ref": "colorlog==6.9.0"
+    },
+    {
       "dependsOn": [
         "chardet==5.2.0",
         "cyclonedx-python-lib==9.1.0",
@@ -3940,6 +4177,7 @@
         "dagster==1.9.11",
         "gazu==0.10.31",
         "graphviz==0.20.3",
+        "nox==2025.2.9",
         "pipdeptree==2.26.0",
         "setuptools==78.1.0"
       ],
@@ -4005,6 +4243,16 @@
     },
     {
       "dependsOn": [
+        "packaging==24.2",
+        "tomli==2.2.1"
+      ],
+      "ref": "dependency-groups==1.3.0"
+    },
+    {
+      "ref": "distlib==0.3.9"
+    },
+    {
+      "dependsOn": [
         "Jinja2==3.1.6",
         "PyYAML==6.0.2",
         "graphviz==0.20.3",
@@ -4027,7 +4275,8 @@
     },
     {
       "dependsOn": [
-        "typing_extensions==4.13.1"
+        "typing_extensions==4.13.1",
+        "virtualenv==20.30.0"
       ],
       "ref": "filelock==3.18.0"
     },
@@ -4138,6 +4387,19 @@
     },
     {
       "dependsOn": [
+        "Jinja2==3.1.6",
+        "argcomplete==3.6.2",
+        "attrs==25.3.0",
+        "colorlog==6.9.0",
+        "dependency-groups==1.3.0",
+        "packaging==24.2",
+        "tomli==2.2.1",
+        "virtualenv==20.30.0"
+      ],
+      "ref": "nox==2025.2.9"
+    },
+    {
+      "dependsOn": [
         "SQLAlchemy==2.0.40",
         "setuptools==78.1.0"
       ],
@@ -4160,7 +4422,8 @@
       "dependsOn": [
         "graphviz==0.20.3",
         "packaging==24.2",
-        "pip==25.0.1"
+        "pip==25.0.1",
+        "virtualenv==20.30.0"
       ],
       "ref": "pipdeptree==2.26.0"
     },
@@ -4301,7 +4564,8 @@
         "packaging==24.2",
         "pip==25.0.1",
         "platformdirs==4.3.7",
-        "tomli==2.2.1"
+        "tomli==2.2.1",
+        "virtualenv==20.30.0"
       ],
       "ref": "setuptools==78.1.0"
     },
@@ -4375,6 +4639,16 @@
     },
     {
       "dependsOn": [
+        "distlib==0.3.9",
+        "filelock==3.18.0",
+        "packaging==24.2",
+        "platformdirs==4.3.7",
+        "setuptools==78.1.0"
+      ],
+      "ref": "virtualenv==20.30.0"
+    },
+    {
+      "dependsOn": [
         "PyYAML==6.0.2"
       ],
       "ref": "watchdog==5.0.3"
@@ -4396,7 +4670,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2025-04-06T23:57:24.860582+00:00",
+    "timestamp": "2025-04-07T23:33:14.745537+00:00",
     "tools": {
       "components": [
         {
@@ -4498,7 +4772,7 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:5185796f-b511-40ae-a894-d3c90d815b58",
+  "serialNumber": "urn:uuid:af00da97-4b29-4021-b01b-487ee2755960",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.5.schema.json",
   "bomFormat": "CycloneDX",

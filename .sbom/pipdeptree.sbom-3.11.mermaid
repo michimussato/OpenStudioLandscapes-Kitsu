@@ -3,6 +3,7 @@ flowchart TD
     alembic["alembic\n1.15.2"]
     annotated-types["annotated-types\n0.7.0"]
     antlr4-python3-runtime["antlr4-python3-runtime\n4.13.2"]
+    argcomplete["argcomplete\n3.6.2"]
     arrow["arrow\n1.3.0"]
     attrs["attrs\n25.3.0"]
     bidict["bidict\n0.23.1"]
@@ -12,6 +13,7 @@ flowchart TD
     charset-normalizer["charset-normalizer\n3.4.1"]
     click_0["click\n8.1.8"]
     coloredlogs["coloredlogs\n14.0"]
+    colorlog["colorlog\n6.9.0"]
     configupdater["ConfigUpdater\n3.2"]
     cyclonedx-bom["cyclonedx-bom\n5.3.0"]
     cyclonedx-python-lib["cyclonedx-python-lib\n9.1.0"]
@@ -21,7 +23,9 @@ flowchart TD
     dagster-shared["dagster-shared\n0.0.post1.dev10+g614f3c1"]
     dagster["dagster\n1.9.11"]
     defusedxml["defusedxml\n0.7.1"]
+    dependency-groups["dependency-groups\n1.3.0"]
     deprecated["Deprecated\n1.2.18"]
+    distlib["distlib\n0.3.9"]
     docker-compose-graph["docker-compose-graph\n0.0.post1.dev176+gbc4b36e"]
     docker["docker\n7.1.0"]
     docstring-parser["docstring_parser\n0.16"]
@@ -49,8 +53,9 @@ flowchart TD
     markdown-it-py["markdown-it-py\n3.0.0"]
     markupsafe["MarkupSafe\n3.0.2"]
     mdurl["mdurl\n0.1.2"]
-    openstudiolandscapes-kitsu["OpenStudioLandscapes-Kitsu\n0.0.post1.dev85+g53b4de5.d20250406"]
-    openstudiolandscapes["OpenStudioLandscapes\n0.0.post1.dev564+g5e56f51"]
+    nox["nox\n2025.2.9"]
+    openstudiolandscapes-kitsu["OpenStudioLandscapes-Kitsu\n0.0.post1.dev91+g802bbbc"]
+    openstudiolandscapes["OpenStudioLandscapes\n0.0.post1.dev572+g0f1f924"]
     packageurl-python["packageurl-python\n0.16.0"]
     packaging["packaging\n24.2"]
     pip-requirements-parser["pip-requirements-parser\n32.0.1"]
@@ -98,6 +103,7 @@ flowchart TD
     universal-pathlib["universal_pathlib\n0.2.6"]
     uri-template["uri-template\n1.3.0"]
     urllib3["urllib3\n2.3.0"]
+    virtualenv["virtualenv\n20.30.0"]
     watchdog["watchdog\n5.0.3"]
     webcolors["webcolors\n24.11.1"]
     websocket-client["websocket-client\n1.8.0"]
@@ -154,6 +160,7 @@ flowchart TD
     dagster-postgres -- "any" --> psycopg2-binary
     dagster-shared -- "any" --> dagster
     dagster-shared -- "any" --> dagster-pipes
+    dependency-groups -- "any" --> packaging
     deprecated -- ">=1.10,<2" --> wrapt
     docker -- ">=1.26.0" --> urllib3
     docker -- ">=2.26.0" --> requests
@@ -179,6 +186,12 @@ flowchart TD
     license-expression -- ">=4.0" --> boolean-py
     mako -- ">=0.9.2" --> markupsafe
     markdown-it-py -- "~=0.1" --> mdurl
+    nox -- ">=1.1" --> dependency-groups
+    nox -- ">=1.9.4,<4" --> argcomplete
+    nox -- ">=2.6.1,<7" --> colorlog
+    nox -- ">=20.14.1" --> virtualenv
+    nox -- ">=20.9" --> packaging
+    nox -- ">=23.1" --> attrs
     openstudiolandscapes -- "==1.9.11" --> dagster
     openstudiolandscapes -- "any" --> dagster-job-processor
     openstudiolandscapes -- "any" --> dagster-postgres
@@ -186,6 +199,7 @@ flowchart TD
     openstudiolandscapes -- "any" --> docker
     openstudiolandscapes -- "any" --> docker-compose-graph
     openstudiolandscapes -- "any" --> gitpython
+    openstudiolandscapes -- "any" --> nox
     openstudiolandscapes -- "any" --> pydot
     openstudiolandscapes -- "any" --> pyscaffold
     openstudiolandscapes -- "any" --> python-on-whales
@@ -234,5 +248,8 @@ flowchart TD
     sqlalchemy -- ">=4.6.0" --> typing-extensions
     typing-inspection -- ">=4.12.0" --> typing-extensions
     universal-pathlib -- ">=2022.1.0,!=2024.3.1" --> fsspec
+    virtualenv -- ">=0.3.7,<1" --> distlib
+    virtualenv -- ">=3.12.2,<4" --> filelock
+    virtualenv -- ">=3.9.1,<5" --> platformdirs
     wsproto -- ">=0.9.0,<1" --> h11
 
