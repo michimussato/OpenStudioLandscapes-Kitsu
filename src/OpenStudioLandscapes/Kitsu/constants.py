@@ -19,7 +19,7 @@ from dagster import (
     asset,
 )
 from OpenStudioLandscapes.engine.constants import DOCKER_USE_CACHE_GLOBAL, THIRD_PARTY
-from OpenStudioLandscapes.engine.utils import *
+from OpenStudioLandscapes.engine.exceptions import ComposeScopeException
 
 DOCKER_USE_CACHE = DOCKER_USE_CACHE_GLOBAL or False
 KITSUDB_INSIDE_CONTAINER = False
@@ -114,8 +114,9 @@ for i in THIRD_PARTY:
         break
 
 if COMPOSE_SCOPE is None:
-    raise Exception(
-        "No compose_scope found for module '%s'." "Is the module enabled?" % _module
+    raise ComposeScopeException(
+        "No compose_scope found for module '%s'. Is the module enabled "
+        "in `OpenStudioLandscapes.engine.constants.THIRD_PARTY`?" % _module
     )
 
 
