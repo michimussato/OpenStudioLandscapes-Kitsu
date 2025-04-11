@@ -14,8 +14,8 @@
     {
       "args": {},
       "name": "sbom",
-      "result": "success",
-      "result_code": 1,
+      "result": "failed",
+      "result_code": 0,
       "signatures": [
         "sbom-3.11"
       ]
@@ -23,8 +23,8 @@
     {
       "args": {},
       "name": "sbom",
-      "result": "success",
-      "result_code": 1,
+      "result": "failed",
+      "result_code": 0,
       "signatures": [
         "sbom-3.12"
       ]
@@ -50,8 +50,8 @@
     {
       "args": {},
       "name": "lint",
-      "result": "success",
-      "result_code": 1,
+      "result": "failed",
+      "result_code": 0,
       "signatures": [
         "lint-3.11"
       ]
@@ -59,8 +59,8 @@
     {
       "args": {},
       "name": "lint",
-      "result": "success",
-      "result_code": 1,
+      "result": "failed",
+      "result_code": 0,
       "signatures": [
         "lint-3.12"
       ]
@@ -86,8 +86,8 @@
     {
       "args": {},
       "name": "docs",
-      "result": "success",
-      "result_code": 1,
+      "result": "failed",
+      "result_code": 0,
       "signatures": [
         "docs"
       ]
