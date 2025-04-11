@@ -6,8 +6,7 @@
    1. [Brief](#brief)
    2. [Requirements](#requirements)
    3. [Install](#install)
-      1. [From Github directly](#from-github-directly)
-      2. [From local Repo](#from-local-repo)
+      1. [This Feature](#this-feature)
    4. [Add to OpenStudioLandscapes](#add-to-openstudiolandscapes)
    5. [Testing](#testing)
       1. [pre-commit](#pre-commit)
@@ -24,44 +23,44 @@
 
 This is an extension to the OpenStudioLandscapes ecosystem. The full documentation of OpenStudioLandscapes is available [here](https://github.com/michimussato/OpenStudioLandscapes).
 
-You feel like writing your own module? Go and check out the [OpenStudioLandscapes-Template](https://github.com/michimussato/OpenStudioLandscapes-Template).
+You feel like writing your own Feature? Go and check out the [OpenStudioLandscapes-Template](https://github.com/michimussato/OpenStudioLandscapes-Template).
 
 ## Requirements
 
 - `python-3.11`
+- `OpenStudioLandscapes`
 
 ## Install
 
-### From Github directly
+### This Feature
 
-WIP: This does not work as expected yet.
-
-For more info see [VCS Support of pip](https://pip.pypa.io/en/stable/topics/vcs-support/).
-
-### From local Repo
-
-Clone repository:
+Clone this repository into `OpenStudioLandscapes/.features`:
 
 ```shell
 
+# cd .features
 git clone https://github.com/michimussato/OpenStudioLandscapes-Kitsu.git
-cd OpenStudioLandscapes-Kitsu
 
 ```
 
-Create venv, activate it and upgrade:
+Create `venv`:
 
 ```shell
 
+# cd .features/OpenStudioLandscapes-Kitsu
 python3.11 -m venv .venv
 source .venv/bin/activate
-pip install --upgrade pip setuptools
+python -m pip install --upgrade pip setuptools
 
 ```
 
+Configure `venv`:
+
 ```shell
 
-pip install -e .[dev]
+# cd .features/OpenStudioLandscapes-Kitsu
+pip install -e agfsdfgsd"../../[dev]"
+pip install -e ".[dev]"
 
 ```
 
