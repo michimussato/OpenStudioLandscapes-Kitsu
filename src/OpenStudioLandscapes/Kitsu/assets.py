@@ -583,12 +583,12 @@ def compose_kitsu(
         )
 
     service_name = "kitsu"
-    container_name = service_name
+    container_name = "--".join([service_name, env.get("LANDSCAPE", "default")])
     host_name = ".".join([env["KITSU_HOSTNAME"], env["ROOT_DOMAIN"]])
 
     docker_dict = {
         "services": {
-            "kitsu": {
+            service_name: {
                 "container_name": container_name,
                 "hostname": host_name,
                 "domainname": env.get("ROOT_DOMAIN"),
@@ -713,12 +713,12 @@ def compose_init_db(
     }
 
     service_name = "kitsu-init-db"
-    container_name = service_name
+    container_name = "--".join([service_name, env.get("LANDSCAPE", "default")])
     host_name = ".".join([service_name, env["ROOT_DOMAIN"]])
 
     docker_dict = {
         "services": {
-            "kitsu-init-db": {
+            service_name: {
                 "container_name": container_name,
                 "hostname": host_name,
                 "domainname": env.get("ROOT_DOMAIN"),
