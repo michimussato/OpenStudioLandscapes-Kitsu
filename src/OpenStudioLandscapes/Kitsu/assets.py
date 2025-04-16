@@ -18,7 +18,8 @@ from dagster import (
     Output,
     asset,
 )
-from OpenStudioLandscapes.engine.base.assets import KEY_BASE
+
+# from OpenStudioLandscapes.engine.base.assets import KEY_BASE
 from OpenStudioLandscapes.engine.base.ops import (
     op_compose,
     op_docker_compose_graph,
@@ -36,24 +37,33 @@ from OpenStudioLandscapes.Kitsu.constants import *
     **ASSET_HEADER,
     ins={
         "group_in": AssetIn(AssetKey([*KEY_BASE, "group_out"])),
+        "constants": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "FEATURE_CONFIGS"])
+        ),
+        "FEATURE_CONFIG": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "FEATURE_CONFIG"])
+        ),
+        "COMPOSE_SCOPE": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "COMPOSE_SCOPE"])
+        ),
     },
-    deps=[AssetKey([*ASSET_HEADER["key_prefix"], "constants"])],
 )
 def env(
     context: AssetExecutionContext,
     group_in: dict,  # pylint: disable=redefined-outer-name
+    constants: dict,  # pylint: disable=redefined-outer-name
+    FEATURE_CONFIG: OpenStudioLandscapesConfig,  # pylint: disable=redefined-outer-name
+    COMPOSE_SCOPE: ComposeScope,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[dict] | AssetMaterialization, None, None]:
 
     env_in = copy.deepcopy(group_in["env"])
 
-    # Todo
-    #  - [ ] externalize
-    # expanding variables in OpenStudioLandscapes.Kitsu.constants.ENVIRONMENT
-    for k, v in ENVIRONMENT.items():
-        if isinstance(v, str):
-            ENVIRONMENT[k] = v.format(**env_in)
-
-    env_in.update(ENVIRONMENT)
+    env_in.update(
+        expand_dict_vars(
+            dict_to_expand=constants[FEATURE_CONFIG],
+            kv=env_in,
+        )
+    )
 
     env_in.update(
         {
@@ -67,7 +77,7 @@ def env(
         asset_key=context.asset_key,
         metadata={
             "__".join(context.asset_key.path): MetadataValue.json(env_in),
-            "ENVIRONMENT": MetadataValue.json(ENVIRONMENT),
+            "ENVIRONMENT": MetadataValue.json(constants[FEATURE_CONFIG]),
         },
     )
 
