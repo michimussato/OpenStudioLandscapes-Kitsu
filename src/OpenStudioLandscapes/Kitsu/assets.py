@@ -23,6 +23,7 @@ from OpenStudioLandscapes.engine.base.ops import (
     op_compose,
     op_docker_compose_graph,
     op_group_out,
+    op_env,
 )
 from OpenStudioLandscapes.engine.constants import *
 from OpenStudioLandscapes.engine.enums import *
@@ -799,6 +800,28 @@ def compose_maps(
             "__".join(context.asset_key.path): MetadataValue.json(ret),
         },
     )
+
+
+# env = AssetsDefinition.from_op(
+#     op_env,
+#     can_subset=False,
+#     group_name=GROUP,
+#     key_prefix=KEY,
+#     keys_by_input_name={
+#         "group_in": AssetKey([*KEY_BASE, "group_out"]),
+#         "constants": AssetKey([*ASSET_HEADER["key_prefix"], "FEATURE_CONFIGS"]),
+#         "FEATURE_CONFIG": AssetKey([*ASSET_HEADER["key_prefix"], "FEATURE_CONFIG"]),
+#         "COMPOSE_SCOPE": AssetKey([*ASSET_HEADER["key_prefix"], "COMPOSE_SCOPE"]),
+#     },
+#     # keys_by_output_name={
+#     #     "env": AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
+#     # }
+#     tags_by_output_name={
+#         "env": {
+#             "env": "third_party",
+#         },
+#     },
+# )
 
 
 compose = AssetsDefinition.from_op(
