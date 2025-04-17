@@ -23,7 +23,7 @@ from OpenStudioLandscapes.engine.base.ops import (
     op_compose,
     op_docker_compose_graph,
     op_group_out,
-    op_env,
+    op_group_in,
 )
 from OpenStudioLandscapes.engine.constants import *
 from OpenStudioLandscapes.engine.enums import *
@@ -802,26 +802,26 @@ def compose_maps(
     )
 
 
-# env = AssetsDefinition.from_op(
-#     op_env,
-#     can_subset=False,
-#     group_name=GROUP,
-#     key_prefix=KEY,
-#     keys_by_input_name={
-#         "group_in": AssetKey([*KEY_BASE, "group_out"]),
-#         "constants": AssetKey([*ASSET_HEADER["key_prefix"], "FEATURE_CONFIGS"]),
-#         "FEATURE_CONFIG": AssetKey([*ASSET_HEADER["key_prefix"], "FEATURE_CONFIG"]),
-#         "COMPOSE_SCOPE": AssetKey([*ASSET_HEADER["key_prefix"], "COMPOSE_SCOPE"]),
-#     },
-#     # keys_by_output_name={
-#     #     "env": AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
-#     # }
-#     tags_by_output_name={
-#         "env": {
-#             "env": "third_party",
-#         },
-#     },
-# )
+group_in = AssetsDefinition.from_op(
+    op_group_in,
+    can_subset=False,
+    group_name=GROUP,
+    key_prefix=KEY,
+    keys_by_input_name={
+        "group_out": AssetKey([*KEY_BASE, "group_out"]),
+        # "constants": AssetKey([*ASSET_HEADER["key_prefix"], "FEATURE_CONFIGS"]),
+        # "FEATURE_CONFIG": AssetKey([*ASSET_HEADER["key_prefix"], "FEATURE_CONFIG"]),
+        # "COMPOSE_SCOPE": AssetKey([*ASSET_HEADER["key_prefix"], "COMPOSE_SCOPE"]),
+    },
+    keys_by_output_name={
+        "group_in": AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
+    }
+    # tags_by_output_name={
+    #     "group_in": {
+    #         "group_in": "",
+    #     },
+    # },
+)
 
 
 compose = AssetsDefinition.from_op(
