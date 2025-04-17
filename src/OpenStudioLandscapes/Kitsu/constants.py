@@ -8,26 +8,18 @@ __all__ = [
 ]
 
 import pathlib
-from typing import Generator, MutableMapping
 
 from dagster import (
-    AssetExecutionContext,
-    AssetMaterialization,
-    MetadataValue,
-    Output,
-    AssetOut,
-    AssetIn,
+    AssetsDefinition,
     AssetKey,
-    multi_asset,
     get_dagster_logger,
 )
 
 LOGGER = get_dagster_logger(__name__)
 
+from OpenStudioLandscapes.engine.base.ops import op_constants
 from OpenStudioLandscapes.engine.constants import DOCKER_USE_CACHE_GLOBAL
-from OpenStudioLandscapes.engine.utils import *
-from OpenStudioLandscapes.engine.enums import OpenStudioLandscapesConfig, ComposeScope
-from OpenStudioLandscapes.engine.base.assets import KEY_BASE
+from OpenStudioLandscapes.engine.enums import OpenStudioLandscapesConfig
 
 DOCKER_USE_CACHE = DOCKER_USE_CACHE_GLOBAL or False
 KITSUDB_INSIDE_CONTAINER = False
@@ -111,106 +103,17 @@ FEATURE_CONFIGS = {
 # @formatter:on
 
 
-@multi_asset(
-    name=f"constants_{GROUP}",
-    ins={"group_in": AssetIn(AssetKey([*KEY_BASE, "group_out"]))},
-    outs={
-        "COMPOSE_SCOPE": AssetOut(
-            **ASSET_HEADER,
-            dagster_type=ComposeScope,
-            description="",
-        ),
-        "FEATURE_CONFIG": AssetOut(
-            **ASSET_HEADER,
-            dagster_type=OpenStudioLandscapesConfig,
-            description="",
-        ),
-        "FEATURE_CONFIGS": AssetOut(
-            **ASSET_HEADER,
-            dagster_type=dict,
-            description="",
-        ),
-        "DOCKER_USE_CACHE": AssetOut(
-            **ASSET_HEADER,
-            dagster_type=bool,
-            description="",
-        ),
+constants = AssetsDefinition.from_op(
+    op_constants,
+    can_subset=False,
+    group_name=GROUP,
+    keys_by_input_name={
+        "group_in": AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
+    },
+    keys_by_output_name={
+        "COMPOSE_SCOPE": AssetKey([*ASSET_HEADER["key_prefix"], "COMPOSE_SCOPE"]),
+        "FEATURE_CONFIG": AssetKey([*ASSET_HEADER["key_prefix"], "FEATURE_CONFIG"]),
+        "FEATURE_CONFIGS": AssetKey([*ASSET_HEADER["key_prefix"], "FEATURE_CONFIGS"]),
+        "DOCKER_USE_CACHE": AssetKey([*ASSET_HEADER["key_prefix"], "DOCKER_USE_CACHE"]),
     },
 )
-def constants(
-    context: AssetExecutionContext,
-    group_in: dict,  # pylint: disable=redefined-outer-name
-) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
-    """ """
-
-    features = group_in["features"]
-
-    # COMPOSE_SCOPE
-    COMPOSE_SCOPE = get_compose_scope(
-        context=context,
-        features=features,
-        name=__name__,
-    )
-
-    # FEATURE_CONFIG
-    FEATURE_CONFIG = get_feature_config(
-        context=context,
-        features=features,
-        name=__name__,
-    )
-
-    yield Output(
-        output_name="COMPOSE_SCOPE",
-        value=COMPOSE_SCOPE,
-    )
-
-    yield AssetMaterialization(
-        asset_key=context.asset_key_for_output("COMPOSE_SCOPE"),
-        metadata={
-            "__".join(
-                context.asset_key_for_output("COMPOSE_SCOPE").path
-            ): MetadataValue.json(COMPOSE_SCOPE),
-        },
-    )
-
-    yield Output(
-        output_name="FEATURE_CONFIG",
-        value=FEATURE_CONFIG,
-    )
-
-    yield AssetMaterialization(
-        asset_key=context.asset_key_for_output("FEATURE_CONFIG"),
-        metadata={
-            "__".join(
-                context.asset_key_for_output("FEATURE_CONFIG").path
-            ): MetadataValue.json(FEATURE_CONFIG),
-        },
-    )
-
-    yield Output(
-        output_name="FEATURE_CONFIGS",
-        value=FEATURE_CONFIGS,
-    )
-
-    yield AssetMaterialization(
-        asset_key=context.asset_key_for_output("FEATURE_CONFIGS"),
-        metadata={
-            "__".join(
-                context.asset_key_for_output("FEATURE_CONFIGS").path
-            ): MetadataValue.json(FEATURE_CONFIGS),
-        },
-    )
-
-    yield Output(
-        output_name="DOCKER_USE_CACHE",
-        value=DOCKER_USE_CACHE,
-    )
-
-    yield AssetMaterialization(
-        asset_key=context.asset_key_for_output("DOCKER_USE_CACHE"),
-        metadata={
-            "__".join(
-                context.asset_key_for_output("DOCKER_USE_CACHE").path
-            ): MetadataValue.bool(DOCKER_USE_CACHE),
-        },
-    )
