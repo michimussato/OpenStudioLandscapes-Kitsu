@@ -8,8 +8,15 @@ __all__ = [
 ]
 
 import pathlib
+from typing import Generator, MutableMapping
 
 from dagster import (
+    multi_asset,
+    AssetOut,
+    AssetMaterialization,
+    AssetExecutionContext,
+    Output,
+    MetadataValue,
     AssetsDefinition,
     AssetKey,
     get_dagster_logger,
@@ -109,11 +116,61 @@ constants = AssetsDefinition.from_op(
     group_name=GROUP,
     keys_by_input_name={
         "group_in": AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
+        "NAME": AssetKey([*ASSET_HEADER["key_prefix"], "NAME"]),
     },
     keys_by_output_name={
         "COMPOSE_SCOPE": AssetKey([*ASSET_HEADER["key_prefix"], "COMPOSE_SCOPE"]),
         "FEATURE_CONFIG": AssetKey([*ASSET_HEADER["key_prefix"], "FEATURE_CONFIG"]),
-        "FEATURE_CONFIGS": AssetKey([*ASSET_HEADER["key_prefix"], "FEATURE_CONFIGS"]),
-        "DOCKER_USE_CACHE": AssetKey([*ASSET_HEADER["key_prefix"], "DOCKER_USE_CACHE"]),
+        # "FEATURE_CONFIGS": AssetKey([*ASSET_HEADER["key_prefix"], "FEATURE_CONFIGS"]),
+        # "DOCKER_USE_CACHE": AssetKey([*ASSET_HEADER["key_prefix"], "DOCKER_USE_CACHE"]),
     },
 )
+
+
+@multi_asset(
+    name=f"constants_{GROUP}",
+    outs={
+        "NAME": AssetOut(
+            **ASSET_HEADER,
+            dagster_type=str,
+            description="",
+        ),
+        "FEATURE_CONFIGS": AssetOut(
+            **ASSET_HEADER,
+            dagster_type=dict,
+            description="",
+        ),
+    },
+)
+def constants_multi_asset(
+    context: AssetExecutionContext,
+) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
+    """ """
+
+    yield Output(
+        output_name="FEATURE_CONFIGS",
+        value=FEATURE_CONFIGS,
+    )
+
+    yield AssetMaterialization(
+        asset_key=context.asset_key_for_output("FEATURE_CONFIGS"),
+        metadata={
+            "__".join(
+                context.asset_key_for_output("FEATURE_CONFIGS").path
+            ): MetadataValue.json(FEATURE_CONFIGS),
+        },
+    )
+
+    yield Output(
+        output_name="NAME",
+        value=__name__,
+    )
+
+    yield AssetMaterialization(
+        asset_key=context.asset_key_for_output("NAME"),
+        metadata={
+            "__".join(context.asset_key_for_output("NAME").path): MetadataValue.path(
+                __name__
+            ),
+        },
+    )
