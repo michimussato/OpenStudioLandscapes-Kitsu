@@ -17,6 +17,8 @@ from dagster import (
     MetadataValue,
     Output,
     asset,
+    In,
+    Out,
 )
 
 from OpenStudioLandscapes.engine.base.ops import (
@@ -25,6 +27,7 @@ from OpenStudioLandscapes.engine.base.ops import (
     op_group_out,
     op_group_in,
     op_env,
+    factory_feature_out,
 )
 from OpenStudioLandscapes.engine.constants import *
 from OpenStudioLandscapes.engine.enums import *
@@ -779,6 +782,7 @@ env = AssetsDefinition.from_op(
         "constants": AssetKey([*ASSET_HEADER["key_prefix"], "FEATURE_CONFIGS"]),
         "FEATURE_CONFIG": AssetKey([*ASSET_HEADER["key_prefix"], "FEATURE_CONFIG"]),
         "COMPOSE_SCOPE": AssetKey([*ASSET_HEADER["key_prefix"], "COMPOSE_SCOPE"]),
+        "DOCKER_COMPOSE": AssetKey([*ASSET_HEADER["key_prefix"], "DOCKER_COMPOSE"]),
     },
     keys_by_output_name={
         "env_out": AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
@@ -788,6 +792,8 @@ env = AssetsDefinition.from_op(
 
 compose = AssetsDefinition.from_op(
     op_compose,
+    # Todo:
+    #  - [ ] Change to AssetKey
     tags_by_output_name={
         "compose": {
             "compose": "third_party",
@@ -798,6 +804,7 @@ compose = AssetsDefinition.from_op(
     keys_by_input_name={
         "compose_networks": AssetKey([*KEY, "compose_networks"]),
         "compose_maps": AssetKey([*KEY, "compose_maps"]),
+        "env": AssetKey([*KEY, "env"]),
     },
 )
 
@@ -828,4 +835,39 @@ docker_compose_graph = AssetsDefinition.from_op(
         "group_out": AssetKey([*KEY, "group_out"]),
         "compose_project_name": AssetKey([*KEY, "compose_project_name"]),
     },
+)
+
+
+feature_out_ins = {
+    "env": dict,
+    "compose": dict,
+    "group_in": dict,
+    # "group_out": pathlib.Path,
+}
+
+
+feature_out_ins_op = {}
+feature_out_ins_asset = {}
+for k, v in feature_out_ins.items():
+    feature_out_ins_op[k] = In(v)
+    feature_out_ins_asset[k] = AssetKey([*KEY, k])
+
+
+feature_out_op = factory_feature_out(
+    name=f"op_feature_out_{ASSET_HEADER['group_name']}",
+    ins=feature_out_ins_op,
+    out={
+        "feature_out": Out(dict),
+    },
+)
+
+
+feature_out = AssetsDefinition.from_op(
+    feature_out_op,
+    can_subset=False,
+    group_name=GROUP,
+    keys_by_output_name={
+        "feature_out": AssetKey([*ASSET_HEADER["key_prefix"], "feature_out"]),
+    },
+    keys_by_input_name=feature_out_ins_asset,
 )
