@@ -115,24 +115,32 @@ def apt_packages(
     **ASSET_HEADER,
     ins={
         "env": AssetIn(
-            AssetKey([*KEY, "env"]),
+            AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
         ),
-        "group_in": AssetIn(AssetKey([*KEY_BASE, "group_out"])),
+        # "group_in": AssetIn(AssetKey([*KEY_BASE, "group_out"])),
+        "docker_image": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "docker_image"])
+        ),
+        "docker_config": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "docker_config"])
+        ),
         "apt_packages": AssetIn(
-            AssetKey([*KEY, "apt_packages"]),
+            AssetKey([*ASSET_HEADER["key_prefix"], "apt_packages"]),
         ),
         "script_init_db": AssetIn(
-            AssetKey([*KEY, "script_init_db"]),
+            AssetKey([*ASSET_HEADER["key_prefix"], "script_init_db"]),
         ),
         "inject_postgres_conf": AssetIn(
-            AssetKey([*KEY, "inject_postgres_conf"]),
+            AssetKey([*ASSET_HEADER["key_prefix"], "inject_postgres_conf"]),
         ),
     },
 )
 def build_docker_image(
     context: AssetExecutionContext,
     env: dict,  # pylint: disable=redefined-outer-name
-    group_in: dict,  # pylint: disable=redefined-outer-name
+    # group_in: dict,  # pylint: disable=redefined-outer-name
+    docker_image: dict,  # pylint: disable=redefined-outer-name
+    docker_config: DockerConfig,  # pylint: disable=redefined-outer-name
     apt_packages: dict[str, list[str]],  # pylint: disable=redefined-outer-name
     script_init_db: pathlib.Path,  # pylint: disable=redefined-outer-name
     inject_postgres_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
@@ -195,8 +203,8 @@ ERROR: failed to solve: cgwire/cgwire:latest: failed to resolve source metadata 
     raise DockerException(
     """
 
-    build_base_image_data: dict = group_in["docker_image"]
-    build_base_docker_config: DockerConfig = group_in["docker_config"]
+    build_base_image_data: dict = docker_image
+    build_base_docker_config: DockerConfig = docker_config
 
     if build_base_docker_config.value["docker_push"]:
         build_base_parent_image_prefix: str = build_base_image_data["image_prefix_full"]
@@ -757,6 +765,58 @@ def compose_maps(
     )
 
 
+@asset(
+    **ASSET_HEADER,
+    ins={
+        "features_in": AssetIn(AssetKey([*ASSET_HEADER["key_prefix"], "group_in"])),
+    },
+)
+def docker_config(
+    context: AssetExecutionContext,
+    features_in: dict,
+) -> Generator[Output[DockerConfig] | AssetMaterialization, None, None]:
+
+    context.log.info(features_in)
+
+    _docker_config: DockerConfig = features_in.pop("docker_config")
+    context.log.info(_docker_config)
+
+    yield Output(_docker_config)
+
+    yield AssetMaterialization(
+        asset_key=context.asset_key,
+        metadata={
+            _docker_config.name: MetadataValue.json(_docker_config.value),
+        },
+    )
+
+
+@asset(
+    **ASSET_HEADER,
+    ins={
+        "features_in": AssetIn(AssetKey([*ASSET_HEADER["key_prefix"], "group_in"])),
+    },
+)
+def docker_image(
+    context: AssetExecutionContext,
+    features_in: dict,
+) -> Generator[Output[dict] | AssetMaterialization, None, None]:
+
+    context.log.info(features_in)
+
+    _docker_image: dict = features_in.pop("docker_image")
+    context.log.info(_docker_image)
+
+    yield Output(_docker_image)
+
+    yield AssetMaterialization(
+        asset_key=context.asset_key,
+        metadata={
+            "docker_image": MetadataValue.json(_docker_image),
+        },
+    )
+
+
 group_in = AssetsDefinition.from_op(
     op_group_in,
     can_subset=False,
@@ -802,9 +862,9 @@ compose = AssetsDefinition.from_op(
     group_name=GROUP,
     key_prefix=KEY,
     keys_by_input_name={
-        "compose_networks": AssetKey([*KEY, "compose_networks"]),
-        "compose_maps": AssetKey([*KEY, "compose_maps"]),
-        "env": AssetKey([*KEY, "env"]),
+        "compose_networks": AssetKey([*ASSET_HEADER["key_prefix"], "compose_networks"]),
+        "compose_maps": AssetKey([*ASSET_HEADER["key_prefix"], "compose_maps"]),
+        "env": AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
     },
 )
 
@@ -820,9 +880,10 @@ group_out = AssetsDefinition.from_op(
     },
     key_prefix=KEY,
     keys_by_input_name={
-        "compose": AssetKey([*KEY, "compose"]),
-        "env": AssetKey([*KEY, "env"]),
-        "group_in": AssetKey([*KEY_BASE, "group_out"]),
+        "compose": AssetKey([*ASSET_HEADER["key_prefix"], "compose"]),
+        "env": AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
+        # "group_in": AssetKey([*KEY_BASE, "group_out"]),
+        "docker_config": AssetKey([*ASSET_HEADER["key_prefix"], "docker_config"]),
     },
 )
 
@@ -832,8 +893,10 @@ docker_compose_graph = AssetsDefinition.from_op(
     group_name=GROUP,
     key_prefix=KEY,
     keys_by_input_name={
-        "group_out": AssetKey([*KEY, "group_out"]),
-        "compose_project_name": AssetKey([*KEY, "compose_project_name"]),
+        "group_out": AssetKey([*ASSET_HEADER["key_prefix"], "group_out"]),
+        "compose_project_name": AssetKey(
+            [*ASSET_HEADER["key_prefix"], "compose_project_name"]
+        ),
     },
 )
 
@@ -850,7 +913,7 @@ feature_out_ins_op = {}
 feature_out_ins_asset = {}
 for k, v in feature_out_ins.items():
     feature_out_ins_op[k] = In(v)
-    feature_out_ins_asset[k] = AssetKey([*KEY, k])
+    feature_out_ins_asset[k] = AssetKey([*ASSET_HEADER["key_prefix"], k])
 
 
 feature_out_op = factory_feature_out(
