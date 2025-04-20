@@ -1,8 +1,6 @@
 __all__ = [
     "DOCKER_USE_CACHE",
     "KITSUDB_INSIDE_CONTAINER",
-    "GROUP",
-    "KEY",
     "ASSET_HEADER",
     "FEATURE_CONFIGS",
 ]
@@ -151,7 +149,11 @@ constants = AssetsDefinition.from_op(
 def constants_multi_asset(
     context: AssetExecutionContext,
 ) -> Generator[
-    Output[dict[OpenStudioLandscapesConfig, dict[str | Any, bool | str | Any]]]
+    Output[
+        MutableMapping[
+            OpenStudioLandscapesConfig, MutableMapping[str | Any, bool | str | Any]
+        ]
+    ]
     | AssetMaterialization
     | Output[Any]
     | Output[Path]

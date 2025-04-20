@@ -5,7 +5,7 @@ import shutil
 import textwrap
 import time
 import urllib.parse
-from typing import Generator, MutableMapping
+from typing import Generator, MutableMapping, List
 
 import yaml
 from dagster import (
@@ -43,7 +43,10 @@ from OpenStudioLandscapes.Kitsu.constants import *
 def compose_networks(
     context: AssetExecutionContext,
 ) -> Generator[
-    Output[dict[str, dict[str, dict[str, str]]]] | AssetMaterialization, None, None
+    Output[MutableMapping[str, MutableMapping[str, MutableMapping[str, str]]]]
+    | AssetMaterialization,
+    None,
+    None,
 ]:
 
     compose_network_mode = ComposeNetworkMode.DEFAULT
@@ -90,10 +93,12 @@ def compose_networks(
 )
 def apt_packages(
     context: AssetExecutionContext,
-) -> Generator[Output[dict[str, list[str]]] | AssetMaterialization, None, None]:
+) -> Generator[
+    Output[MutableMapping[str, List[str]]] | AssetMaterialization, None, None
+]:
     """ """
 
-    _apt_packages = dict()
+    _apt_packages = {}
 
     _apt_packages["base"] = [
         "sudo",
@@ -117,7 +122,6 @@ def apt_packages(
         "env": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
         ),
-        # "group_in": AssetIn(AssetKey([*KEY_BASE, "group_out"])),
         "docker_image": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "docker_image"])
         ),
@@ -138,13 +142,12 @@ def apt_packages(
 def build_docker_image(
     context: AssetExecutionContext,
     env: dict,  # pylint: disable=redefined-outer-name
-    # group_in: dict,  # pylint: disable=redefined-outer-name
     docker_image: dict,  # pylint: disable=redefined-outer-name
     docker_config: DockerConfig,  # pylint: disable=redefined-outer-name
     apt_packages: dict[str, list[str]],  # pylint: disable=redefined-outer-name
     script_init_db: pathlib.Path,  # pylint: disable=redefined-outer-name
     inject_postgres_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
-) -> Generator[Output[dict] | AssetMaterialization, None, None]:
+) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
     """ """
 
     # Todo:
@@ -219,7 +222,7 @@ ERROR: failed to solve: cgwire/cgwire:latest: failed to resolve source metadata 
     docker_file = pathlib.Path(
         env["DOT_LANDSCAPES"],
         env.get("LANDSCAPE", "default"),
-        f"{GROUP}__{'__'.join(KEY)}",
+        f"{ASSET_HEADER['group_name']}__{'__'.join(ASSET_HEADER['key_prefix'])}",
         "__".join(context.asset_key.path),
         "Dockerfiles",
         "Dockerfile",
@@ -355,7 +358,7 @@ ERROR: failed to solve: cgwire/cgwire:latest: failed to resolve source metadata 
     **ASSET_HEADER,
     ins={
         "env": AssetIn(
-            AssetKey([*KEY, "env"]),
+            AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
         ),
     },
     description="",
@@ -393,7 +396,7 @@ def inject_postgres_conf(
     **ASSET_HEADER,
     ins={
         "env": AssetIn(
-            AssetKey([*KEY, "env"]),
+            AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
         ),
     },
     description="",
@@ -404,7 +407,7 @@ def script_init_db(
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
 
-    init_db = dict()
+    init_db = {}
 
     init_db["exe"] = shutil.which("bash")
     init_db["script"] = str()
@@ -464,7 +467,7 @@ def script_init_db(
     init_db_script = pathlib.Path(
         env["DOT_LANDSCAPES"],
         env.get("LANDSCAPE", "default"),
-        f"{GROUP}__{'__'.join(KEY)}",
+        f"{ASSET_HEADER['group_name']}__{'__'.join(ASSET_HEADER['key_prefix'])}",
         "__".join(context.asset_key.path),
         "init_db.sh",
     )
@@ -493,13 +496,13 @@ def script_init_db(
     **ASSET_HEADER,
     ins={
         "env": AssetIn(
-            AssetKey([*KEY, "env"]),
+            AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
         ),
         "build": AssetIn(
-            AssetKey([*KEY, "build_docker_image"]),
+            AssetKey([*ASSET_HEADER["key_prefix"], "build_docker_image"]),
         ),
         "compose_networks": AssetIn(
-            AssetKey([*KEY, "compose_networks"]),
+            AssetKey([*ASSET_HEADER["key_prefix"], "compose_networks"]),
         ),
     },
 )
@@ -625,30 +628,22 @@ def compose_kitsu(
     **ASSET_HEADER,
     ins={
         "env": AssetIn(
-            AssetKey([*KEY, "env"]),
+            AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
         ),
         "build": AssetIn(
-            AssetKey([*KEY, "build_docker_image"]),
+            AssetKey([*ASSET_HEADER["key_prefix"], "build_docker_image"]),
         ),
-        # "compose_networks": AssetIn(
-        #     AssetKey([*KEY, "compose_networks"]),
-        # ),
     },
     deps=[
-        AssetKey([*KEY, "script_init_db"]),
+        AssetKey([*ASSET_HEADER["key_prefix"], "script_init_db"]),
     ],
     description="This executes the OpenStudioLandscapes Repository Installer. "
     "Needs to be done only once.",
-    # tags={
-    #     "stage": "third_party/deadline/v10_2/repository",
-    #     "step": "docker/compose",
-    # },
 )
 def compose_init_db(
     context: AssetExecutionContext,
     env: dict,  # pylint: disable=redefined-outer-name
     build: dict,  # pylint: disable=redefined-outer-name
-    # compose_networks: dict,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
     """ """
 
@@ -739,17 +734,17 @@ def compose_init_db(
     **ASSET_HEADER,
     ins={
         "compose_kitsu": AssetIn(
-            AssetKey([*KEY, "compose_kitsu"]),
+            AssetKey([*ASSET_HEADER["key_prefix"], "compose_kitsu"]),
         ),
         "compose_init_db": AssetIn(
-            AssetKey([*KEY, "compose_init_db"]),
+            AssetKey([*ASSET_HEADER["key_prefix"], "compose_init_db"]),
         ),
     },
 )
 def compose_maps(
     context: AssetExecutionContext,
     **kwargs,  # pylint: disable=redefined-outer-name
-) -> Generator[Output[list[dict]] | AssetMaterialization, None, None]:
+) -> Generator[Output[List[MutableMapping]] | AssetMaterialization, None, None]:
 
     ret = list(kwargs.values())
 
@@ -821,11 +816,10 @@ group_in = AssetsDefinition.from_op(
     op_group_in,
     can_subset=False,
     group_name=ASSET_HEADER["group_name"],
-    # This can be deceiving: Prefixes everything on top of all
+    # key_prefix=ASSET_HEADER["key_prefix"]: This can be deceiving: Prefixes everything on top of all
     # other Prefixes
-    # key_prefix=ASSET_HEADER["key_prefix"],
     keys_by_input_name={
-        "group_out": AssetKey([*KEY_BASE, "group_out"]),
+        "group_out": AssetKey([*ASSET_HEADER_BASE["key_prefix"], "group_out"]),
     },
     keys_by_output_name={
         "group_in": AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
@@ -836,7 +830,7 @@ group_in = AssetsDefinition.from_op(
 env = AssetsDefinition.from_op(
     op_env,
     can_subset=False,
-    group_name=GROUP,
+    group_name=ASSET_HEADER["group_name"],
     keys_by_input_name={
         "group_in": AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
         "constants": AssetKey([*ASSET_HEADER["key_prefix"], "FEATURE_CONFIGS"]),
@@ -859,8 +853,8 @@ compose = AssetsDefinition.from_op(
             "compose": "third_party",
         },
     },
-    group_name=GROUP,
-    key_prefix=KEY,
+    group_name=ASSET_HEADER["group_name"],
+    key_prefix=ASSET_HEADER["key_prefix"],
     keys_by_input_name={
         "compose_networks": AssetKey([*ASSET_HEADER["key_prefix"], "compose_networks"]),
         "compose_maps": AssetKey([*ASSET_HEADER["key_prefix"], "compose_maps"]),
@@ -872,17 +866,18 @@ compose = AssetsDefinition.from_op(
 group_out = AssetsDefinition.from_op(
     op_group_out,
     can_subset=True,
-    group_name=GROUP,
+    group_name=ASSET_HEADER["group_name"],
+    # Todo:
+    #  - [ ] Change to AssetKey
     tags_by_output_name={
         "group_out": {
             "group_out": "third_party",
         },
     },
-    key_prefix=KEY,
+    key_prefix=ASSET_HEADER["key_prefix"],
     keys_by_input_name={
         "compose": AssetKey([*ASSET_HEADER["key_prefix"], "compose"]),
         "env": AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
-        # "group_in": AssetKey([*KEY_BASE, "group_out"]),
         "docker_config": AssetKey([*ASSET_HEADER["key_prefix"], "docker_config"]),
     },
 )
@@ -890,8 +885,8 @@ group_out = AssetsDefinition.from_op(
 
 docker_compose_graph = AssetsDefinition.from_op(
     op_docker_compose_graph,
-    group_name=GROUP,
-    key_prefix=KEY,
+    group_name=ASSET_HEADER["group_name"],
+    key_prefix=ASSET_HEADER["key_prefix"],
     keys_by_input_name={
         "group_out": AssetKey([*ASSET_HEADER["key_prefix"], "group_out"]),
         "compose_project_name": AssetKey(
@@ -905,7 +900,6 @@ feature_out_ins = {
     "env": dict,
     "compose": dict,
     "group_in": dict,
-    # "group_out": pathlib.Path,
 }
 
 
@@ -928,7 +922,7 @@ feature_out_op = factory_feature_out(
 feature_out = AssetsDefinition.from_op(
     feature_out_op,
     can_subset=False,
-    group_name=GROUP,
+    group_name=ASSET_HEADER["group_name"],
     keys_by_output_name={
         "feature_out": AssetKey([*ASSET_HEADER["key_prefix"], "feature_out"]),
     },
