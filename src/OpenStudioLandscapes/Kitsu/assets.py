@@ -28,6 +28,7 @@ from OpenStudioLandscapes.engine.base.ops import (
     op_group_in,
     op_env,
     factory_feature_out,
+    factory_docker_config,
 )
 from OpenStudioLandscapes.engine.constants import *
 from OpenStudioLandscapes.engine.enums import *
@@ -760,30 +761,28 @@ def compose_maps(
     )
 
 
-@asset(
-    **ASSET_HEADER,
+docker_config_op = factory_docker_config(
+    name=f"op_docker_config_{ASSET_HEADER['group_name']}",
     ins={
-        "features_in": AssetIn(AssetKey([*ASSET_HEADER["key_prefix"], "group_in"])),
+        "group_in": In(dict),
+    },
+    out={
+        "docker_config": Out(DockerConfig),
     },
 )
-def docker_config(
-    context: AssetExecutionContext,
-    features_in: dict,
-) -> Generator[Output[DockerConfig] | AssetMaterialization, None, None]:
 
-    context.log.info(features_in)
 
-    _docker_config: DockerConfig = features_in.pop("docker_config")
-    context.log.info(_docker_config)
-
-    yield Output(_docker_config)
-
-    yield AssetMaterialization(
-        asset_key=context.asset_key,
-        metadata={
-            _docker_config.name: MetadataValue.json(_docker_config.value),
-        },
-    )
+docker_config = AssetsDefinition.from_op(
+    docker_config_op,
+    can_subset=False,
+    group_name=ASSET_HEADER["group_name"],
+    keys_by_output_name={
+        "docker_config": AssetKey([*ASSET_HEADER["key_prefix"], "docker_config"]),
+    },
+    keys_by_input_name={
+        "group_in": AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
+    },
+)
 
 
 @asset(
