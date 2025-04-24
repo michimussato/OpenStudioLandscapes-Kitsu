@@ -13,29 +13,74 @@ from dagster import (
     AssetIn,
     AssetKey,
     AssetMaterialization,
-    AssetsDefinition,
     MetadataValue,
     Output,
     asset,
-    In,
-    Out,
 )
 
-from OpenStudioLandscapes.engine.base.ops import (
-    op_compose,
-    op_docker_compose_graph,
-    op_group_out,
-    op_group_in,
-    op_env,
-    factory_feature_out,
-    factory_docker_config,
-)
 from OpenStudioLandscapes.engine.constants import *
 from OpenStudioLandscapes.engine.enums import *
 from OpenStudioLandscapes.engine.utils import *
 from OpenStudioLandscapes.engine.utils.docker.whales import *
 
 from OpenStudioLandscapes.Kitsu.constants import *
+
+from OpenStudioLandscapes.engine.common_assets.constants import get_constants
+from OpenStudioLandscapes.engine.common_assets.docker_config import get_docker_config
+from OpenStudioLandscapes.engine.common_assets.env import get_env
+from OpenStudioLandscapes.engine.common_assets.group_in import get_group_in
+from OpenStudioLandscapes.engine.common_assets.group_out import get_group_out
+from OpenStudioLandscapes.engine.common_assets.docker_compose_graph import (
+    get_docker_compose_graph,
+)
+from OpenStudioLandscapes.engine.common_assets.feature_out import get_feature_out
+from OpenStudioLandscapes.engine.common_assets.compose import get_compose
+
+
+constants = get_constants(
+    ASSET_HEADER=ASSET_HEADER,
+)
+
+
+docker_config = get_docker_config(
+    ASSET_HEADER=ASSET_HEADER,
+)
+
+
+group_in = get_group_in(
+    ASSET_HEADER=ASSET_HEADER,
+    ASSET_HEADER_BASE=ASSET_HEADER_BASE,
+)
+
+
+env = get_env(
+    ASSET_HEADER=ASSET_HEADER,
+)
+
+
+group_out = get_group_out(
+    ASSET_HEADER=ASSET_HEADER,
+)
+
+
+docker_compose_graph = get_docker_compose_graph(
+    ASSET_HEADER=ASSET_HEADER,
+)
+
+
+compose = get_compose(
+    ASSET_HEADER=ASSET_HEADER,
+)
+
+
+feature_out = get_feature_out(
+    ASSET_HEADER=ASSET_HEADER,
+    feature_out_ins={
+        "env": dict,
+        "compose": dict,
+        "group_in": dict,
+    },
+)
 
 
 @asset(
@@ -761,30 +806,6 @@ def compose_maps(
     )
 
 
-docker_config_op = factory_docker_config(
-    name=f"op_docker_config_{ASSET_HEADER['group_name']}",
-    ins={
-        "group_in": In(dict),
-    },
-    out={
-        "docker_config": Out(DockerConfig),
-    },
-)
-
-
-docker_config = AssetsDefinition.from_op(
-    docker_config_op,
-    can_subset=False,
-    group_name=ASSET_HEADER["group_name"],
-    keys_by_output_name={
-        "docker_config": AssetKey([*ASSET_HEADER["key_prefix"], "docker_config"]),
-    },
-    keys_by_input_name={
-        "group_in": AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
-    },
-)
-
-
 @asset(
     **ASSET_HEADER,
     ins={
@@ -809,121 +830,3 @@ def docker_image(
             "docker_image": MetadataValue.json(_docker_image),
         },
     )
-
-
-group_in = AssetsDefinition.from_op(
-    op_group_in,
-    can_subset=False,
-    group_name=ASSET_HEADER["group_name"],
-    # key_prefix=ASSET_HEADER["key_prefix"]: This can be deceiving: Prefixes everything on top of all
-    # other Prefixes
-    keys_by_input_name={
-        "group_out": AssetKey([*ASSET_HEADER_BASE["key_prefix"], "group_out"]),
-    },
-    keys_by_output_name={
-        "group_in": AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
-    },
-)
-
-
-env = AssetsDefinition.from_op(
-    op_env,
-    can_subset=False,
-    group_name=ASSET_HEADER["group_name"],
-    keys_by_input_name={
-        "group_in": AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
-        "constants": AssetKey([*ASSET_HEADER["key_prefix"], "FEATURE_CONFIGS"]),
-        "FEATURE_CONFIG": AssetKey([*ASSET_HEADER["key_prefix"], "FEATURE_CONFIG"]),
-        "COMPOSE_SCOPE": AssetKey([*ASSET_HEADER["key_prefix"], "COMPOSE_SCOPE"]),
-        "DOCKER_COMPOSE": AssetKey([*ASSET_HEADER["key_prefix"], "DOCKER_COMPOSE"]),
-    },
-    keys_by_output_name={
-        "env_out": AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
-    },
-)
-
-
-compose = AssetsDefinition.from_op(
-    op_compose,
-    # Todo:
-    #  - [ ] Change to AssetKey
-    tags_by_output_name={
-        "compose": {
-            "compose": "third_party",
-        },
-    },
-    group_name=ASSET_HEADER["group_name"],
-    key_prefix=ASSET_HEADER["key_prefix"],
-    keys_by_input_name={
-        "compose_networks": AssetKey([*ASSET_HEADER["key_prefix"], "compose_networks"]),
-        "compose_maps": AssetKey([*ASSET_HEADER["key_prefix"], "compose_maps"]),
-        "env": AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
-    },
-)
-
-
-group_out = AssetsDefinition.from_op(
-    op_group_out,
-    can_subset=True,
-    group_name=ASSET_HEADER["group_name"],
-    # Todo:
-    #  - [ ] Change to AssetKey
-    tags_by_output_name={
-        "group_out": {
-            "group_out": "third_party",
-        },
-    },
-    key_prefix=ASSET_HEADER["key_prefix"],
-    keys_by_input_name={
-        "compose": AssetKey([*ASSET_HEADER["key_prefix"], "compose"]),
-        "env": AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
-        "docker_config": AssetKey([*ASSET_HEADER["key_prefix"], "docker_config"]),
-    },
-)
-
-
-docker_compose_graph = AssetsDefinition.from_op(
-    op_docker_compose_graph,
-    group_name=ASSET_HEADER["group_name"],
-    key_prefix=ASSET_HEADER["key_prefix"],
-    keys_by_input_name={
-        "group_out": AssetKey([*ASSET_HEADER["key_prefix"], "group_out"]),
-        "compose_project_name": AssetKey(
-            [*ASSET_HEADER["key_prefix"], "compose_project_name"]
-        ),
-    },
-)
-
-
-feature_out_ins = {
-    "env": dict,
-    "compose": dict,
-    "group_in": dict,
-}
-
-
-feature_out_ins_op = {}
-feature_out_ins_asset = {}
-for k, v in feature_out_ins.items():
-    feature_out_ins_op[k] = In(v)
-    feature_out_ins_asset[k] = AssetKey([*ASSET_HEADER["key_prefix"], k])
-
-
-feature_out_op = factory_feature_out(
-    name=f"op_feature_out_{ASSET_HEADER['group_name']}",
-    ins=feature_out_ins_op,
-    out={
-        "feature_out": Out(dict),
-    },
-)
-
-
-feature_out = AssetsDefinition.from_op(
-    feature_out_op,
-    can_subset=False,
-    group_name=ASSET_HEADER["group_name"],
-    keys_by_output_name={
-        "feature_out": AssetKey([*ASSET_HEADER["key_prefix"], "feature_out"]),
-    },
-    keys_by_input_name=feature_out_ins_asset,
-)
