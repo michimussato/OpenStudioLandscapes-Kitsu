@@ -37,25 +37,35 @@ ASSET_HEADER = {
     "key_prefix": KEY,
 }
 
+# Todo:
+#  - [ ] Integrate into readme_generator
+DOCUMENTATION = [
+    "https://github.com/cgwire/kitsu-docker",
+]
+
 # @formatter:off
 FEATURE_CONFIGS = {
     OpenStudioLandscapesConfig.DEFAULT: {
         "DOCKER_USE_CACHE": DOCKER_USE_CACHE,
-        # "CONFIGS_ROOT": pathlib.Path(
-        #     get_git_root(pathlib.Path(__file__)),
-        #     ".payload",
-        #     "config",
-        # )
-        # .expanduser()
-        # .as_posix(),
+        # https://zou.cg-wire.com/jobs/#enabling-job-queue
         # Todo:
-        #  - [ ] These have no effect yet
+        #  - [ ] Job Queue
+        #        https://github.com/michimussato/kitsu-setup/blob/main/README_KITSU.md#zou-job-queue
+        "KITSU_ENABLE_JOB_QUEUE": False,
         "KITSU_HOSTNAME": "kitsu",
-        "KITSU_ADMIN_USER": "michimussato@gmail.com",
-        "KITSU_DB_PASSWORD": "myp4ssword",
+        # Todo:
+        #  - [ ] Report Kitsu bug:
+        #        Not OK:
+        #        (env) root@kitsu:/opt/zou# zou create-admin --password openstudiolandscapes kitsu@openstudiolandscapes.com
+        #        Email is not valid.
+        #        OK:
+        #        (env) root@kitsu:/opt/zou# zou create-admin --password openstudiolandscapes kitsu@openstudio.com
+        #        Admin successfully created.
+        "KITSU_ADMIN_USER": "admin@example.com",
+        "KITSU_DB_PASSWORD": "mysecretpassword",
         "KITSU_SECRET_KEY": "yourrandomsecretkey",
-        "KITSU_PREVIEW_FOLDER": "/opt/zou/previews",
-        "KITSU_TMP_DIR": "/opt/zou/tmp",
+        "KITSU_PREVIEW_FOLDER": "/opt/zou/previews",  # Default: "/opt/zou/previews"
+        "KITSU_TMP_DIR": "/opt/zou/tmp",  # Default: "/opt/zou/tmp"
         "KITSU_PORT_HOST": "4545",
         "KITSU_PORT_CONTAINER": "80",
         f"KITSU_POSTGRES_CONF": pathlib.Path(
