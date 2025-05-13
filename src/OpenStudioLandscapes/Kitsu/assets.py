@@ -482,9 +482,7 @@ def script_init_db(
     init_db["script"] += "mkdir -p ${TMP_DIR}\n"
     init_db["script"] += "chown -R postgres:postgres ${TMP_DIR}\n"
     init_db["script"] += "\n"
-    init_db[
-        "script"
-    ] += "zou create-admin --password ${KITSU_ADMIN_PASSWORD} ${KITSU_ADMIN_USER}\n"
+    init_db["script"] += "zou create-admin --password ${DB_PASSWORD} ${KITSU_ADMIN}\n"
     init_db["script"] += "\n"
     init_db["script"] += "service postgresql stop\n"
     init_db["script"] += "service redis-server stop\n"
