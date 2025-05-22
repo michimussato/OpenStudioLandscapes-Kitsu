@@ -80,6 +80,21 @@ Kitsu itself consists of two modules:
 1. [Gazu - Kitsu Python Client](https://gazu.cg-wire.com/)
 2. [Zou - Kitsu Python API](https://zou.cg-wire.com/)
 
+`OpenStudioLandscapes-Kitsu` is based on the Kitsu provided Docker image:
+
+1. [https://kitsu.cg-wire.com/installation/#using-docker-image]()
+2. [https://hub.docker.com/r/cgwire/cgwire]()
+
+The default credentials are:
+
+1. User: `admin@example.com`
+2. Password: `mysecretpassword`
+
+You can override the default credentials by setting:
+
+1. `KITSU_ADMIN_USER`
+2. `KITSU_DB_PASSWORD`
+
 ## Add to OpenStudioLandscapes
 
 Add the following code to `OpenStudioLandscapes.engine.constants` (`FEATURES`):
