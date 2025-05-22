@@ -8,20 +8,13 @@
    3. [Install](#install)
       1. [This Feature](#this-feature)
    4. [Kitsu Documentation](#kitsu-documentation)
-      1. [Get Deadline 10.2](#get-deadline-102)
-      2. [Instructions](#instructions)
-   5. [Documentation](#documentation)
-      1. [User Manual](#user-manual)
-      2. [Scripting Reference](#scripting-reference)
-      3. [Python Reference](#python-reference)
-      4. [Information on Usage Based Licensing (UBL)](#information-on-usage-based-licensing-ubl)
-   6. [Add to OpenStudioLandscapes](#add-to-openstudiolandscapes)
-   7. [Testing](#testing)
+   5. [Add to OpenStudioLandscapes](#add-to-openstudiolandscapes)
+   6. [Testing](#testing)
       1. [pre-commit](#pre-commit)
       2. [nox](#nox)
-   8. [Variables](#variables)
+   7. [Variables](#variables)
       1. [Feature Configs](#feature-configs)
-   9. [Community](#community)
+   8. [Community](#community)
 
 ***
 
@@ -86,44 +79,6 @@ Kitsu itself consists of two modules:
 
 1. [Gazu - Kitsu Python Client](https://gazu.cg-wire.com/)
 2. [Zou - Kitsu Python API](https://zou.cg-wire.com/)
-
-### Get Deadline 10.2
-
-Deadline is free, however (legally), an AWS account is required to access the download area. Also, the account is required to use all Deadline features. Register here:
-
-- [https://portal.aws.amazon.com/billing/signup]()
-
-Once logged in, you can download the Deadline tar archive from this website:
-
-- [https://us-east-1.console.aws.amazon.com/deadlinecloud/home#/thinkbox]()
-
-If you prefer to just download Deadline and use it without any AWS Cloud features, here you can get the `tar` archive and the `sha256` directly:
-
-- [https://thinkbox-installers.s3.us-west-2.amazonaws.com/Releases/Deadline/10.2/5_10.2.1.1/Deadline-10.2.1.1-linux-installers.tar]()
-- [https://thinkbox-installers.s3.us-west-2.amazonaws.com/Releases/Deadline/10.2/5_10.2.1.1/Deadline-10.2.1.1-linux-installers.sha256]()
-
-### Instructions
-
-Extract all contents for the `tar` archive to `OpenStudioLandscapes-Deadline-10-2/.payload/bin`.
-
-## Documentation
-
-### User Manual
-
-- [https://docs.thinkboxsoftware.com/products/deadline/10.2/1_User%20Manual/index.html]()
-
-### Scripting Reference
-
-- [https://docs.thinkboxsoftware.com/products/deadline/10.2/2_Scripting%20Reference/index.html]()
-
-### Python Reference
-
-- [https://docs.thinkboxsoftware.com/products/deadline/10.2/3_Python%20Reference/index.html]()
-
-### Information on Usage Based Licensing (UBL)
-
-- [https://marketplace.thinkboxsoftware.com]()
-- [https://awsthinkbox.zendesk.com/hc/en-us/articles/22883209044759-AWS-Deadline-Cloud-UBL-for-Deadline-10-on-AWS]()
 
 ## Add to OpenStudioLandscapes
 
