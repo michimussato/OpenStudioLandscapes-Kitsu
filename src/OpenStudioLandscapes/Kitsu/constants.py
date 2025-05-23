@@ -51,10 +51,11 @@ FEATURE_CONFIGS = {
         # Todo:
         #  - [ ] Job Queue
         #        https://github.com/michimussato/kitsu-setup/blob/main/README_KITSU.md#zou-job-queue
-        "KITSU_ENABLE_JOB_QUEUE": False,
+        "KITSU_ENABLE_JOB_QUEUE": True,
         "KITSU_HOSTNAME": "kitsu",
         # Todo:
-        #  - [ ] Report Kitsu bug:
+        #  - [x] Report Kitsu bug:
+        #        https://github.com/cgwire/zou/issues/960
         #        Not OK:
         #        (env) root@kitsu:/opt/zou# zou create-admin --password openstudiolandscapes kitsu@openstudiolandscapes.com
         #        Email is not valid.
