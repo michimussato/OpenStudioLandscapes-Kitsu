@@ -30,7 +30,7 @@ KITSUDB_INSIDE_CONTAINER = False
 
 GROUP = "Kitsu"
 KEY = [GROUP]
-FEATURE = f"OpenStudioLandscapes-{GROUP}"
+FEATURE = f"OpenStudioLandscapes-{GROUP}".replace("_", "-")
 
 ASSET_HEADER = {
     "group_name": GROUP,
@@ -49,7 +49,7 @@ FEATURE_CONFIGS = {
         "DOCKER_USE_CACHE": DOCKER_USE_CACHE,
         # https://zou.cg-wire.com/jobs/#enabling-job-queue
         # Todo:
-        #  - [ ] Job Queue
+        #  - [x] Job Queue
         #        https://github.com/michimussato/kitsu-setup/blob/main/README_KITSU.md#zou-job-queue
         "KITSU_ENABLE_JOB_QUEUE": True,
         "KITSU_HOSTNAME": "kitsu",
@@ -71,8 +71,10 @@ FEATURE_CONFIGS = {
         "KITSU_PORT_CONTAINER": "80",
         f"KITSU_POSTGRES_CONF": pathlib.Path(
             # /etc/postgresql/14/main/postgresql.conf
-            # get_configs_root(pathlib.Path(__file__)),
-            pathlib.Path(__file__).parent.parent.parent.parent / ".payload" / "config",
+            "{DOT_FEATURES}",
+            FEATURE,
+            ".payload",
+            "config",
             "etc",
             "postgresql",
             "14",
