@@ -11,6 +11,12 @@ def readme_feature(doc: snakemd.Document) -> snakemd.Document:
         level=2,
     )
 
+    doc.add_unordered_list(
+        [
+            "[https://kitsu.cg-wire.com/]()",
+        ]
+    )
+
     # Logo
 
     doc.add_paragraph(
@@ -76,7 +82,7 @@ def readme_feature(doc: snakemd.Document) -> snakemd.Document:
         )
     )
 
-    doc.add_ordered_list(
+    doc.add_unordered_list(
         [
             "[https://kitsu.cg-wire.com/installation/#using-docker-image]()",
             "[https://hub.docker.com/r/cgwire/cgwire]()",
@@ -91,7 +97,7 @@ def readme_feature(doc: snakemd.Document) -> snakemd.Document:
         )
     )
 
-    doc.add_ordered_list(
+    doc.add_unordered_list(
         [
             "User: `admin@example.com`",
             "Password: `mysecretpassword`",
@@ -106,7 +112,7 @@ def readme_feature(doc: snakemd.Document) -> snakemd.Document:
         )
     )
 
-    doc.add_ordered_list(
+    doc.add_unordered_list(
         [
             "`KITSU_ADMIN_USER`",
             "`KITSU_DB_PASSWORD`",
