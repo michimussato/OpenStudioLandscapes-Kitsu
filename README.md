@@ -194,7 +194,7 @@ Currently, the following Python interpreters are enabled for testing:
 
 ## Variables
 
-The following variables are being declared in [`Kitsu`](https://github.com/michimussato/OpenStudioLandscapes-Kitsu/tree/main/src/OpenStudioLandscapes/Kitsu/constants.py) published throughout the `OpenStudioLandscapes-Kitsu` package.
+The following variables are being declared in `OpenStudioLandscapes.Kitsu.constants` and are accessible throughout the [`OpenStudioLandscapes-Kitsu`](https://github.com/michimussato/OpenStudioLandscapes-Kitsu/tree/main/src/OpenStudioLandscapes/Kitsu/constants.py) package.
 
 | Variable                   | Type   |
 | :------------------------- | :----- |
@@ -207,20 +207,20 @@ The following variables are being declared in [`Kitsu`](https://github.com/michi
 
 #### Feature Config: default
 
-| Variable                             | Type   | Value                                                                                                                                      |
-| :----------------------------------- | :----- | :----------------------------------------------------------------------------------------------------------------------------------------- |
-| `DOCKER_USE_CACHE`                   | `bool` | `False`                                                                                                                                    |
-| `KITSU_ENABLE_JOB_QUEUE`             | `bool` | `True`                                                                                                                                     |
-| `KITSU_HOSTNAME`                     | `str`  | `kitsu`                                                                                                                                    |
-| `KITSU_ADMIN_USER`                   | `str`  | `admin@example.com`                                                                                                                        |
-| `KITSU_DB_PASSWORD`                  | `str`  | `mysecretpassword`                                                                                                                         |
-| `KITSU_SECRET_KEY`                   | `str`  | `yourrandomsecretkey`                                                                                                                      |
-| `KITSU_PREVIEW_FOLDER`               | `str`  | `/opt/zou/previews`                                                                                                                        |
-| `KITSU_TMP_DIR`                      | `str`  | `/opt/zou/tmp`                                                                                                                             |
-| `KITSU_PORT_HOST`                    | `str`  | `4545`                                                                                                                                     |
-| `KITSU_PORT_CONTAINER`               | `str`  | `80`                                                                                                                                       |
-| `KITSU_POSTGRES_CONF`                | `str`  | `/home/michael/git/repos/OpenStudioLandscapes/.features/OpenStudioLandscapes-Kitsu/.payload/config/etc/postgresql/14/main/postgresql.conf` |
-| `KITSU_DATABASE_INSTALL_DESTINATION` | `str`  | `{DOT_LANDSCAPES}/{LANDSCAPE}/Kitsu__Kitsu/data/kitsu`                                                                                     |
+| Variable                             | Type   | Value                                                                                              |
+| :----------------------------------- | :----- | :------------------------------------------------------------------------------------------------- |
+| `DOCKER_USE_CACHE`                   | `bool` | `False`                                                                                            |
+| `KITSU_ENABLE_JOB_QUEUE`             | `bool` | `True`                                                                                             |
+| `KITSU_HOSTNAME`                     | `str`  | `kitsu`                                                                                            |
+| `KITSU_ADMIN_USER`                   | `str`  | `admin@example.com`                                                                                |
+| `KITSU_DB_PASSWORD`                  | `str`  | `mysecretpassword`                                                                                 |
+| `KITSU_SECRET_KEY`                   | `str`  | `yourrandomsecretkey`                                                                              |
+| `KITSU_PREVIEW_FOLDER`               | `str`  | `/opt/zou/previews`                                                                                |
+| `KITSU_TMP_DIR`                      | `str`  | `/opt/zou/tmp`                                                                                     |
+| `KITSU_PORT_HOST`                    | `str`  | `4545`                                                                                             |
+| `KITSU_PORT_CONTAINER`               | `str`  | `80`                                                                                               |
+| `KITSU_POSTGRES_CONF`                | `str`  | `{DOT_FEATURES}/OpenStudioLandscapes-Kitsu/.payload/config/etc/postgresql/14/main/postgresql.conf` |
+| `KITSU_DATABASE_INSTALL_DESTINATION` | `str`  | `{DOT_LANDSCAPES}/{LANDSCAPE}/Kitsu__Kitsu/data/kitsu`                                             |
 
 ## Community
 
