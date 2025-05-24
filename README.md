@@ -69,6 +69,8 @@ For more info see [VCS Support of pip](https://pip.pypa.io/en/stable/topics/vcs-
 
 ## Kitsu Documentation
 
+- [https://kitsu.cg-wire.com/]()
+
 [![ Logo Kitsu ](https://camo.githubusercontent.com/023fe0d7cf9dc4bd4258a299a718a8c98d94be4357d72dfda0fcb0217ba1582c/68747470733a2f2f7a6f752e63672d776972652e636f6d2f6b697473752e706e67)](https://github.com/cgwire/zou)
 
 Kitsu is written and maintained by CGWire, a company based in France:
@@ -82,18 +84,18 @@ Kitsu itself consists of two modules:
 
 `OpenStudioLandscapes-Kitsu` is based on the Kitsu provided Docker image:
 
-1. [https://kitsu.cg-wire.com/installation/#using-docker-image]()
-2. [https://hub.docker.com/r/cgwire/cgwire]()
+- [https://kitsu.cg-wire.com/installation/#using-docker-image]()
+- [https://hub.docker.com/r/cgwire/cgwire]()
 
 The default credentials are:
 
-1. User: `admin@example.com`
-2. Password: `mysecretpassword`
+- User: `admin@example.com`
+- Password: `mysecretpassword`
 
 You can override the default credentials by setting:
 
-1. `KITSU_ADMIN_USER`
-2. `KITSU_DB_PASSWORD`
+- `KITSU_ADMIN_USER`
+- `KITSU_DB_PASSWORD`
 
 ## Add to OpenStudioLandscapes
 
@@ -102,12 +104,12 @@ Add the following code to `OpenStudioLandscapes.engine.constants` (`FEATURES`):
 ```python
 
 FEATURES.update(
-   {
-      "enabled": True,
-      "module": "Kitsu.definitions",
-      "compose_scope": ComposeScope.DEFAULT,
-      "feature_config": OpenStudioLandscapesConfig.DEFAULT,
-   }
+    "OpenStudioLandscapes-Kitsu": {
+        "enabled": True,
+        "module": "OpenStudioLandscapes.Kitsu.definitions",
+        "compose_scope": ComposeScope.DEFAULT,
+        "feature_config": OpenStudioLandscapesConfig.DEFAULT,
+    }
 )
 
 ```
@@ -208,7 +210,7 @@ The following variables are being declared in [`Kitsu`](https://github.com/michi
 | Variable                             | Type   | Value                                                                                                                                      |
 | :----------------------------------- | :----- | :----------------------------------------------------------------------------------------------------------------------------------------- |
 | `DOCKER_USE_CACHE`                   | `bool` | `False`                                                                                                                                    |
-| `KITSU_ENABLE_JOB_QUEUE`             | `bool` | `False`                                                                                                                                    |
+| `KITSU_ENABLE_JOB_QUEUE`             | `bool` | `True`                                                                                                                                     |
 | `KITSU_HOSTNAME`                     | `str`  | `kitsu`                                                                                                                                    |
 | `KITSU_ADMIN_USER`                   | `str`  | `admin@example.com`                                                                                                                        |
 | `KITSU_DB_PASSWORD`                  | `str`  | `mysecretpassword`                                                                                                                         |
