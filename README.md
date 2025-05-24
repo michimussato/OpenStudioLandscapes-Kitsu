@@ -242,3 +242,7 @@ To follow up on the previous LinkedIn publications, visit:
 
 - [OpenStudioLandscapes on LinkedIn](https://www.linkedin.com/company/106731439/).
 - [Search for tag #OpenStudioLandscapes on LinkedIn](https://www.linkedin.com/search/results/all/?keywords=%23openstudiolandscapes).
+
+***
+
+This `README.md` was dynamically created with [OpenStudioLandscapesUtil-ReadmeGenerator](https://github.com/michimussato/OpenStudioLandscapesUtil-ReadmeGenerator).
