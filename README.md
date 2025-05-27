@@ -7,14 +7,18 @@
    2. [Requirements](#requirements)
    3. [Install](#install)
       1. [This Feature](#this-feature)
-   4. [Kitsu Documentation](#kitsu-documentation)
-   5. [Add to OpenStudioLandscapes](#add-to-openstudiolandscapes)
-   6. [Testing](#testing)
+   4. [Add to OpenStudioLandscapes](#add-to-openstudiolandscapes)
+   5. [Testing](#testing)
       1. [pre-commit](#pre-commit)
       2. [nox](#nox)
-   7. [Variables](#variables)
+   6. [Variables](#variables)
       1. [Feature Configs](#feature-configs)
-   8. [Community](#community)
+2. [Community](#community)
+3. [Kitsu Documentation](#kitsu-documentation)
+
+***
+
+This `README.md` was dynamically created with [OpenStudioLandscapesUtil-ReadmeGenerator](https://github.com/michimussato/OpenStudioLandscapesUtil-ReadmeGenerator).
 
 ***
 
@@ -66,36 +70,6 @@ pip install -e ".[dev]"
 ```
 
 For more info see [VCS Support of pip](https://pip.pypa.io/en/stable/topics/vcs-support/).
-
-## Kitsu Documentation
-
-- [https://kitsu.cg-wire.com/]()
-
-[![ Logo Kitsu ](https://camo.githubusercontent.com/023fe0d7cf9dc4bd4258a299a718a8c98d94be4357d72dfda0fcb0217ba1582c/68747470733a2f2f7a6f752e63672d776972652e636f6d2f6b697473752e706e67)](https://github.com/cgwire/zou)
-
-Kitsu is written and maintained by CGWire, a company based in France:
-
-[![ Logo CGWire ](https://www.cg-wire.com/_nuxt/logo.4d5a2d7e.png)](https://www.cg-wire.com/)
-
-Kitsu itself consists of two modules:
-
-1. [Gazu - Kitsu Python Client](https://gazu.cg-wire.com/)
-2. [Zou - Kitsu Python API](https://zou.cg-wire.com/)
-
-`OpenStudioLandscapes-Kitsu` is based on the Kitsu provided Docker image:
-
-- [https://kitsu.cg-wire.com/installation/#using-docker-image]()
-- [https://hub.docker.com/r/cgwire/cgwire]()
-
-The default credentials are:
-
-- User: `admin@example.com`
-- Password: `mysecretpassword`
-
-You can override the default credentials by setting:
-
-- `KITSU_ADMIN_USER`
-- `KITSU_DB_PASSWORD`
 
 ## Add to OpenStudioLandscapes
 
@@ -222,7 +196,7 @@ The following variables are being declared in `OpenStudioLandscapes.Kitsu.consta
 | `KITSU_POSTGRES_CONF`                | `str`  | `{DOT_FEATURES}/OpenStudioLandscapes-Kitsu/.payload/config/etc/postgresql/14/main/postgresql.conf` |
 | `KITSU_DATABASE_INSTALL_DESTINATION` | `str`  | `{DOT_LANDSCAPES}/{LANDSCAPE}/Kitsu__Kitsu/data/kitsu`                                             |
 
-## Community
+# Community
 
 | GitHub                                                                                                                       | Discord                                                                                                                |
 | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
@@ -245,4 +219,32 @@ To follow up on the previous LinkedIn publications, visit:
 
 ***
 
-This `README.md` was dynamically created with [OpenStudioLandscapesUtil-ReadmeGenerator](https://github.com/michimussato/OpenStudioLandscapesUtil-ReadmeGenerator).
+# Kitsu Documentation
+
+- [https://kitsu.cg-wire.com/]()
+
+[![ Logo Kitsu ](https://camo.githubusercontent.com/023fe0d7cf9dc4bd4258a299a718a8c98d94be4357d72dfda0fcb0217ba1582c/68747470733a2f2f7a6f752e63672d776972652e636f6d2f6b697473752e706e67)](https://github.com/cgwire/zou)
+
+Kitsu is written and maintained by CGWire, a company based in France:
+
+[![ Logo CGWire ](https://www.cg-wire.com/_nuxt/logo.4d5a2d7e.png)](https://www.cg-wire.com/)
+
+Kitsu itself consists of two modules:
+
+1. [Gazu - Kitsu Python Client](https://gazu.cg-wire.com/)
+2. [Zou - Kitsu Python API](https://zou.cg-wire.com/)
+
+`OpenStudioLandscapes-Kitsu` is based on the Kitsu provided Docker image:
+
+- [https://kitsu.cg-wire.com/installation/#using-docker-image]()
+- [https://hub.docker.com/r/cgwire/cgwire]()
+
+The default credentials are:
+
+- User: `admin@example.com`
+- Password: `mysecretpassword`
+
+You can override the default credentials by setting:
+
+- `KITSU_ADMIN_USER`
+- `KITSU_DB_PASSWORD`
