@@ -8,7 +8,7 @@ def readme_feature(doc: snakemd.Document) -> snakemd.Document:
 
     doc.add_heading(
         text="Kitsu Documentation",
-        level=2,
+        level=1,
     )
 
     doc.add_unordered_list(
