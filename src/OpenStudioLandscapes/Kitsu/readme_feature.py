@@ -13,7 +13,7 @@ def readme_feature(doc: snakemd.Document) -> snakemd.Document:
 
     doc.add_unordered_list(
         [
-            "[https://kitsu.cg-wire.com/]()",
+            "[https://kitsu.cg-wire.com](https://kitsu.cg-wire.com)",
         ]
     )
 
@@ -54,7 +54,7 @@ def readme_feature(doc: snakemd.Document) -> snakemd.Document:
             image={
                 "CGWire": "https://www.cg-wire.com/_nuxt/logo.4d5a2d7e.png",
             }["CGWire"],
-            link="https://www.cg-wire.com/",
+            link="https://www.cg-wire.com",
         ).__str__()
     )
 
@@ -68,8 +68,8 @@ def readme_feature(doc: snakemd.Document) -> snakemd.Document:
 
     doc.add_ordered_list(
         [
-            "[Gazu - Kitsu Python Client](https://gazu.cg-wire.com/)",
-            "[Zou - Kitsu Python API](https://zou.cg-wire.com/)",
+            "[Gazu - Kitsu Python Client](https://gazu.cg-wire.com)",
+            "[Zou - Kitsu Python API](https://zou.cg-wire.com)",
         ]
     )
 
@@ -84,8 +84,8 @@ def readme_feature(doc: snakemd.Document) -> snakemd.Document:
 
     doc.add_unordered_list(
         [
-            "[https://kitsu.cg-wire.com/installation/#using-docker-image]()",
-            "[https://hub.docker.com/r/cgwire/cgwire]()",
+            "[https://kitsu.cg-wire.com/installation/#using-docker-image](https://kitsu.cg-wire.com/installation/#using-docker-image)",
+            "[https://hub.docker.com/r/cgwire/cgwire](https://hub.docker.com/r/cgwire/cgwire)",
         ]
     )
 
