@@ -115,7 +115,7 @@ nox --no-error-on-missing-interpreters --report .nox/nox-report.json
 
 ```shell
 
-nox --session readme
+nox -v --add-timestamp --session readme
 
 ```
 
@@ -123,7 +123,7 @@ nox --session readme
 
 ```shell
 
-nox --session docs
+nox -v --add-timestamp --session docs
 
 ```
 
@@ -131,7 +131,7 @@ nox --session docs
 
 ```shell
 
-nox --session lint
+nox -v --add-timestamp --session lint
 
 ```
 
@@ -145,7 +145,7 @@ Acronym for Software Bill of Materials
 
 ```shell
 
-nox --session sbom
+nox -v --add-timestamp --session sbom
 
 ```
 
@@ -221,23 +221,23 @@ To follow up on the previous LinkedIn publications, visit:
 
 # Kitsu Documentation
 
-- [https://kitsu.cg-wire.com/]()
+- [https://kitsu.cg-wire.com](https://kitsu.cg-wire.com)
 
 [![ Logo Kitsu ](https://camo.githubusercontent.com/023fe0d7cf9dc4bd4258a299a718a8c98d94be4357d72dfda0fcb0217ba1582c/68747470733a2f2f7a6f752e63672d776972652e636f6d2f6b697473752e706e67)](https://github.com/cgwire/zou)
 
 Kitsu is written and maintained by CGWire, a company based in France:
 
-[![ Logo CGWire ](https://www.cg-wire.com/_nuxt/logo.4d5a2d7e.png)](https://www.cg-wire.com/)
+[![ Logo CGWire ](https://www.cg-wire.com/_nuxt/logo.4d5a2d7e.png)](https://www.cg-wire.com)
 
 Kitsu itself consists of two modules:
 
-1. [Gazu - Kitsu Python Client](https://gazu.cg-wire.com/)
-2. [Zou - Kitsu Python API](https://zou.cg-wire.com/)
+1. [Gazu - Kitsu Python Client](https://gazu.cg-wire.com)
+2. [Zou - Kitsu Python API](https://zou.cg-wire.com)
 
 `OpenStudioLandscapes-Kitsu` is based on the Kitsu provided Docker image:
 
-- [https://kitsu.cg-wire.com/installation/#using-docker-image]()
-- [https://hub.docker.com/r/cgwire/cgwire]()
+- [https://kitsu.cg-wire.com/installation/#using-docker-image](https://kitsu.cg-wire.com/installation/#using-docker-image)
+- [https://hub.docker.com/r/cgwire/cgwire](https://hub.docker.com/r/cgwire/cgwire)
 
 The default credentials are:
 
