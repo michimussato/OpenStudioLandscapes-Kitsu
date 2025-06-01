@@ -2439,6 +2439,20 @@ def docs(session):
     # nox --session docs
     # nox --tags docs
 
+    # Copy images in img to build/docs/_images
+    # Relative image paths in md files outside the
+    # sphinx project are not compatible out of the box
+
+    # defining source and destination
+    # paths
+    src = pathlib.Path(__file__).parent / "_images"
+    trg = pathlib.Path(__file__).parent / "build" / "docs" / "_images"
+
+    # if - mistakenly (which has happened) - _images is a file,
+    # remove it before proceeding.
+    if trg.is_file():
+        os.remove(trg.as_posix())
+
     sudo = False
 
     session.install("-e", ".[docs]", silent=True)
@@ -2467,15 +2481,6 @@ def docs(session):
     # LATEX/PDF
     # session.run("sphinx-build", "--builder", "latex", "docs/", "build/pdf")
     # session.run("make", "-C", "latexmk", "docs/", "build/pdf")
-
-    # Copy images in img to build/docs/_images
-    # Relative image paths in md files outside the
-    # sphinx project are not compatible out of the box
-
-    # defining source and destination
-    # paths
-    src = pathlib.Path(__file__).parent / "_images"
-    trg = pathlib.Path(__file__).parent / "build" / "docs" / "_images"
 
     files = os.listdir(src)
 
