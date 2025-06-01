@@ -30,6 +30,7 @@ Contents
    :maxdepth: 2
 
    README.md <readme_md>
+   SBOM <sbom>
    Contributions & Help <contributing>
    License <license>
    Authors <authors>
