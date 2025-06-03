@@ -31,11 +31,9 @@ Contents
 
    README.md <readme_md>
    SBOM <sbom>
-   Contributions & Help <contributing>
-   License <license>
    Authors <authors>
-   Changelog <changelog>
    Module Reference <api/modules>
+   License <license>
 
 
 Indices and tables
