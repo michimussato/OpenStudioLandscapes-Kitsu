@@ -69,9 +69,9 @@ def download(
 
 
 # reuse_existing_virtualenvs:
-# local: @nox.session(reuse_venv=True)
 # global: nox.options.reuse_existing_virtualenvs = True
 nox.options.reuse_existing_virtualenvs = False
+# per session: @nox.session(reuse_venv=True)
 
 # default sessions when none is specified
 # nox --session [SESSION] [SESSION] [...]
@@ -160,14 +160,14 @@ REPOS_FEATURE = {
     "OpenStudioLandscapes-Deadline-10-2": "git@github.com:michimussato/OpenStudioLandscapes-Deadline-10-2.git",
     "OpenStudioLandscapes-Deadline-10-2-Worker": "git@github.com:michimussato/OpenStudioLandscapes-Deadline-10-2-Worker.git",
     "OpenStudioLandscapes-filebrowser": "git@github.com:michimussato/OpenStudioLandscapes-filebrowser.git",
-    # "git@github.com:michimussato/OpenStudioLandscapes-Grafana.git",
+    "OpenStudioLandscapes-Grafana": "git@github.com:michimussato/OpenStudioLandscapes-Grafana.git",
     "OpenStudioLandscapes-Kitsu": "git@github.com:michimussato/OpenStudioLandscapes-Kitsu.git",
-    # "git@github.com:michimussato/OpenStudioLandscapes-LikeC4.git",
+    "OpenStudioLandscapes-LikeC4": "git@github.com:michimussato/OpenStudioLandscapes-LikeC4.git",
     "OpenStudioLandscapes-NukeRLM-8": "git@github.com:michimussato/OpenStudioLandscapes-NukeRLM-8.git",
-    # "git@github.com:michimussato/OpenStudioLandscapes-OpenCue.git",
+    "OpenStudioLandscapes-OpenCue": "git@github.com:michimussato/OpenStudioLandscapes-OpenCue.git",
     "OpenStudioLandscapes-SESI-gcc-9-3-Houdini-20": "git@github.com:michimussato/OpenStudioLandscapes-SESI-gcc-9-3-Houdini-20.git",
     "OpenStudioLandscapes-Syncthing": "git@github.com:michimussato/OpenStudioLandscapes-Syncthing.git",
-    # "git@github.com:michimussato/OpenStudioLandscapes-Watchtower.git",
+    "OpenStudioLandscapes-Watchtower": "git@github.com:michimussato/OpenStudioLandscapes-Watchtower.git",
 }
 
 # # MAIN BRANCH
@@ -309,6 +309,8 @@ def readme_features(session):
                     session.install("-e", ".[nox]", silent=True)
                     session.run(
                         shutil.which("nox"),
+                        "-v",
+                        "--add-timestamp",
                         "--session",
                         "readme",
                         external=True,
@@ -723,7 +725,7 @@ def install_features_into_engine(session):
 #######################################################################################################################
 # Hard Links
 
-IDENTICAL_FILES = [
+LINKED_FILES = [
     ".obsidian/plugins/obsidian-excalidraw-plugin/main.js",
     ".obsidian/plugins/obsidian-excalidraw-plugin/manifest.json",
     ".obsidian/plugins/obsidian-excalidraw-plugin/styles.css",
@@ -789,7 +791,7 @@ def fix_hardlinks_in_features(session):
         # dir_ is always the full path
         if dir_.is_dir():
             if pathlib.Path(dir_ / ".git").exists():
-                for file_ in IDENTICAL_FILES:
+                for file_ in LINKED_FILES:
 
                     file_ = pathlib.Path(file_)
 
@@ -2426,7 +2428,7 @@ def release(session):
 
 #######################################################################################################################
 # Docs
-@nox.session(reuse_venv=True, tags=["docs"])
+@nox.session(tags=["docs"])
 def docs(session):
     """
     Creates Sphinx documentation.
@@ -2446,14 +2448,21 @@ def docs(session):
     # defining source and destination
     # paths
     src = pathlib.Path(__file__).parent / "_images"
-    trg = pathlib.Path(__file__).parent / "build" / "docs" / "_images"
+
+    sudo = False
+
+    readthedocs_outdir = os.environ.get("READTHEDOCS_OUTPUT", None)
+    if readthedocs_outdir is None:
+        outdir = pathlib.Path(__file__).parent / "build" / "docs"
+    else:
+        outdir = pathlib.Path(readthedocs_outdir) / "html"
+
+    trg = outdir / "_images"
 
     # if - mistakenly (which has happened) - _images is a file,
     # remove it before proceeding.
     if trg.is_file():
         os.remove(trg.as_posix())
-
-    sudo = False
 
     session.install("-e", ".[docs]", silent=True)
 
@@ -2477,7 +2486,13 @@ def docs(session):
 
     # sphinx-build [OPTIONS] SOURCEDIR OUTPUTDIR [FILENAMES...]
     # HTML
-    session.run("sphinx-build", "--builder", "html", "docs/", "build/docs")
+    session.run(
+        shutil.which("sphinx-build"),
+        "--builder",
+        "html",
+        str(pathlib.Path(__file__).parent / "docs"),
+        str(outdir),
+    )
     # LATEX/PDF
     # session.run("sphinx-build", "--builder", "latex", "docs/", "build/pdf")
     # session.run("make", "-C", "latexmk", "docs/", "build/pdf")
@@ -2521,6 +2536,8 @@ def docs_features(session):
                     session.install("-e", ".[nox]", silent=True)
                     session.run(
                         shutil.which("nox"),
+                        "-v",
+                        "--add-timestamp",
                         "--session",
                         "docs",
                         external=True,
