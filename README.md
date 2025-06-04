@@ -14,8 +14,7 @@
    6. [Variables](#variables)
       1. [Feature Configs](#feature-configs)
 2. [Community](#community)
-3. [ReadTheDocs](#readthedocs)
-4. [Kitsu Documentation](#kitsu-documentation)
+3. [Kitsu Documentation](#kitsu-documentation)
 
 ***
 
@@ -199,40 +198,24 @@ The following variables are being declared in `OpenStudioLandscapes.Kitsu.consta
 
 # Community
 
-| GitHub                                                                                                                       | Discord                                                                                                                |
-| ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| [OpenStudioLandscapes](https://github.com/michimussato/OpenStudioLandscapes)                                                 | [# openstudiolandscapes-general](https://discord.com/channels/1357343453364748419/1357343454065328202)                 |
-| [OpenStudioLandscapes-Ayon](https://github.com/michimussato/OpenStudioLandscapes-Ayon)                                       | [# openstudiolandscapes-ayon](https://discord.com/channels/1357343453364748419/1357722468336271411)                    |
-| [OpenStudioLandscapes-Dagster](https://github.com/michimussato/OpenStudioLandscapes-Dagster)                                 | [# openstudiolandscapes-dagster](https://discord.com/channels/1357343453364748419/1358016764608249856)                 |
-| [OpenStudioLandscapes-Deadline-10-2](https://github.com/michimussato/OpenStudioLandscapes-Deadline-10-2)                     | [# openstudiolandscapes-deadline-10-2](https://discord.com/channels/1357343453364748419/1357343453364748419)           |
-| [OpenStudioLandscapes-Deadline-10-2-Worker](https://github.com/michimussato/OpenStudioLandscapes-Deadline-10-2-Worker)       | [# openstudiolandscapes-deadline-10-2-worker](https://discord.com/channels/1357343453364748419/1357343453364748419)    |
-| [OpenStudioLandscapes-filebrowser](https://github.com/michimussato/OpenStudioLandscapes-filebrowser)                         | [# openstudiolandscapes-filebrowser](https://discord.com/channels/1357343453364748419/1364746200175083520)             |
-| [OpenStudioLandscapes-NukeRLM-8](https://github.com/michimussato/OpenStudioLandscapes-NukeRLM-8)                             | [# openstudiolandscapes-nukerlm-8](https://discord.com/channels/1357343453364748419/1358017656732782672)               |
-| [OpenStudioLandscapes-SESI-gcc-9-3-Houdini-20](https://github.com/michimussato/OpenStudioLandscapes-SESI-gcc-9-3-Houdini-20) | [# openstudiolandscapes-sesi-gcc-9-3-houdini-20](https://discord.com/channels/1357343453364748419/1357343453364748419) |
-| [OpenStudioLandscapes-Syncthing](https://github.com/michimussato/OpenStudioLandscapes-Syncthing)                             | [# openstudiolandscapes-syncthing](https://discord.com/channels/1357343453364748419/1364746871381168138)               |
-| [OpenStudioLandscapes-Kitsu](https://github.com/michimussato/OpenStudioLandscapes-Kitsu)                                     | [# openstudiolandscapes-kitsu](https://discord.com/channels/1357343453364748419/1357638253632688231)                   |
-| [OpenStudioLandscapes-Watchtower](https://github.com/michimussato/OpenStudioLandscapes-Watchtower)                           | [# openstudiolandscapes-watchtower](https://discord.com/channels/1357343453364748419/1364747275938562079)              |
+| Feature                                      | GitHub                                                                                                                                                       | Discord                                                                                                                |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| OpenStudioLandscapes                         | [https://github.com/michimussato/OpenStudioLandscapes](https://github.com/michimussato/OpenStudioLandscapes)                                                 | [# openstudiolandscapes-general](https://discord.com/channels/1357343453364748419/1357343454065328202)                 |
+| OpenStudioLandscapes-Ayon                    | [https://github.com/michimussato/OpenStudioLandscapes-Ayon](https://github.com/michimussato/OpenStudioLandscapes-Ayon)                                       | [# openstudiolandscapes-ayon](https://discord.com/channels/1357343453364748419/1357722468336271411)                    |
+| OpenStudioLandscapes-Dagster                 | [https://github.com/michimussato/OpenStudioLandscapes-Dagster](https://github.com/michimussato/OpenStudioLandscapes-Dagster)                                 | [# openstudiolandscapes-dagster](https://discord.com/channels/1357343453364748419/1358016764608249856)                 |
+| OpenStudioLandscapes-Deadline-10-2           | [https://github.com/michimussato/OpenStudioLandscapes-Deadline-10-2](https://github.com/michimussato/OpenStudioLandscapes-Deadline-10-2)                     | [# openstudiolandscapes-deadline-10-2](https://discord.com/channels/1357343453364748419/1357343453364748419)           |
+| OpenStudioLandscapes-Deadline-10-2-Worker    | [https://github.com/michimussato/OpenStudioLandscapes-Deadline-10-2-Worker](https://github.com/michimussato/OpenStudioLandscapes-Deadline-10-2-Worker)       | [# openstudiolandscapes-deadline-10-2-worker](https://discord.com/channels/1357343453364748419/1357343453364748419)    |
+| OpenStudioLandscapes-filebrowser             | [https://github.com/michimussato/OpenStudioLandscapes-filebrowser](https://github.com/michimussato/OpenStudioLandscapes-filebrowser)                         | [# openstudiolandscapes-filebrowser](https://discord.com/channels/1357343453364748419/1364746200175083520)             |
+| OpenStudioLandscapes-NukeRLM-8               | [https://github.com/michimussato/OpenStudioLandscapes-NukeRLM-8](https://github.com/michimussato/OpenStudioLandscapes-NukeRLM-8)                             | [# openstudiolandscapes-nukerlm-8](https://discord.com/channels/1357343453364748419/1358017656732782672)               |
+| OpenStudioLandscapes-SESI-gcc-9-3-Houdini-20 | [https://github.com/michimussato/OpenStudioLandscapes-SESI-gcc-9-3-Houdini-20](https://github.com/michimussato/OpenStudioLandscapes-SESI-gcc-9-3-Houdini-20) | [# openstudiolandscapes-sesi-gcc-9-3-houdini-20](https://discord.com/channels/1357343453364748419/1357343453364748419) |
+| OpenStudioLandscapes-Syncthing               | [https://github.com/michimussato/OpenStudioLandscapes-Syncthing](https://github.com/michimussato/OpenStudioLandscapes-Syncthing)                             | [# openstudiolandscapes-syncthing](https://discord.com/channels/1357343453364748419/1364746871381168138)               |
+| OpenStudioLandscapes-Kitsu                   | [https://github.com/michimussato/OpenStudioLandscapes-Kitsu](https://github.com/michimussato/OpenStudioLandscapes-Kitsu)                                     | [# openstudiolandscapes-kitsu](https://discord.com/channels/1357343453364748419/1357638253632688231)                   |
+| OpenStudioLandscapes-Watchtower              | [https://github.com/michimussato/OpenStudioLandscapes-Watchtower](https://github.com/michimussato/OpenStudioLandscapes-Watchtower)                           | [# openstudiolandscapes-watchtower](https://discord.com/channels/1357343453364748419/1364747275938562079)              |
 
 To follow up on the previous LinkedIn publications, visit:
 
 - [OpenStudioLandscapes on LinkedIn](https://www.linkedin.com/company/106731439/).
 - [Search for tag #OpenStudioLandscapes on LinkedIn](https://www.linkedin.com/search/results/all/?keywords=%23openstudiolandscapes).
-
-# ReadTheDocs
-
-| ReadTheDocs                                                                                                                                                                          |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [https://openstudiolandscapes.readthedocs.io/en/latest/index.html](https://openstudiolandscapes.readthedocs.io/en/latest/index.html)                                                 |
-| [https://openstudiolandscapes-ayon.readthedocs.io/en/latest/index.html](https://openstudiolandscapes-ayon.readthedocs.io/en/latest/index.html)                                       |
-| [https://openstudiolandscapes-dagster.readthedocs.io/en/latest/index.html](https://openstudiolandscapes-dagster.readthedocs.io/en/latest/index.html)                                 |
-| [https://openstudiolandscapes-deadline-10-2.readthedocs.io/en/latest/index.html](https://openstudiolandscapes-deadline-10-2.readthedocs.io/en/latest/index.html)                     |
-| [https://openstudiolandscapes-deadline-10-2-worker.readthedocs.io/en/latest/index.html](https://openstudiolandscapes-deadline-10-2-worker.readthedocs.io/en/latest/index.html)       |
-| [https://openstudiolandscapes-filebrowser.readthedocs.io/en/latest/index.html](https://openstudiolandscapes-filebrowser.readthedocs.io/en/latest/index.html)                         |
-| [https://openstudiolandscapes-nukerlm-8.readthedocs.io/en/latest/index.html](https://openstudiolandscapes-nukerlm-8.readthedocs.io/en/latest/index.html)                             |
-| [https://openstudiolandscapes-sesi-gcc-9-3-houdini-20.readthedocs.io/en/latest/index.html](https://openstudiolandscapes-sesi-gcc-9-3-houdini-20.readthedocs.io/en/latest/index.html) |
-| [https://openstudiolandscapes-syncthing.readthedocs.io/en/latest/index.html](https://openstudiolandscapes-syncthing.readthedocs.io/en/latest/index.html)                             |
-| [https://openstudiolandscapes-kitsu.readthedocs.io/en/latest/index.html](https://openstudiolandscapes-kitsu.readthedocs.io/en/latest/index.html)                                     |
-| [https://openstudiolandscapes-watchtower.readthedocs.io/en/latest/index.html](https://openstudiolandscapes-watchtower.readthedocs.io/en/latest/index.html)                           |
 
 ***
 
