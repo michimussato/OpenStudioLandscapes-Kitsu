@@ -159,6 +159,7 @@ def apt_packages(
         "sudo",
         "htop",
         "curl",
+        "ffmpeg",
     ]
 
     yield Output(_apt_packages)
