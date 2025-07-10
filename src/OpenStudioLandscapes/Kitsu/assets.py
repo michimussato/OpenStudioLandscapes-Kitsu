@@ -779,8 +779,6 @@ def compose_kitsu(
 
     volumes_dict = {
         "volumes": [
-            f"{env.get('NFS_ENTRY_POINT')}:{env.get('NFS_ENTRY_POINT')}",
-            f"{env.get('NFS_ENTRY_POINT')}:{env.get('NFS_ENTRY_POINT_LNS')}",
             f"{supervisord_conf.as_posix()}:/etc/supervisord.conf:ro",
         ]
     }
@@ -925,8 +923,6 @@ def compose_init_db(
     volumes_dict = {
         "volumes": [
             f"{kitsu_db_dir_host.as_posix()}:/var/lib/postgresql",
-            f"{env.get('NFS_ENTRY_POINT')}:{env.get('NFS_ENTRY_POINT')}",
-            f"{env.get('NFS_ENTRY_POINT')}:{env.get('NFS_ENTRY_POINT_LNS')}",
         ]
     }
 
