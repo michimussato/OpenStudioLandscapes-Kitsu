@@ -98,21 +98,6 @@ FEATURE_CONFIGS = {
             )
             .expanduser()
             .as_posix(),
-            #################################################################
-            # # Prod DB:
-            # "prod_db": pathlib.Path(
-            #     "{NFS_ENTRY_POINT}",
-            #     "services",
-            #     "kitsu",
-            # ).as_posix(),
-            # #################################################################
-            # # Test DB:
-            # "test_db": pathlib.Path(
-            #     "{NFS_ENTRY_POINT}",
-            #     "test_data",
-            #     "10.2",
-            #     "kitsu",
-            # ).as_posix(),
         }["default"],
     }
 }
