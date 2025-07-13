@@ -807,29 +807,11 @@ def compose_kitsu(
             f"{kitsu_previews_host}:/opt/zou/previews",
         )
 
-    # Is:
-    # - /home/michael/git/repos/OpenStudioLandscapes/.landscapes/2025-07-12-15-44-28-d7511d9a293d496daed627176a026b43/Kitsu__Kitsu/data/kitsu/postgresql:/var/lib/postgresql
-    # - /home/michael/git/repos/OpenStudioLandscapes/.landscapes/2025-07-12-15-44-28-d7511d9a293d496daed627176a026b43/Kitsu__Kitsu/data/kitsu/previews:/opt/zou/previews
-    # - /home/michael/git/repos/OpenStudioLandscapes/.landscapes/2025-07-12-15-44-28-d7511d9a293d496daed627176a026b43/Kitsu__Kitsu/Kitsu__supervisord_conf/supervisord.conf:/etc/supervisord.conf:ro
-    #
-    # Want:
-    # - ../../../../2025-07-10-22-36-50-47cd6c0a7dd141429707ab6d91190a27/Kitsu__Kitsu/data/kitsu/postgresql:/var/lib/postgresql
-    # - ../../../../2025-07-10-22-36-50-47cd6c0a7dd141429707ab6d91190a27/Kitsu__Kitsu/data/kitsu/previews:/opt/zou/previews
-    # - ../../../../2025-07-10-22-36-50-47cd6c0a7dd141429707ab6d91190a27/Kitsu__Kitsu/Kitsu__supervisord_conf/supervisord.conf:/etc/supervisord.conf:ro
-    #
-    # Get:
-    # - ../../../../2025-07-12-15-44-28-d7511d9a293d496daed627176a026b43/Kitsu__Kitsu/data/kitsu/postgresql:/var/lib/postgresql
-    # - ../../../../2025-07-12-15-44-28-d7511d9a293d496daed627176a026b43/Kitsu__Kitsu/data/kitsu/previews:/opt/zou/previews
-    # - ../../../../2025-07-12-15-44-28-d7511d9a293d496daed627176a026b43/Kitsu__Kitsu/Kitsu__supervisord_conf/supervisord.conf:/etc/supervisord.conf:ro
-
     # For portability, convert absolute volume paths to relative paths
-    volumes_paths_to_convert = [
-        *volumes_dict["volumes"],
-    ]
 
     _volume_relative = []
 
-    for v in volumes_paths_to_convert:
+    for v in volumes_dict["volumes"]:
 
         host, container = v.split(":", maxsplit=1)
 
