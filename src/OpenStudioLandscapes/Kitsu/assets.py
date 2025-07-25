@@ -793,7 +793,7 @@ def compose_kitsu(
 
         volumes_dict["volumes"].insert(
             0,
-            f"{kitsu_db_dir_host.as_posix()}:/var/lib/postgresql",
+            f"{kitsu_db_dir_host.as_posix()}:/var/lib/postgresql:rw",
         )
 
         kitsu_previews_host = (
@@ -804,7 +804,7 @@ def compose_kitsu(
 
         volumes_dict["volumes"].insert(
             1,
-            f"{kitsu_previews_host}:/opt/zou/previews",
+            f"{kitsu_previews_host}:/opt/zou/previews:rw",
         )
 
     # For portability, convert absolute volume paths to relative paths
