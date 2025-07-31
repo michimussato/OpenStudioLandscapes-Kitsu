@@ -312,7 +312,7 @@ def build_docker_image(
 
     # @formatter:off
     docker_file_str = textwrap.dedent(
-        """
+        """\
         # {auto_generated}
         # {dagster_url}
         # https://hub.docker.com/r/cgwire/cgwire
@@ -348,7 +348,7 @@ def build_docker_image(
         RUN chmod 0755 init_db.sh
 
         ENTRYPOINT []
-    """
+        """
     ).format(
         apt_install_str_base=apt_install_str_base,
         pip_install_str=pip_install_str.format(
@@ -604,7 +604,7 @@ def supervisord_conf(
     """
 
     supervisord_conf_str = textwrap.dedent(
-        """
+        """\
         [supervisord]
         nodaemon = True
         umask = 022
@@ -854,7 +854,7 @@ def compose_kitsu(
                     "TMP_DIR": env["KITSU_TMP_DIR"],
                     "ENABLE_JOB_QUEUE": env["KITSU_ENABLE_JOB_QUEUE"],
                 },
-                "image": "${REGISTRY_NAMESPACE_OVERRIDE:-docker.io/openstudiolandscapes}/%s:%s" % (build['image_name'], build['image_tags'][0]),
+                "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s" % (build['image_name'], build['image_tags'][0]),
                 **copy.deepcopy(volumes_dict),
                 **copy.deepcopy(network_dict),
                 "depends_on": {
@@ -1003,7 +1003,7 @@ def compose_init_db(
                     "TMP_DIR": env["KITSU_TMP_DIR"],
                 },
                 "restart": "no",
-                "image": "${REGISTRY_NAMESPACE_OVERRIDE:-docker.io/openstudiolandscapes}/%s:%s" % (build['image_name'], build['image_tags'][0]),
+                "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s" % (build['image_name'], build['image_tags'][0]),
                 "command": [
                     "/usr/bin/bash",
                     "/opt/zou/init_db.sh",
