@@ -5,7 +5,7 @@ import shutil
 import textwrap
 import time
 import urllib.parse
-from typing import Generator, MutableMapping, List
+from typing import Generator, MutableMapping, List, Any
 
 import yaml
 from dagster import (
@@ -312,7 +312,7 @@ def build_docker_image(
 
     # @formatter:off
     docker_file_str = textwrap.dedent(
-        """
+        """\
         # {auto_generated}
         # {dagster_url}
         # https://hub.docker.com/r/cgwire/cgwire
@@ -348,7 +348,7 @@ def build_docker_image(
         RUN chmod 0755 init_db.sh
 
         ENTRYPOINT []
-    """
+        """
     ).format(
         apt_install_str_base=apt_install_str_base,
         pip_install_str=pip_install_str.format(
@@ -604,7 +604,7 @@ def supervisord_conf(
     """
 
     supervisord_conf_str = textwrap.dedent(
-        """
+        """\
         [supervisord]
         nodaemon = True
         umask = 022
@@ -793,7 +793,7 @@ def compose_kitsu(
 
         volumes_dict["volumes"].insert(
             0,
-            f"{kitsu_db_dir_host.as_posix()}:/var/lib/postgresql",
+            f"{kitsu_db_dir_host.as_posix()}:/var/lib/postgresql:rw",
         )
 
         kitsu_previews_host = (
@@ -804,8 +804,33 @@ def compose_kitsu(
 
         volumes_dict["volumes"].insert(
             1,
-            f"{kitsu_previews_host}:/opt/zou/previews",
+            f"{kitsu_previews_host}:/opt/zou/previews:rw",
         )
+
+    # For portability, convert absolute volume paths to relative paths
+
+    _volume_relative = []
+
+    for v in volumes_dict["volumes"]:
+
+        host, container = v.split(":", maxsplit=1)
+
+        volume_dir_host_rel_path = get_relative_path_via_common_root(
+            context=context,
+            path_src=pathlib.Path(env["DOCKER_COMPOSE"]),
+            path_dst=pathlib.Path(host),
+            path_common_root=pathlib.Path(env["DOT_LANDSCAPES"]),
+        )
+
+        _volume_relative.append(
+            f"{volume_dir_host_rel_path.as_posix()}:{container}",
+        )
+
+    volumes_dict = {
+        "volumes": [
+            *_volume_relative,
+        ]
+    }
 
     service_name = "kitsu"
     container_name = "--".join([service_name, env.get("LANDSCAPE", "default")])
@@ -829,7 +854,7 @@ def compose_kitsu(
                     "TMP_DIR": env["KITSU_TMP_DIR"],
                     "ENABLE_JOB_QUEUE": env["KITSU_ENABLE_JOB_QUEUE"],
                 },
-                "image": f"{build['image_prefix_full']}{build['image_name']}:{build['image_tags'][0]}",
+                "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s" % (build['image_name'], build['image_tags'][0]),
                 **copy.deepcopy(volumes_dict),
                 **copy.deepcopy(network_dict),
                 "depends_on": {
@@ -920,9 +945,40 @@ def compose_init_db(
     )
     kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
 
+    # Is:
+    # - /home/michael/git/repos/OpenStudioLandscapes/.landscapes/2025-07-12-15-44-28-d7511d9a293d496daed627176a026b43/Kitsu__Kitsu/data/kitsu/postgresql:/var/lib/postgresql
+    #
+    # Want:
+    # - ../../../../2025-07-10-22-36-50-47cd6c0a7dd141429707ab6d91190a27/Kitsu__Kitsu/data/kitsu/postgresql:/var/lib/postgresql
+    #
+    # Get:
+    # - ../../../../2025-07-12-15-44-28-d7511d9a293d496daed627176a026b43/Kitsu__Kitsu/data/kitsu/postgresql:/var/lib/postgresql
+
+    # For portability, convert absolute volume paths to relative paths
+    volumes_paths_to_convert = [
+        f"{kitsu_db_dir_host.as_posix()}:/var/lib/postgresql"
+    ]
+
+    _volume_relative = []
+
+    for v in volumes_paths_to_convert:
+
+        host, container = v.split(":", maxsplit=1)
+
+        volume_dir_host_rel_path = get_relative_path_via_common_root(
+            context=context,
+            path_src=pathlib.Path(env["DOCKER_COMPOSE"]),
+            path_dst=pathlib.Path(host),
+            path_common_root=pathlib.Path(env["DOT_LANDSCAPES"]),
+        )
+
+        _volume_relative.append(
+            f"{volume_dir_host_rel_path.as_posix()}:{container}",
+        )
+
     volumes_dict = {
         "volumes": [
-            f"{kitsu_db_dir_host.as_posix()}:/var/lib/postgresql",
+            *_volume_relative,
         ]
     }
 
@@ -947,7 +1003,7 @@ def compose_init_db(
                     "TMP_DIR": env["KITSU_TMP_DIR"],
                 },
                 "restart": "no",
-                "image": f"{build['image_prefix_full']}{build['image_name']}:{build['image_tags'][0]}",
+                "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s" % (build['image_name'], build['image_tags'][0]),
                 "command": [
                     "/usr/bin/bash",
                     "/opt/zou/init_db.sh",
@@ -1026,5 +1082,50 @@ def docker_image(
         asset_key=context.asset_key,
         metadata={
             "docker_image": MetadataValue.json(_docker_image),
+        },
+    )
+
+
+@asset(
+    **ASSET_HEADER,
+    ins={
+    },
+)
+def cmd_extend(
+        context: AssetExecutionContext,
+) -> Generator[Output[list[Any]] | AssetMaterialization | Any, Any, None]:
+
+    ret = []
+
+    yield Output(ret)
+
+    yield AssetMaterialization(
+        asset_key=context.asset_key,
+        metadata={
+            "__".join(context.asset_key.path): MetadataValue.json(ret),
+        },
+    )
+
+
+@asset(
+    **ASSET_HEADER,
+    ins={
+    },
+)
+def cmd_append(
+        context: AssetExecutionContext,
+) -> Generator[Output[dict[str, list[Any]]] | AssetMaterialization | Any, Any, None]:
+
+    ret = {
+        "cmd": [],
+        "exclude_from_quote": []
+    }
+
+    yield Output(ret)
+
+    yield AssetMaterialization(
+        asset_key=context.asset_key,
+        metadata={
+            "__".join(context.asset_key.path): MetadataValue.json(ret),
         },
     )
