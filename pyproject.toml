@@ -18,7 +18,7 @@ dependencies = [
     "PyYAML",
     # yaml_tags.overrides:
     "docker-compose-graph @ git+https://github.com/michimussato/docker-compose-graph.git@v1.0.0",
-    "OpenStudioLandscapes @ git+https://github.com/michimussato/OpenStudioLandscapes@v1.2.0-rc1",
+    "OpenStudioLandscapes @ git+https://github.com/michimussato/OpenStudioLandscapes@v1.3.0-rc1",
 ]
 dynamic = ["version"]
 
