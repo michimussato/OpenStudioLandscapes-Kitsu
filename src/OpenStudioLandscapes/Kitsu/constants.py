@@ -7,16 +7,16 @@ __all__ = [
 
 import pathlib
 from pathlib import Path
-from typing import Generator, MutableMapping, Any
+from typing import Any, Generator, MutableMapping
 
 from dagster import (
-    multi_asset,
-    AssetOut,
-    AssetMaterialization,
     AssetExecutionContext,
-    Output,
+    AssetMaterialization,
+    AssetOut,
     MetadataValue,
+    Output,
     get_dagster_logger,
+    multi_asset,
 )
 
 LOGGER = get_dagster_logger(__name__)

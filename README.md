@@ -170,7 +170,6 @@ SBOMs for the different Python interpreters defined in [`.noxfile.VERSIONS`](htt
 Currently, the following Python interpreters are enabled for testing:
 
 - `python3.11`
-- `python3.12`
 
 ## Variables
 

@@ -5,7 +5,7 @@ import shutil
 import textwrap
 import time
 import urllib.parse
-from typing import Generator, MutableMapping, List, Any
+from typing import Any, Generator, List, MutableMapping
 
 import yaml
 from dagster import (
@@ -17,28 +17,25 @@ from dagster import (
     Output,
     asset,
 )
-
+from OpenStudioLandscapes.engine.common_assets.compose import get_compose
+from OpenStudioLandscapes.engine.common_assets.constants import get_constants
+from OpenStudioLandscapes.engine.common_assets.docker_compose_graph import (
+    get_docker_compose_graph,
+)
+from OpenStudioLandscapes.engine.common_assets.docker_config import get_docker_config
+from OpenStudioLandscapes.engine.common_assets.docker_config_json import (
+    get_docker_config_json,
+)
+from OpenStudioLandscapes.engine.common_assets.env import get_env
+from OpenStudioLandscapes.engine.common_assets.feature_out import get_feature_out
+from OpenStudioLandscapes.engine.common_assets.group_in import get_group_in
+from OpenStudioLandscapes.engine.common_assets.group_out import get_group_out
 from OpenStudioLandscapes.engine.constants import *
 from OpenStudioLandscapes.engine.enums import *
 from OpenStudioLandscapes.engine.utils import *
 from OpenStudioLandscapes.engine.utils.docker import *
 
 from OpenStudioLandscapes.Kitsu.constants import *
-
-from OpenStudioLandscapes.engine.common_assets.constants import get_constants
-from OpenStudioLandscapes.engine.common_assets.docker_config import get_docker_config
-from OpenStudioLandscapes.engine.common_assets.env import get_env
-from OpenStudioLandscapes.engine.common_assets.group_in import get_group_in
-from OpenStudioLandscapes.engine.common_assets.group_out import get_group_out
-from OpenStudioLandscapes.engine.common_assets.docker_compose_graph import (
-    get_docker_compose_graph,
-)
-from OpenStudioLandscapes.engine.common_assets.feature_out import get_feature_out
-from OpenStudioLandscapes.engine.common_assets.compose import get_compose
-from OpenStudioLandscapes.engine.common_assets.docker_config_json import (
-    get_docker_config_json,
-)
-
 
 constants = get_constants(
     ASSET_HEADER=ASSET_HEADER,
@@ -854,7 +851,8 @@ def compose_kitsu(
                     "TMP_DIR": env["KITSU_TMP_DIR"],
                     "ENABLE_JOB_QUEUE": env["KITSU_ENABLE_JOB_QUEUE"],
                 },
-                "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s" % (build['image_name'], build['image_tags'][0]),
+                "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"
+                % (build["image_name"], build["image_tags"][0]),
                 **copy.deepcopy(volumes_dict),
                 **copy.deepcopy(network_dict),
                 "depends_on": {
@@ -955,9 +953,7 @@ def compose_init_db(
     # - ../../../../2025-07-12-15-44-28-d7511d9a293d496daed627176a026b43/Kitsu__Kitsu/data/kitsu/postgresql:/var/lib/postgresql
 
     # For portability, convert absolute volume paths to relative paths
-    volumes_paths_to_convert = [
-        f"{kitsu_db_dir_host.as_posix()}:/var/lib/postgresql"
-    ]
+    volumes_paths_to_convert = [f"{kitsu_db_dir_host.as_posix()}:/var/lib/postgresql"]
 
     _volume_relative = []
 
@@ -1003,7 +999,8 @@ def compose_init_db(
                     "TMP_DIR": env["KITSU_TMP_DIR"],
                 },
                 "restart": "no",
-                "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s" % (build['image_name'], build['image_tags'][0]),
+                "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"
+                % (build["image_name"], build["image_tags"][0]),
                 "command": [
                     "/usr/bin/bash",
                     "/opt/zou/init_db.sh",
@@ -1088,11 +1085,10 @@ def docker_image(
 
 @asset(
     **ASSET_HEADER,
-    ins={
-    },
+    ins={},
 )
 def cmd_extend(
-        context: AssetExecutionContext,
+    context: AssetExecutionContext,
 ) -> Generator[Output[list[Any]] | AssetMaterialization | Any, Any, None]:
 
     ret = []
@@ -1109,17 +1105,13 @@ def cmd_extend(
 
 @asset(
     **ASSET_HEADER,
-    ins={
-    },
+    ins={},
 )
 def cmd_append(
-        context: AssetExecutionContext,
+    context: AssetExecutionContext,
 ) -> Generator[Output[dict[str, list[Any]]] | AssetMaterialization | Any, Any, None]:
 
-    ret = {
-        "cmd": [],
-        "exclude_from_quote": []
-    }
+    ret = {"cmd": [], "exclude_from_quote": []}
 
     yield Output(ret)
 
