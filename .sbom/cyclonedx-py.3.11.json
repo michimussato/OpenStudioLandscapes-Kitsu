@@ -143,13 +143,13 @@
       "version": "3.0.2"
     },
     {
-      "bom-ref": "OpenStudioLandscapes==1.2.0rc2.dev0+g4fccbd35a.d20250906",
+      "bom-ref": "OpenStudioLandscapes==0.0.0",
       "description": "A Toolkit to create dynamic Animation and VFX studio environments for robust automation and pipelines.",
       "externalReferences": [
         {
           "comment": "PackageSource: VCS 'git'",
           "type": "vcs",
-          "url": "https://github.com/michimussato/OpenStudioLandscapes#4fccbd35a88b06481bbf9c8f6ccfafc47fde6920"
+          "url": "https://github.com/michimussato/OpenStudioLandscapes#742b937023f389e6b37ba3fdbe156da6f87bf862"
         },
         {
           "comment": "from packaging metadata Project-URL: Homepage",
@@ -161,19 +161,19 @@
       "properties": [
         {
           "name": "cdx:python:package:source:vcs:commit_id",
-          "value": "4fccbd35a88b06481bbf9c8f6ccfafc47fde6920"
+          "value": "742b937023f389e6b37ba3fdbe156da6f87bf862"
         },
         {
           "name": "cdx:python:package:source:vcs:requested_revision",
-          "value": "v1.2.0-rc1"
+          "value": "v1.3.0-rc1"
         }
       ],
-      "purl": "pkg:pypi/openstudiolandscapes@1.2.0rc2.dev0%2Bg4fccbd35a.d20250906?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes%404fccbd35a88b06481bbf9c8f6ccfafc47fde6920",
+      "purl": "pkg:pypi/openstudiolandscapes@0.0.0?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes%40742b937023f389e6b37ba3fdbe156da6f87bf862",
       "type": "library",
-      "version": "1.2.0rc2.dev0+g4fccbd35a.d20250906"
+      "version": "0.0.0"
     },
     {
-      "bom-ref": "OpenStudioLandscapes-Kitsu==1.2.0rc2.dev0+gac7c50ad7.d20250906",
+      "bom-ref": "OpenStudioLandscapes-Kitsu==0.0.0",
       "description": "Kitsu Feature for OpenStudioLandscapes",
       "externalReferences": [
         {
@@ -189,7 +189,7 @@
       ],
       "name": "OpenStudioLandscapes-Kitsu",
       "type": "library",
-      "version": "1.2.0rc2.dev0+gac7c50ad7.d20250906"
+      "version": "0.0.0"
     },
     {
       "bom-ref": "PyYAML==6.0.2",
@@ -1662,7 +1662,7 @@
       "version": "4.25.1"
     },
     {
-      "bom-ref": "jsonschema-specifications==2025.4.1",
+      "bom-ref": "jsonschema-specifications==2025.9.1",
       "description": "The JSON Schema meta-schemas and vocabularies, exposed as a Registry",
       "externalReferences": [
         {
@@ -1705,9 +1705,9 @@
         }
       ],
       "name": "jsonschema-specifications",
-      "purl": "pkg:pypi/jsonschema-specifications@2025.4.1",
+      "purl": "pkg:pypi/jsonschema-specifications@2025.9.1",
       "type": "library",
-      "version": "2025.4.1"
+      "version": "2025.9.1"
     },
     {
       "bom-ref": "lark==1.2.2",
@@ -3340,7 +3340,7 @@
     },
     {
       "dependsOn": [
-        "OpenStudioLandscapes==1.2.0rc2.dev0+g4fccbd35a.d20250906",
+        "OpenStudioLandscapes==0.0.0",
         "PyYAML==6.0.2",
         "cyclonedx-bom==7.1.0",
         "dagster==1.9.11",
@@ -3350,7 +3350,7 @@
         "pipdeptree==2.28.0",
         "setuptools==80.9.0"
       ],
-      "ref": "OpenStudioLandscapes-Kitsu==1.2.0rc2.dev0+gac7c50ad7.d20250906"
+      "ref": "OpenStudioLandscapes-Kitsu==0.0.0"
     },
     {
       "dependsOn": [
@@ -3366,7 +3366,7 @@
         "pipdeptree==2.28.0",
         "pydot==4.0.1"
       ],
-      "ref": "OpenStudioLandscapes==1.2.0rc2.dev0+g4fccbd35a.d20250906"
+      "ref": "OpenStudioLandscapes==0.0.0"
     },
     {
       "ref": "PyYAML==6.0.2"
@@ -3602,7 +3602,7 @@
       "dependsOn": [
         "referencing==0.36.2"
       ],
-      "ref": "jsonschema-specifications==2025.4.1"
+      "ref": "jsonschema-specifications==2025.9.1"
     },
     {
       "dependsOn": [
@@ -3611,7 +3611,7 @@
         "idna==3.10",
         "isoduration==20.11.0",
         "jsonpointer==3.0.0",
-        "jsonschema-specifications==2025.4.1",
+        "jsonschema-specifications==2025.9.1",
         "referencing==0.36.2",
         "rfc3339-validator==0.1.4",
         "rfc3986-validator==0.1.1",
@@ -3879,7 +3879,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2025-09-06T00:11:43.884602+00:00",
+    "timestamp": "2025-09-08T10:26:18.666759+00:00",
     "tools": {
       "components": [
         {
@@ -3983,7 +3983,7 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:5fd3dd46-ea6d-4902-887e-ebb7dec8fcea",
+  "serialNumber": "urn:uuid:7fd3c80e-5de4-442e-847d-77d04d85be54",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
