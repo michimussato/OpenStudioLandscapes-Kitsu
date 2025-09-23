@@ -69,6 +69,8 @@ FEATURE_CONFIGS = {
         "KITSU_TMP_DIR": "/opt/zou/tmp",  # Default: "/opt/zou/tmp"
         "KITSU_PORT_HOST": "4545",
         "KITSU_PORT_CONTAINER": "80",
+        "TELEPORT_ENTRY_POINT_HOST": "{{KITSU_HOSTNAME}}",  # Either a hardcoded str or a ref to a Variable (with double {{ }}!)
+        "TELEPORT_ENTRY_POINT_PORT": "{{KITSU_PORT_HOST}}",  # Either a hardcoded str or a ref to a Variable (with double {{ }}!)
         f"KITSU_POSTGRES_CONF": pathlib.Path(
             # /etc/postgresql/14/main/postgresql.conf
             "{DOT_FEATURES}",
