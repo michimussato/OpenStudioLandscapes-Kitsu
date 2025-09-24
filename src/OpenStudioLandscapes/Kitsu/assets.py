@@ -831,7 +831,9 @@ def compose_kitsu(
 
     service_name = "kitsu"
     container_name = "--".join([service_name, env.get("LANDSCAPE", "default")])
-    host_name = ".".join([env["HOSTNAME"] or service_name, env["OPENSTUDIOLANDSCAPES__DOMAIN_LAN"]])
+    host_name = ".".join(
+        [env["HOSTNAME"] or service_name, env["OPENSTUDIOLANDSCAPES__DOMAIN_LAN"]]
+    )
 
     docker_dict = {
         "services": {
