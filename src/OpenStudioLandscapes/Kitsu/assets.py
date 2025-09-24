@@ -831,14 +831,14 @@ def compose_kitsu(
 
     service_name = "kitsu"
     container_name = "--".join([service_name, env.get("LANDSCAPE", "default")])
-    host_name = ".".join([env["KITSU_HOSTNAME"] or service_name, env["ROOT_DOMAIN"]])
+    host_name = ".".join([env["HOSTNAME"] or service_name, env["OPENSTUDIOLANDSCAPES__DOMAIN_LAN"]])
 
     docker_dict = {
         "services": {
             service_name: {
                 "container_name": container_name,
                 "hostname": host_name,
-                "domainname": env["ROOT_DOMAIN"],
+                "domainname": env["OPENSTUDIOLANDSCAPES__DOMAIN_LAN"],
                 "restart": "always",
                 "environment": {
                     # https://zou.cg-wire.com/
@@ -980,14 +980,14 @@ def compose_init_db(
 
     service_name = "kitsu-init-db"
     container_name = "--".join([service_name, env.get("LANDSCAPE", "default")])
-    host_name = ".".join([service_name, env["ROOT_DOMAIN"]])
+    host_name = ".".join([service_name, env["OPENSTUDIOLANDSCAPES__DOMAIN_LAN"]])
 
     docker_dict = {
         "services": {
             service_name: {
                 "container_name": container_name,
                 "hostname": host_name,
-                "domainname": env["ROOT_DOMAIN"],
+                "domainname": env["OPENSTUDIOLANDSCAPES__DOMAIN_LAN"],
                 "environment": {
                     # https://zou.cg-wire.com/
                     # "LC_ALL": "C.UTF-8",
