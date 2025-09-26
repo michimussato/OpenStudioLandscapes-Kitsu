@@ -22,7 +22,7 @@ from dagster import (
 LOGGER = get_dagster_logger(__name__)
 
 from OpenStudioLandscapes.engine.constants import DOCKER_USE_CACHE_GLOBAL
-from OpenStudioLandscapes.engine.enums import OpenStudioLandscapesConfig
+from OpenStudioLandscapes.engine.enums import OpenStudioLandscapesConfig, FeatureVolumeType
 
 DOCKER_USE_CACHE = DOCKER_USE_CACHE_GLOBAL or False
 KITSUDB_INSIDE_CONTAINER = False
@@ -88,7 +88,7 @@ FEATURE_CONFIGS = {
             #################################################################
             #################################################################
             # Inside Landscape:
-            "default": pathlib.Path(
+            FeatureVolumeType.CONTAINED: pathlib.Path(
                 "{DOT_LANDSCAPES}",
                 "{LANDSCAPE}",
                 f"{GROUP}__{'__'.join(KEY)}",
@@ -97,7 +97,18 @@ FEATURE_CONFIGS = {
             )
             .expanduser()
             .as_posix(),
-        }["default"],
+            #################################################################
+            # In Landscapes root:
+            FeatureVolumeType.SHARED: pathlib.Path(
+                "{DOT_LANDSCAPES}",
+                "{DOT_SHARED_VOLUMES}",
+                f"{GROUP}__{'__'.join(KEY)}",
+                "data",
+                "kitsu",
+            )
+            .expanduser()
+            .as_posix(),
+        }[FeatureVolumeType.CONTAINED],
     }
 }
 # @formatter:on
