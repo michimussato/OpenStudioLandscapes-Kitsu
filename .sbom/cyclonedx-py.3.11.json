@@ -100,7 +100,7 @@
       "version": "1.3.10"
     },
     {
-      "bom-ref": "MarkupSafe==3.0.2",
+      "bom-ref": "MarkupSafe==3.0.3",
       "description": "Safely add untrusted strings to HTML/XML markup.",
       "externalReferences": [
         {
@@ -126,21 +126,21 @@
         {
           "comment": "from packaging metadata Project-URL: Changes",
           "type": "release-notes",
-          "url": "https://markupsafe.palletsprojects.com/changes/"
+          "url": "https://markupsafe.palletsprojects.com/page/changes/"
         }
       ],
       "licenses": [
         {
           "license": {
             "acknowledgement": "declared",
-            "name": "License :: OSI Approved :: BSD License"
+            "id": "BSD-3-Clause"
           }
         }
       ],
       "name": "MarkupSafe",
-      "purl": "pkg:pypi/markupsafe@3.0.2",
+      "purl": "pkg:pypi/markupsafe@3.0.3",
       "type": "library",
-      "version": "3.0.2"
+      "version": "3.0.3"
     },
     {
       "bom-ref": "OpenStudioLandscapes==0.0.0",
@@ -149,7 +149,7 @@
         {
           "comment": "PackageSource: VCS 'git'",
           "type": "vcs",
-          "url": "https://github.com/michimussato/OpenStudioLandscapes#1284057d4f653b1e5fa1c0422e8484b5912943db"
+          "url": "https://github.com/michimussato/OpenStudioLandscapes#9b2a9a7356f3835ef23991c4f76b2538d08a899f"
         },
         {
           "comment": "from packaging metadata Project-URL: Homepage",
@@ -161,14 +161,14 @@
       "properties": [
         {
           "name": "cdx:python:package:source:vcs:commit_id",
-          "value": "1284057d4f653b1e5fa1c0422e8484b5912943db"
+          "value": "9b2a9a7356f3835ef23991c4f76b2538d08a899f"
         },
         {
           "name": "cdx:python:package:source:vcs:requested_revision",
           "value": "v1.5.0-rc1"
         }
       ],
-      "purl": "pkg:pypi/openstudiolandscapes@0.0.0?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes%401284057d4f653b1e5fa1c0422e8484b5912943db",
+      "purl": "pkg:pypi/openstudiolandscapes@0.0.0?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes%409b2a9a7356f3835ef23991c4f76b2538d08a899f",
       "type": "library",
       "version": "0.0.0"
     },
@@ -3319,18 +3319,18 @@
     },
     {
       "dependsOn": [
-        "MarkupSafe==3.0.2"
+        "MarkupSafe==3.0.3"
       ],
       "ref": "Jinja2==3.1.6"
     },
     {
       "dependsOn": [
-        "MarkupSafe==3.0.2"
+        "MarkupSafe==3.0.3"
       ],
       "ref": "Mako==1.3.10"
     },
     {
-      "ref": "MarkupSafe==3.0.2"
+      "ref": "MarkupSafe==3.0.3"
     },
     {
       "dependsOn": [
@@ -3876,7 +3876,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2025-09-27T16:00:38.212267+00:00",
+    "timestamp": "2025-09-28T10:31:16.251935+00:00",
     "tools": {
       "components": [
         {
@@ -3980,7 +3980,7 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:0a3a891a-a131-4941-aa80-2a55144bbaf7",
+  "serialNumber": "urn:uuid:5fdd216a-55ef-44da-988b-546360c3a18f",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
