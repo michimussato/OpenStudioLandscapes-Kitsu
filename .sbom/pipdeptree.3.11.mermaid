@@ -78,6 +78,7 @@ flowchart TD
     setuptools["setuptools\n80.9.0"]
     six["six\n1.17.0"]
     smmap["smmap\n5.0.2"]
+    snakemd["snakemd\n2.3.0"]
     sortedcontainers["sortedcontainers\n2.4.0"]
     sqlalchemy["SQLAlchemy\n2.0.43"]
     structlog["structlog\n25.4.0"]
@@ -178,10 +179,12 @@ flowchart TD
     openstudiolandscapes -- "any" --> nox
     openstudiolandscapes -- "any" --> pydot
     openstudiolandscapes -- "any" --> pyyaml
+    openstudiolandscapes -- "any" --> snakemd
     openstudiolandscapes-kitsu -- "==1.9.11" --> dagster
     openstudiolandscapes-kitsu -- "any" --> docker-compose-graph
     openstudiolandscapes-kitsu -- "any" --> openstudiolandscapes
     openstudiolandscapes-kitsu -- "any" --> pyyaml
+    openstudiolandscapes-kitsu -- "any" --> snakemd
     pip-requirements-parser -- "any" --> packaging
     pip-requirements-parser -- "any" --> pyparsing
     pipdeptree -- ">=24.1" --> packaging

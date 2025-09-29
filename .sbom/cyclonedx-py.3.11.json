@@ -149,7 +149,7 @@
         {
           "comment": "PackageSource: VCS 'git'",
           "type": "vcs",
-          "url": "https://github.com/michimussato/OpenStudioLandscapes#94c780e7ba1fcd34450e55b16da8ec1277876910"
+          "url": "https://github.com/michimussato/OpenStudioLandscapes#b639cfbebd645b1f3587cae194d13bc473257198"
         },
         {
           "comment": "from packaging metadata Project-URL: Homepage",
@@ -161,14 +161,14 @@
       "properties": [
         {
           "name": "cdx:python:package:source:vcs:commit_id",
-          "value": "94c780e7ba1fcd34450e55b16da8ec1277876910"
+          "value": "b639cfbebd645b1f3587cae194d13bc473257198"
         },
         {
           "name": "cdx:python:package:source:vcs:requested_revision",
           "value": "v1.5.0-rc1"
         }
       ],
-      "purl": "pkg:pypi/openstudiolandscapes@0.0.0?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes%4094c780e7ba1fcd34450e55b16da8ec1277876910",
+      "purl": "pkg:pypi/openstudiolandscapes@0.0.0?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes%40b639cfbebd645b1f3587cae194d13bc473257198",
       "type": "library",
       "version": "0.0.0"
     },
@@ -2773,6 +2773,44 @@
       "version": "5.0.2"
     },
     {
+      "bom-ref": "snakemd==2.3.0",
+      "description": "A markdown generation library for Python.",
+      "externalReferences": [
+        {
+          "comment": "from packaging metadata Project-URL: Documentation",
+          "type": "documentation",
+          "url": "https://www.snakemd.io/en/latest/docs/"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Changelog",
+          "type": "release-notes",
+          "url": "https://www.snakemd.io/en/latest/version-history/"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Repository",
+          "type": "vcs",
+          "url": "https://github.com/TheRenegadeCoder/SnakeMD"
+        },
+        {
+          "comment": "from packaging metadata: Home-page",
+          "type": "website",
+          "url": "https://www.snakemd.io"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "acknowledgement": "declared",
+            "id": "MIT"
+          }
+        }
+      ],
+      "name": "snakemd",
+      "purl": "pkg:pypi/snakemd@2.3.0",
+      "type": "library",
+      "version": "2.3.0"
+    },
+    {
       "bom-ref": "sortedcontainers==2.4.0",
       "description": "Sorted Containers -- Sorted List, Sorted Dict, Sorted Set",
       "externalReferences": [
@@ -3342,7 +3380,8 @@
         "graphviz==0.21",
         "nox==2025.5.1",
         "pipdeptree==2.28.0",
-        "setuptools==80.9.0"
+        "setuptools==80.9.0",
+        "snakemd==2.3.0"
       ],
       "ref": "OpenStudioLandscapes-Kitsu==0.0.0"
     },
@@ -3358,7 +3397,8 @@
         "graphviz==0.21",
         "nox==2025.5.1",
         "pipdeptree==2.28.0",
-        "pydot==4.0.1"
+        "pydot==4.0.1",
+        "snakemd==2.3.0"
       ],
       "ref": "OpenStudioLandscapes==0.0.0"
     },
@@ -3803,6 +3843,9 @@
       "ref": "smmap==5.0.2"
     },
     {
+      "ref": "snakemd==2.3.0"
+    },
+    {
       "ref": "sortedcontainers==2.4.0"
     },
     {
@@ -3876,7 +3919,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2025-09-28T21:58:43.783667+00:00",
+    "timestamp": "2025-09-29T12:55:56.920416+00:00",
     "tools": {
       "components": [
         {
@@ -3980,7 +4023,7 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:008ed180-e27a-4537-8da4-752733aef26d",
+  "serialNumber": "urn:uuid:7c2b022c-4287-4e74-a199-f77890a04054",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
