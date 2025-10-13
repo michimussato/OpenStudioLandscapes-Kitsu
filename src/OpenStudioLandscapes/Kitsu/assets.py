@@ -768,11 +768,11 @@ def compose_kitsu(
         network_dict = {"networks": list(compose_networks.get("networks", {}).keys())}
         ports_dict = {
             "ports": [
-                f"{env.get('KITSU_PORT_HOST')}:{env.get('KITSU_PORT_CONTAINER')}",
+                f"{env['KITSU_PORT_HOST']}:{env['KITSU_PORT_CONTAINER']}",
             ]
         }
     elif "network_mode" in compose_networks:
-        network_dict = {"network_mode": compose_networks.get("network_mode")}
+        network_dict = {"network_mode": compose_networks["network_mode"]}
 
     volumes_dict = {
         "volumes": [
@@ -783,7 +783,7 @@ def compose_kitsu(
     if not KITSUDB_INSIDE_CONTAINER:
 
         kitsu_db_dir_host = (
-            pathlib.Path(env.get("KITSU_DATABASE_INSTALL_DESTINATION")) / "postgresql"
+            pathlib.Path(env["KITSU_DATABASE_INSTALL_DESTINATION"]) / "postgresql"
         )
         kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
         context.log.info(f"Directory {kitsu_db_dir_host.as_posix()} created.")
@@ -794,7 +794,7 @@ def compose_kitsu(
         )
 
         kitsu_previews_host = (
-            pathlib.Path(env.get("KITSU_DATABASE_INSTALL_DESTINATION")) / "previews"
+            pathlib.Path(env["KITSU_DATABASE_INSTALL_DESTINATION"]) / "previews"
         )
         kitsu_previews_host.mkdir(parents=True, exist_ok=True)
         context.log.info(f"Directory {kitsu_previews_host.as_posix()} created.")
@@ -941,7 +941,7 @@ def compose_init_db(
     #     ports_dict = {}
 
     kitsu_db_dir_host = (
-        pathlib.Path(env.get("KITSU_DATABASE_INSTALL_DESTINATION")) / "postgresql"
+        pathlib.Path(env["KITSU_DATABASE_INSTALL_DESTINATION"]) / "postgresql"
     )
     kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
 
