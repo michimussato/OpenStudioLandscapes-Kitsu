@@ -1510,7 +1510,7 @@
       "version": "3.2.4"
     },
     {
-      "bom-ref": "grpcio==1.75.1",
+      "bom-ref": "grpcio==1.76.0",
       "description": "HTTP/2-based RPC framework",
       "externalReferences": [
         {
@@ -1543,9 +1543,9 @@
         }
       ],
       "name": "grpcio",
-      "purl": "pkg:pypi/grpcio@1.75.1",
+      "purl": "pkg:pypi/grpcio@1.76.0",
       "type": "library",
-      "version": "1.75.1"
+      "version": "1.76.0"
     },
     {
       "bom-ref": "grpcio-health-checking==1.71.2",
@@ -3703,7 +3703,7 @@
         "filelock==3.20.0",
         "fsspec==2025.9.0",
         "grpcio-health-checking==1.71.2",
-        "grpcio==1.75.1",
+        "grpcio==1.76.0",
         "packaging==25.0",
         "protobuf==5.29.5",
         "pydantic==2.12.3",
@@ -3797,7 +3797,7 @@
     },
     {
       "dependsOn": [
-        "grpcio==1.75.1",
+        "grpcio==1.76.0",
         "protobuf==5.29.5"
       ],
       "ref": "grpcio-health-checking==1.71.2"
@@ -3806,7 +3806,7 @@
       "dependsOn": [
         "typing_extensions==4.15.0"
       ],
-      "ref": "grpcio==1.75.1"
+      "ref": "grpcio==1.76.0"
     },
     {
       "ref": "humanfriendly==10.0"
@@ -4115,7 +4115,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2025-10-21T12:17:34.403244+00:00",
+    "timestamp": "2025-10-21T22:02:49.659575+00:00",
     "tools": {
       "components": [
         {
@@ -4219,7 +4219,7 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:9020e453-76dc-4644-be62-6c974e99ea82",
+  "serialNumber": "urn:uuid:92976e77-ef50-448b-a4d8-44fac24f59f8",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
