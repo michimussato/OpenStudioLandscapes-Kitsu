@@ -23,8 +23,8 @@ def readme_feature(doc: snakemd.Document) -> snakemd.Document:
     doc.add_paragraph(
         snakemd.Inline(
             text=textwrap.dedent(
-                """
-                Logo Kitsu
+                """\
+                Logo Kitsu\
                 """
             ),
             image={
@@ -36,9 +36,9 @@ def readme_feature(doc: snakemd.Document) -> snakemd.Document:
 
     doc.add_paragraph(
         text=textwrap.dedent(
-            """
+            """\
             Kitsu is written and maintained by CGWire, a company based
-            in France:
+            in France:\
             """
         )
     )
@@ -48,8 +48,8 @@ def readme_feature(doc: snakemd.Document) -> snakemd.Document:
     doc.add_paragraph(
         snakemd.Inline(
             text=textwrap.dedent(
-                """
-                Logo CGWire
+                """\
+                Logo CGWire\
                 """
             ),
             image={
@@ -61,8 +61,8 @@ def readme_feature(doc: snakemd.Document) -> snakemd.Document:
 
     doc.add_paragraph(
         text=textwrap.dedent(
-            """
-            Kitsu itself consists of two modules:
+            """\
+            Kitsu itself consists of two modules:\
             """
         )
     )
@@ -76,9 +76,9 @@ def readme_feature(doc: snakemd.Document) -> snakemd.Document:
 
     doc.add_paragraph(
         text=textwrap.dedent(
-            """
+            """\
             `OpenStudioLandscapes-Kitsu` is based on the Kitsu provided
-            Docker image:
+            Docker image:\
             """
         )
     )
@@ -92,8 +92,8 @@ def readme_feature(doc: snakemd.Document) -> snakemd.Document:
 
     doc.add_paragraph(
         text=textwrap.dedent(
-            """
-            The default credentials are:
+            """\
+            The default credentials are:\
             """
         )
     )
@@ -107,8 +107,8 @@ def readme_feature(doc: snakemd.Document) -> snakemd.Document:
 
     doc.add_paragraph(
         text=textwrap.dedent(
-            """
-            You can override the default credentials by setting:
+            """\
+            You can override the default credentials by setting:\
             """
         )
     )
