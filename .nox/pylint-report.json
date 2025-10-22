@@ -646,7 +646,7 @@
         "endColumn": 54,
         "path": "src/OpenStudioLandscapes/Kitsu/assets.py",
         "symbol": "unused-wildcard-import",
-        "message": "Unused import(s) queue, threading, subprocess, OpenStudioLandscapesDockerException, OutputReader, execute_in_threads and docker_process_cmds from wildcard import of OpenStudioLandscapes.engine.utils.docker",
+        "message": "Unused import(s) queue, subprocess, threading, OpenStudioLandscapesDockerException, OutputReader, execute_in_threads and docker_process_cmds from wildcard import of OpenStudioLandscapes.engine.utils.docker",
         "message-id": "W0614"
     },
     {

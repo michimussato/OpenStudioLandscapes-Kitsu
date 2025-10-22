@@ -149,7 +149,7 @@
         {
           "comment": "PackageSource: VCS 'git'",
           "type": "vcs",
-          "url": "https://github.com/michimussato/OpenStudioLandscapes#ecbb4ea4078b1eec050a21e0336ca03337bd572c"
+          "url": "https://github.com/michimussato/OpenStudioLandscapes#865b78b1decd9373ec3e40f143d7bec00abaace1"
         },
         {
           "comment": "from packaging metadata Project-URL: Homepage",
@@ -161,14 +161,14 @@
       "properties": [
         {
           "name": "cdx:python:package:source:vcs:commit_id",
-          "value": "ecbb4ea4078b1eec050a21e0336ca03337bd572c"
+          "value": "865b78b1decd9373ec3e40f143d7bec00abaace1"
         },
         {
           "name": "cdx:python:package:source:vcs:requested_revision",
           "value": "v1.6.0-rc1"
         }
       ],
-      "purl": "pkg:pypi/openstudiolandscapes@0.0.0?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes%40ecbb4ea4078b1eec050a21e0336ca03337bd572c",
+      "purl": "pkg:pypi/openstudiolandscapes@0.0.0?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes%40865b78b1decd9373ec3e40f143d7bec00abaace1",
       "type": "library",
       "version": "0.0.0"
     },
@@ -843,7 +843,7 @@
       "version": "7.2.0"
     },
     {
-      "bom-ref": "cyclonedx-python-lib==11.2.0",
+      "bom-ref": "cyclonedx-python-lib==11.3.0",
       "description": "Python library for CycloneDX",
       "externalReferences": [
         {
@@ -898,9 +898,9 @@
           "value": "validation"
         }
       ],
-      "purl": "pkg:pypi/cyclonedx-python-lib@11.2.0",
+      "purl": "pkg:pypi/cyclonedx-python-lib@11.3.0",
       "type": "library",
-      "version": "11.2.0"
+      "version": "11.3.0"
     },
     {
       "bom-ref": "dagster==1.9.11",
@@ -3657,7 +3657,7 @@
     {
       "dependsOn": [
         "chardet==5.2.0",
-        "cyclonedx-python-lib==11.2.0",
+        "cyclonedx-python-lib==11.3.0",
         "packageurl-python==0.17.5",
         "packaging==25.0",
         "pip-requirements-parser==32.0.1",
@@ -3676,7 +3676,7 @@
         "sortedcontainers==2.4.0",
         "typing_extensions==4.15.0"
       ],
-      "ref": "cyclonedx-python-lib==11.2.0"
+      "ref": "cyclonedx-python-lib==11.3.0"
     },
     {
       "ref": "dagster-pipes==1.9.11"
@@ -4115,7 +4115,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2025-10-21T22:02:49.659575+00:00",
+    "timestamp": "2025-10-22T13:01:24.631211+00:00",
     "tools": {
       "components": [
         {
@@ -4214,12 +4214,12 @@
           ],
           "name": "cyclonedx-python-lib",
           "type": "library",
-          "version": "11.2.0"
+          "version": "11.3.0"
         }
       ]
     }
   },
-  "serialNumber": "urn:uuid:92976e77-ef50-448b-a4d8-44fac24f59f8",
+  "serialNumber": "urn:uuid:4652e213-affc-423e-8bde-578a3b79b039",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
