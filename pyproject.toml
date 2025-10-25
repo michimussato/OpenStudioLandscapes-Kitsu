@@ -29,7 +29,7 @@ dependencies = [
     "snakemd",
     # yaml_tags.overrides:
     "docker-compose-graph @ git+https://github.com/michimussato/docker-compose-graph.git@v1.0.0",
-    "OpenStudioLandscapes @ git+https://github.com/michimussato/OpenStudioLandscapes@v1.6.0",
+    "OpenStudioLandscapes @ git+https://github.com/michimussato/OpenStudioLandscapes@v1.7.0-rc1",
 ]
 dynamic = ["version"]
 
@@ -76,7 +76,7 @@ nox = [
     "nox",
 ]
 readme = [
-    "OpenStudioLandscapesUtil-ReadmeGenerator @ git+https://github.com/michimussato/OpenStudioLandscapesUtil-ReadmeGenerator.git@v1.6.0"
+    "OpenStudioLandscapesUtil-ReadmeGenerator @ git+https://github.com/michimussato/OpenStudioLandscapesUtil-ReadmeGenerator.git@v1.7.0-rc1"
 ]
 dev = [
     "OpenStudioLandscapes-Kitsu[testing]",
