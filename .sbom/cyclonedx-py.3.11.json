@@ -149,7 +149,7 @@
         {
           "comment": "PackageSource: VCS 'git'",
           "type": "vcs",
-          "url": "https://github.com/michimussato/OpenStudioLandscapes#afc007fb82f790fd31277bc4038c36cbecadb92a"
+          "url": "https://github.com/michimussato/OpenStudioLandscapes#c4b4070cf4d3c7040c8380cd7bf915505b56f896"
         },
         {
           "comment": "from packaging metadata Project-URL: Homepage",
@@ -161,14 +161,14 @@
       "properties": [
         {
           "name": "cdx:python:package:source:vcs:commit_id",
-          "value": "afc007fb82f790fd31277bc4038c36cbecadb92a"
+          "value": "c4b4070cf4d3c7040c8380cd7bf915505b56f896"
         },
         {
           "name": "cdx:python:package:source:vcs:requested_revision",
-          "value": "v1.6.0-rc1"
+          "value": "v1.7.0-rc1"
         }
       ],
-      "purl": "pkg:pypi/openstudiolandscapes@0.0.0?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes%40afc007fb82f790fd31277bc4038c36cbecadb92a",
+      "purl": "pkg:pypi/openstudiolandscapes@0.0.0?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes%40c4b4070cf4d3c7040c8380cd7bf915505b56f896",
       "type": "library",
       "version": "0.0.0"
     },
@@ -198,7 +198,7 @@
         {
           "comment": "PackageSource: VCS 'git'",
           "type": "vcs",
-          "url": "https://github.com/michimussato/OpenStudioLandscapesUtil-HarborCLI.git#4fe997fc68265a71f874cf652f52bfcece9311df"
+          "url": "https://github.com/michimussato/OpenStudioLandscapesUtil-HarborCLI.git#acbde99e8ad525ace4843993ac08005e50ac333e"
         },
         {
           "comment": "from packaging metadata Project-URL: Homepage",
@@ -210,14 +210,14 @@
       "properties": [
         {
           "name": "cdx:python:package:source:vcs:commit_id",
-          "value": "4fe997fc68265a71f874cf652f52bfcece9311df"
+          "value": "acbde99e8ad525ace4843993ac08005e50ac333e"
         },
         {
           "name": "cdx:python:package:source:vcs:requested_revision",
-          "value": "v1.6.0-rc1"
+          "value": "v1.7.0-rc1"
         }
       ],
-      "purl": "pkg:pypi/openstudiolandscapesutil-harborcli@0.0.0?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapesUtil-HarborCLI.git%404fe997fc68265a71f874cf652f52bfcece9311df",
+      "purl": "pkg:pypi/openstudiolandscapesutil-harborcli@0.0.0?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapesUtil-HarborCLI.git%40acbde99e8ad525ace4843993ac08005e50ac333e",
       "type": "library",
       "version": "0.0.0"
     },
@@ -2101,7 +2101,7 @@
       "version": "0.5.2"
     },
     {
-      "bom-ref": "pip==25.2",
+      "bom-ref": "pip==25.3",
       "description": "The PyPA recommended tool for installing Python packages.",
       "externalReferences": [
         {
@@ -2134,9 +2134,9 @@
         }
       ],
       "name": "pip",
-      "purl": "pkg:pypi/pip@25.2",
+      "purl": "pkg:pypi/pip@25.3",
       "type": "library",
-      "version": "25.2"
+      "version": "25.3"
     },
     {
       "bom-ref": "pip-requirements-parser==32.0.1",
@@ -3908,13 +3908,13 @@
       "ref": "pip-requirements-parser==32.0.1"
     },
     {
-      "ref": "pip==25.2"
+      "ref": "pip==25.3"
     },
     {
       "dependsOn": [
         "graphviz==0.21",
         "packaging==25.0",
-        "pip==25.2",
+        "pip==25.3",
         "virtualenv==20.35.3"
       ],
       "ref": "pipdeptree==2.29.0"
@@ -4025,7 +4025,7 @@
       "dependsOn": [
         "filelock==3.20.0",
         "packaging==25.0",
-        "pip==25.2",
+        "pip==25.3",
         "platformdirs==4.5.0",
         "tomli==2.3.0",
         "virtualenv==20.35.3"
@@ -4115,7 +4115,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2025-10-24T18:52:23.783268+00:00",
+    "timestamp": "2025-10-25T12:12:52.746633+00:00",
     "tools": {
       "components": [
         {
@@ -4219,7 +4219,7 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:425a852b-ccf1-40c3-acc0-7faecace3582",
+  "serialNumber": "urn:uuid:960493ba-2d5e-48f2-a894-bdfdf88a291f",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
