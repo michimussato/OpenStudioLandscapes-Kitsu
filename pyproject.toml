@@ -94,16 +94,9 @@ code_location_name = "OpenStudioLandscapes-Kitsu"
 module_name = "OpenStudioLandscapes.Kitsu.definitions"
 
 [tool.setuptools]
-include-package-data = true
+packages = [
+    "OpenStudioLandscapes.Kitsu",
+]
 platforms = [
     "Linux",
-]
-
-[tool.setuptools.packages.find]
-exclude = [
-    "tests",
-]
-namespaces = true
-where = [
-    "src",
 ]
