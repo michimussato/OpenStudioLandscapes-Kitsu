@@ -1,0 +1,31 @@
+[project]
+name = "OpenStudioLandscapes-Kitsu"
+description = "Kitsu Feature for OpenStudioLandscapes"
+
+[project.urls]
+Homepage = "https://github.com/michimussato/OpenStudioLandscapes-Kitsu"
+
+[project.optional-dependencies]
+sbom = [
+    "OpenStudioLandscapes-Kitsu[graphviz]",
+]
+nox = [
+    "OpenStudioLandscapes-Kitsu[testing]",
+]
+dev = [
+    "OpenStudioLandscapes-Kitsu[testing]",
+    "OpenStudioLandscapes-Kitsu[lint]",
+    "OpenStudioLandscapes-Kitsu[nox]",
+    "OpenStudioLandscapes-Kitsu[sbom]",
+    "OpenStudioLandscapes-Kitsu[coverage]",
+    "OpenStudioLandscapes-Kitsu[readme]",
+]
+
+[tool.setuptools]
+packages = [
+    "OpenStudioLandscapes.Kitsu"
+]
+
+[tool.dagster]
+module_name = "OpenStudioLandscapes.Kitsu.definitions"
+code_location_name = "OpenStudioLandscapes-Kitsu"
