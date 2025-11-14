@@ -149,7 +149,7 @@
         {
           "comment": "PackageSource: VCS 'git'",
           "type": "vcs",
-          "url": "https://github.com/michimussato/OpenStudioLandscapes#4925aefa95932a8caeb65456dacb8d5a7eebfe7b"
+          "url": "https://github.com/michimussato/OpenStudioLandscapes#6203e17545eca8356a657fe81122f4f558ee8696"
         },
         {
           "comment": "from packaging metadata Project-URL: Homepage",
@@ -161,14 +161,14 @@
       "properties": [
         {
           "name": "cdx:python:package:source:vcs:commit_id",
-          "value": "4925aefa95932a8caeb65456dacb8d5a7eebfe7b"
+          "value": "6203e17545eca8356a657fe81122f4f558ee8696"
         },
         {
           "name": "cdx:python:package:source:vcs:requested_revision",
           "value": "v1.9.0-rc1"
         }
       ],
-      "purl": "pkg:pypi/openstudiolandscapes@0.0.0?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes%404925aefa95932a8caeb65456dacb8d5a7eebfe7b",
+      "purl": "pkg:pypi/openstudiolandscapes@0.0.0?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes%406203e17545eca8356a657fe81122f4f558ee8696",
       "type": "library",
       "version": "0.0.0"
     },
@@ -4049,7 +4049,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2025-11-14T12:18:50.003835+00:00",
+    "timestamp": "2025-11-14T14:55:47.756966+00:00",
     "tools": {
       "components": [
         {
@@ -4153,7 +4153,7 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:65908e72-89eb-416d-b386-235b811b989f",
+  "serialNumber": "urn:uuid:985935a4-deaa-475a-a58e-c2e2f7154c4c",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
