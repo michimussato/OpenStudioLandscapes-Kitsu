@@ -248,15 +248,17 @@ def build_docker_image(
     build_base_image_data: dict = docker_image
     build_base_docker_config: DockerConfig = docker_config
 
-    if build_base_docker_config.value["docker_push"]:
-        build_base_parent_image_prefix: str = build_base_image_data["image_prefix_full"]
-    else:
-        build_base_parent_image_prefix: str = build_base_image_data[
-            "image_prefix_local"
-        ]
+    context.log.debug(f"{build_base_image_data = }")
+    context.log.debug(f"{build_base_docker_config = }")
+
+    build_base_parent_image_prefix: str = build_base_image_data["image_prefixes"]
+    context.log.debug(f"{build_base_parent_image_prefix = }")
 
     build_base_parent_image_name: str = build_base_image_data["image_name"]
+    context.log.debug(f"{build_base_parent_image_name = }")
+
     build_base_parent_image_tags: list = build_base_image_data["image_tags"]
+    context.log.debug(f"{build_base_parent_image_tags = }")
 
     docker_file = pathlib.Path(
         env["DOT_LANDSCAPES"],
@@ -270,18 +272,19 @@ def build_docker_image(
     docker_file.parent.mkdir(parents=True, exist_ok=True)
 
     image_name = get_image_name(context=context)
-    image_prefix_local = parse_docker_image_path(
+    context.log.debug(f"{image_name = }")
+
+    image_prefixes = parse_docker_image_path(
         docker_config=build_base_docker_config,
-        prepend_registry=False,
     )
-    image_prefix_full = parse_docker_image_path(
-        docker_config=build_base_docker_config,
-        prepend_registry=True,
-    )
+    context.log.debug(f"{image_prefixes = }")
 
     tags = [
         env.get("LANDSCAPE", str(time.time())),
     ]
+    context.log.debug(f"{tags = }")
+
+    #################################################
 
     apt_install_str_base: str = get_apt_install_str(
         apt_install_packages=apt_packages["base"],
@@ -373,38 +376,46 @@ def build_docker_image(
     with open(docker_file, "r") as fr:
         docker_file_content = fr.read()
 
+    #################################################
+
     image_data = {
         "image_name": image_name,
-        "image_prefix_local": image_prefix_local,
-        "image_prefix_full": image_prefix_full,
+        "image_prefixes": image_prefixes,
         "image_tags": tags,
         "image_parent": copy.deepcopy(build_base_image_data),
     }
 
-    context.log.info(f"{image_data = }")
+    # just highlight the message
+    context.log.warning(f"{image_data = }")
 
     cmds = []
 
-    tags_local = [f"{image_prefix_local}{image_name}:{tag}" for tag in tags]
-    tags_full = [f"{image_prefix_full}{image_name}:{tag}" for tag in tags]
+    tags_full_str = [f"{image_prefixes}{image_name}:{tag}" for tag in tags]
+    context.log.debug(f"{tags_full_str = }")
+
+    localhost_only = docker_config == DockerConfig.LOCALHOST
+    context.log.debug(f"{localhost_only = }")
 
     cmd_build = docker_build_cmd(
         context=context,
         docker_config_json=docker_config_json,
         docker_file=docker_file,
-        tags_local=tags_local,
-        tags_full=tags_full,
+        tags=tags_full_str,
+        pull=not localhost_only
     )
 
     cmds.append(cmd_build)
 
-    cmds_push = docker_push_cmd(
-        context=context,
-        docker_config_json=docker_config_json,
-        tags_full=tags_full,
-    )
+    if localhost_only:  # or not_push
+        pass
+    else:
+        cmds_push = docker_push_cmd(
+            context=context,
+            docker_config_json=docker_config_json,
+            tags_full=tags_full_str,
+        )
 
-    cmds.extend(cmds_push)
+        cmds.extend(cmds_push)
 
     context.log.info(f"{cmds = }")
 
