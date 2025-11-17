@@ -819,8 +819,9 @@ def compose_kitsu(
                     "TMP_DIR": env["KITSU_TMP_DIR"],
                     "ENABLE_JOB_QUEUE": env["KITSU_ENABLE_JOB_QUEUE"],
                 },
-                "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"
-                % (build["image_name"], build["image_tags"][0]),
+                # "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"
+                # % (build["image_name"], build["image_tags"][0]),
+                "image": "%s:%s" % (build["image_name"], build["image_tags"][0]),
                 **copy.deepcopy(volumes_dict),
                 **copy.deepcopy(network_dict),
                 "depends_on": {
@@ -967,8 +968,9 @@ def compose_init_db(
                     "TMP_DIR": env["KITSU_TMP_DIR"],
                 },
                 "restart": "no",
-                "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"
-                % (build["image_name"], build["image_tags"][0]),
+                # "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"
+                # % (build["image_name"], build["image_tags"][0]),
+                "image": "%s:%s" % (build["image_name"], build["image_tags"][0]),
                 "command": [
                     "/usr/bin/bash",
                     "/opt/zou/init_db.sh",
