@@ -15,7 +15,6 @@ classifiers = [
     "Programming Language :: Python",
 ]
 dependencies = [
-    "OpenStudioLandscapes @ git+https://github.com/michimussato/OpenStudioLandscapes@v1.9.0",
     "PyYAML",
     "dagster==1.9.11",
     "docker-compose-graph @ git+https://github.com/michimussato/docker-compose-graph.git@v1.0.0",
@@ -70,7 +69,7 @@ pyproject = [
     "OpenStudioLandscapesUtil-VersionBumper @ git+https://github.com/michimussato/OpenStudioLandscapesUtil-VersionBumper.git",
 ]
 readme = [
-    "OpenStudioLandscapesUtil-ReadmeGenerator @ git+https://github.com/michimussato/OpenStudioLandscapesUtil-ReadmeGenerator.git@v1.9.0",
+    "OpenStudioLandscapesUtil-ReadmeGenerator @ git+https://github.com/michimussato/OpenStudioLandscapesUtil-ReadmeGenerator.git",
 ]
 sbom = [
     "OpenStudioLandscapes-Kitsu[graphviz]",
