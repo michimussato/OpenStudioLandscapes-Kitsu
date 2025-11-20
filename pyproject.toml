@@ -16,6 +16,7 @@ classifiers = [
 ]
 dependencies = [
     "PyYAML",
+    "backoff",
     "dagster==1.9.11",
     "docker-compose-graph @ git+https://github.com/michimussato/docker-compose-graph.git@v1.0.0",
     "gitpython",
@@ -56,12 +57,14 @@ graphviz = [
     "pipdeptree",
 ]
 lint = [
+    "OpenStudioLandscapes @ git+https://github.com/michimussato/OpenStudioLandscapes.git",
     "black",
     "isort",
     "pre-commit",
     "pylint",
 ]
 nox = [
+    "OpenStudioLandscapes @ git+https://github.com/michimussato/OpenStudioLandscapes.git",
     "OpenStudioLandscapes-Kitsu[testing]",
     "nox",
 ]
@@ -73,6 +76,7 @@ readme = [
     "OpenStudioLandscapesUtil-ReadmeGenerator @ git+https://github.com/michimussato/OpenStudioLandscapesUtil-ReadmeGenerator.git",
 ]
 sbom = [
+    "OpenStudioLandscapes @ git+https://github.com/michimussato/OpenStudioLandscapes.git",
     "OpenStudioLandscapes-Kitsu[graphviz]",
     "cyclonedx-bom",
 ]
