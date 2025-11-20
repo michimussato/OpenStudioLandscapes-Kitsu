@@ -149,7 +149,7 @@
         {
           "comment": "PackageSource: VCS 'git'",
           "type": "vcs",
-          "url": "https://github.com/michimussato/OpenStudioLandscapes.git#5e0bf4e1d3721664b4a0c8c4830dc2ac68609df9"
+          "url": "https://github.com/michimussato/OpenStudioLandscapes.git#18a047f47d0f63cfb3a20a7224a8b9905b20bcaa"
         },
         {
           "comment": "from packaging metadata Project-URL: Homepage",
@@ -161,10 +161,10 @@
       "properties": [
         {
           "name": "cdx:python:package:source:vcs:commit_id",
-          "value": "5e0bf4e1d3721664b4a0c8c4830dc2ac68609df9"
+          "value": "18a047f47d0f63cfb3a20a7224a8b9905b20bcaa"
         }
       ],
-      "purl": "pkg:pypi/openstudiolandscapes@0.0.0?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes.git%405e0bf4e1d3721664b4a0c8c4830dc2ac68609df9",
+      "purl": "pkg:pypi/openstudiolandscapes@0.0.0?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes.git%4018a047f47d0f63cfb3a20a7224a8b9905b20bcaa",
       "type": "library",
       "version": "0.0.0"
     },
@@ -3535,6 +3535,7 @@
         "GitPython==3.1.45",
         "PyYAML==6.0.3",
         "SnakeMD==2.4.0",
+        "backoff==2.2.1",
         "cyclonedx-bom==7.2.1",
         "dagster-postgres==0.25.11",
         "dagster==1.9.11",
@@ -4077,7 +4078,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2025-11-20T12:34:08.644466+00:00",
+    "timestamp": "2025-11-20T13:29:56.394105+00:00",
     "tools": {
       "components": [
         {
@@ -4181,7 +4182,7 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:f813a23b-e1af-438f-8890-e88963606490",
+  "serialNumber": "urn:uuid:2aba36cb-1ff4-4a3b-b8ca-c8a5c72c0a11",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",

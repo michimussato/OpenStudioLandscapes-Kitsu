@@ -312,32 +312,6 @@
         "message-id": "C0116"
     },
     {
-        "type": "error",
-        "module": "OpenStudioLandscapes.Kitsu.assets",
-        "obj": "compose_networks",
-        "line": 104,
-        "column": 27,
-        "endLine": 104,
-        "endColumn": 48,
-        "path": "src/OpenStudioLandscapes/Kitsu/assets.py",
-        "symbol": "undefined-variable",
-        "message": "Undefined variable 'DockerComposePolicies'",
-        "message-id": "E0602"
-    },
-    {
-        "type": "error",
-        "module": "OpenStudioLandscapes.Kitsu.assets",
-        "obj": "compose_networks",
-        "line": 106,
-        "column": 31,
-        "endLine": 106,
-        "endColumn": 52,
-        "path": "src/OpenStudioLandscapes/Kitsu/assets.py",
-        "symbol": "undefined-variable",
-        "message": "Undefined variable 'DockerComposePolicies'",
-        "message-id": "E0602"
-    },
-    {
         "type": "convention",
         "module": "OpenStudioLandscapes.Kitsu.assets",
         "obj": "apt_packages",
@@ -429,19 +403,6 @@
         "message-id": "W0621"
     },
     {
-        "type": "error",
-        "module": "OpenStudioLandscapes.Kitsu.assets",
-        "obj": "build_docker_image",
-        "line": 273,
-        "column": 8,
-        "endLine": 273,
-        "endColumn": 26,
-        "path": "src/OpenStudioLandscapes/Kitsu/assets.py",
-        "symbol": "undefined-variable",
-        "message": "Undefined variable 'get_image_metadata'",
-        "message-id": "E0602"
-    },
-    {
         "type": "warning",
         "module": "OpenStudioLandscapes.Kitsu.assets",
         "obj": "build_docker_image",
@@ -466,19 +427,6 @@
         "symbol": "unspecified-encoding",
         "message": "Using open without explicitly specifying an encoding",
         "message-id": "W1514"
-    },
-    {
-        "type": "error",
-        "module": "OpenStudioLandscapes.Kitsu.assets",
-        "obj": "build_docker_image",
-        "line": 374,
-        "column": 23,
-        "endLine": 374,
-        "endColumn": 35,
-        "path": "src/OpenStudioLandscapes/Kitsu/assets.py",
-        "symbol": "undefined-variable",
-        "message": "Undefined variable 'create_image'",
-        "message-id": "E0602"
     },
     {
         "type": "warning",
@@ -624,19 +572,6 @@
         "message-id": "R0914"
     },
     {
-        "type": "error",
-        "module": "OpenStudioLandscapes.Kitsu.assets",
-        "obj": "compose_kitsu",
-        "line": 810,
-        "column": 27,
-        "endLine": 810,
-        "endColumn": 48,
-        "path": "src/OpenStudioLandscapes/Kitsu/assets.py",
-        "symbol": "undefined-variable",
-        "message": "Undefined variable 'DockerComposePolicies'",
-        "message-id": "E0602"
-    },
-    {
         "type": "convention",
         "module": "OpenStudioLandscapes.Kitsu.assets",
         "obj": "compose_kitsu",
@@ -674,19 +609,6 @@
         "symbol": "too-many-locals",
         "message": "Too many local variables (16/15)",
         "message-id": "R0914"
-    },
-    {
-        "type": "error",
-        "module": "OpenStudioLandscapes.Kitsu.assets",
-        "obj": "compose_init_db",
-        "line": 975,
-        "column": 27,
-        "endLine": 975,
-        "endColumn": 48,
-        "path": "src/OpenStudioLandscapes/Kitsu/assets.py",
-        "symbol": "undefined-variable",
-        "message": "Undefined variable 'DockerComposePolicies'",
-        "message-id": "E0602"
     },
     {
         "type": "convention",
@@ -776,7 +698,7 @@
         "endColumn": 51,
         "path": "src/OpenStudioLandscapes/Kitsu/assets.py",
         "symbol": "unused-wildcard-import",
-        "message": "Unused import(s) docker_config, DOCKER_PROGRESS, DOCKER_CONFIG, DOCKER_USE_CACHE_GLOBAL, DOCKER_USE_CACHE_BASE, PREFIX_COMPOSE_SCOPE, GROUP_COMPOSE, KEY_COMPOSE, ASSET_HEADER_COMPOSE, ENVIRONMENT_COMPOSE, GROUP_COMPOSE_LICENSE_SERVER, KEY_COMPOSE_LICENSE_SERVER, ASSET_HEADER_COMPOSE_LICENSE_SERVER, ENVIRONMENT_COMPOSE_LICENSE_SERVER, GROUP_COMPOSE_WORKER, KEY_COMPOSE_WORKER, ASSET_HEADER_COMPOSE_WORKER, ENVIRONMENT_COMPOSE_WORKER, GROUP_BASE_ENV, KEY_BASE_ENV, ASSET_HEADER_BASE_ENV, GROUP_BASE, KEY_BASE, GROUP_LANDSCAPE_MAP, KEY_LANDSCAPE_MAP, ASSET_HEADER_LANDSCAPE_MAP, GROUP_TELEPORT, KEY_TELEPORT, ASSET_HEADER_TELEPORT, GROUP_TRAEFIK, KEY_TRAEFIK, ASSET_HEADER_TRAEFIK, GROUP_DISTRIBUTABLE, KEY_DISTRIBUTABLE, ASSET_HEADER_DISTRIBUTABLE, constants_base, features, enum, OpenStudioLandscapesConfig, FeatureVolumeType, ComposeScope, ComposeCmdExclusion, ComposeNetworkMode, DockerRegistry, DockerRepositoryType, EnvVar, FEATURES, constants_compose, constants_compose_license_server and constants_compose_worker from wildcard import of OpenStudioLandscapes.engine.constants",
+        "message": "Unused import(s) docker_config, os, LOGGER, DOCKER_PROGRESS, docker_config_, msg, e, DOCKER_CONFIG, DOCKER_USE_CACHE_GLOBAL, DOCKER_USE_CACHE_BASE, PREFIX_COMPOSE_SCOPE, GROUP_COMPOSE, KEY_COMPOSE, ASSET_HEADER_COMPOSE, ENVIRONMENT_COMPOSE, GROUP_COMPOSE_LICENSE_SERVER, KEY_COMPOSE_LICENSE_SERVER, ASSET_HEADER_COMPOSE_LICENSE_SERVER, ENVIRONMENT_COMPOSE_LICENSE_SERVER, GROUP_COMPOSE_WORKER, KEY_COMPOSE_WORKER, ASSET_HEADER_COMPOSE_WORKER, ENVIRONMENT_COMPOSE_WORKER, GROUP_BASE_ENV, KEY_BASE_ENV, ASSET_HEADER_BASE_ENV, GROUP_BASE, KEY_BASE, GROUP_LANDSCAPE_MAP, KEY_LANDSCAPE_MAP, ASSET_HEADER_LANDSCAPE_MAP, GROUP_TELEPORT, KEY_TELEPORT, ASSET_HEADER_TELEPORT, GROUP_TRAEFIK, KEY_TRAEFIK, ASSET_HEADER_TRAEFIK, GROUP_DISTRIBUTABLE, KEY_DISTRIBUTABLE, ASSET_HEADER_DISTRIBUTABLE, constants_base, features, get_dagster_logger, enum, OpenStudioLandscapesConfig, FeatureVolumeType, ComposeScope, ComposeCmdExclusion, DockerComposeNetworkMode, DockerComposeRestartPolicy, DockerComposeDependsOnPolicy, DockerRegistry, DockerRepositoryType, EnvVar, FEATURES, constants_compose, constants_compose_license_server and constants_compose_worker from wildcard import of OpenStudioLandscapes.engine.constants",
         "message-id": "W0614"
     },
     {
@@ -789,20 +711,7 @@
         "endColumn": 47,
         "path": "src/OpenStudioLandscapes/Kitsu/assets.py",
         "symbol": "unused-wildcard-import",
-        "message": "Unused import(s) operator_, os, shlex, git, LOGGER, cmd_list_to_str, get_copy_str, get_wget_str, get_git_root, get_configs_root, get_data_root, get_bin_root, get_image_name, parse_docker_image_path, get_compose_scope, get_feature_config, expand_dict_vars, serialize_dict, metadatavalues_from_dict, get_bool_env, get_str_env, get_dynamic_ins, get_teleport_app_dict, Union, OpExecutionContext, get_dagster_logger, ComposeScopeException and OpenStudioLandscapesException from wildcard import of OpenStudioLandscapes.engine.utils",
-        "message-id": "W0614"
-    },
-    {
-        "type": "warning",
-        "module": "OpenStudioLandscapes.Kitsu.assets",
-        "obj": "",
-        "line": 36,
-        "column": 0,
-        "endLine": 36,
-        "endColumn": 54,
-        "path": "src/OpenStudioLandscapes/Kitsu/assets.py",
-        "symbol": "unused-wildcard-import",
-        "message": "Unused import(s) queue, subprocess, threading, OpenStudioLandscapesDockerException, docker_build_cmd, docker_push_cmd, OutputReader, execute_in_threads, docker_process_cmds and docker_do from wildcard import of OpenStudioLandscapes.engine.utils.docker",
+        "message": "Unused import(s) operator_, shlex, git, cmd_list_to_str, get_copy_str, get_wget_str, get_git_root, get_configs_root, get_data_root, get_bin_root, get_image_name, parse_docker_image_path, get_compose_scope, get_feature_config, expand_dict_vars, metadatavalues_from_dict, get_bool_env, get_str_env, get_dynamic_ins, get_networks_dict, Dict, Union, OpExecutionContext, ComposeScopeException, OpenStudioLandscapesException, queue, subprocess, threading, backoff, OpenStudioLandscapesDockerException, docker_build_cmd, docker_push_cmd, OutputReader, execute_in_threads, docker_process_cmds and docker_do from wildcard import of OpenStudioLandscapes.engine.utils",
         "message-id": "W0614"
     },
     {

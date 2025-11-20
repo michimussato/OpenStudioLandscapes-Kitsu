@@ -161,6 +161,7 @@ digraph {
 	nox [label="nox\n2025.11.12"]
 	openstudiolandscapes -> "dagster-postgres" [label=any]
 	openstudiolandscapes -> "docker-compose-graph" [label=any]
+	openstudiolandscapes -> backoff [label=any]
 	openstudiolandscapes -> dagster [label="==1.9.11"]
 	openstudiolandscapes -> docker [label=any]
 	openstudiolandscapes -> gitpython [label=any]
