@@ -101,9 +101,9 @@ def compose_networks(
     None,
 ]:
 
-    compose_network_mode = ComposeNetworkMode.DEFAULT
+    compose_network_mode = DockerComposePolicies.NETWORK_MODE.DEFAULT
 
-    if compose_network_mode == ComposeNetworkMode.DEFAULT:
+    if compose_network_mode is DockerComposePolicies.NETWORK_MODE.DEFAULT:
         docker_dict = {
             "networks": {
                 # "mongodb": {
@@ -807,7 +807,7 @@ def compose_kitsu(
                 "container_name": container_name,
                 "hostname": host_name,
                 "domainname": env["OPENSTUDIOLANDSCAPES__DOMAIN_LAN"],
-                "restart": "always",
+                "restart": DockerComposePolicies.RESTART_POLICY.ALWAYS.value,
                 "environment": {
                     # https://zou.cg-wire.com/
                     # "LC_ALL": "C.UTF-8",
@@ -821,7 +821,12 @@ def compose_kitsu(
                 },
                 # "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"
                 # % (build["image_name"], build["image_tags"][0]),
-                "image": "%s%s:%s" % (build["image_prefixes"], build["image_name"], build["image_tags"][0]),
+                "image": "%s%s:%s"
+                % (
+                    build["image_prefixes"],
+                    build["image_name"],
+                    build["image_tags"][0],
+                ),
                 **copy.deepcopy(volumes_dict),
                 **copy.deepcopy(network_dict),
                 "depends_on": {
@@ -967,10 +972,15 @@ def compose_init_db(
                     "PREVIEW_FOLDER": env["KITSU_PREVIEW_FOLDER"],
                     "TMP_DIR": env["KITSU_TMP_DIR"],
                 },
-                "restart": "no",
+                "restart": DockerComposePolicies.RESTART_POLICY.NO.value,
                 # "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"
                 # % (build["image_name"], build["image_tags"][0]),
-                "image": "%s%s:%s" % (build["image_prefixes"], build["image_name"], build["image_tags"][0]),
+                "image": "%s%s:%s"
+                % (
+                    build["image_prefixes"],
+                    build["image_name"],
+                    build["image_tags"][0],
+                ),
                 "command": [
                     "/usr/bin/bash",
                     "/opt/zou/init_db.sh",

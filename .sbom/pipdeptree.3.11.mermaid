@@ -3,20 +3,27 @@ flowchart TD
     alembic["alembic\n1.17.2"]
     annotated-types["annotated-types\n0.7.0"]
     antlr4-python3-runtime["antlr4-python3-runtime\n4.13.2"]
+    argcomplete["argcomplete\n3.6.3"]
     arrow["arrow\n1.4.0"]
     attrs["attrs\n25.4.0"]
+    backoff["backoff\n2.2.1"]
     boolean-py["boolean.py\n5.0"]
     certifi["certifi\n2025.11.12"]
     chardet["chardet\n5.2.0"]
     charset-normalizer["charset-normalizer\n3.4.4"]
     click_0["click\n8.3.1"]
     coloredlogs["coloredlogs\n14.0"]
+    colorlog["colorlog\n6.10.1"]
     cyclonedx-bom["cyclonedx-bom\n7.2.1"]
     cyclonedx-python-lib["cyclonedx-python-lib\n11.5.0"]
     dagster-pipes["dagster-pipes\n1.9.11"]
+    dagster-postgres["dagster-postgres\n0.25.11"]
     dagster["dagster\n1.9.11"]
     defusedxml["defusedxml\n0.7.1"]
+    dependency-groups["dependency-groups\n1.3.1"]
+    distlib["distlib\n0.4.0"]
     docker-compose-graph["docker-compose-graph\n1.0.0"]
+    docker["docker\n7.1.0"]
     docstring-parser["docstring_parser\n0.17.0"]
     filelock["filelock\n3.20.0"]
     fqdn["fqdn\n1.5.1"]
@@ -28,6 +35,7 @@ flowchart TD
     grpcio-health-checking["grpcio-health-checking\n1.71.2"]
     grpcio["grpcio\n1.76.0"]
     humanfriendly["humanfriendly\n10.0"]
+    humanize["humanize\n4.14.0"]
     idna["idna\n3.11"]
     isoduration["isoduration\n20.11.0"]
     jinja2["Jinja2\n3.1.6"]
@@ -41,14 +49,18 @@ flowchart TD
     markdown-it-py["markdown-it-py\n4.0.0"]
     markupsafe["MarkupSafe\n3.0.3"]
     mdurl["mdurl\n0.1.2"]
+    nox["nox\n2025.11.12"]
     openstudiolandscapes-kitsu["OpenStudioLandscapes-Kitsu\n0.0.0"]
+    openstudiolandscapes["OpenStudioLandscapes\n0.0.0"]
     packageurl-python["packageurl-python\n0.17.5"]
     packaging["packaging\n25.0"]
     pathlib-abc["pathlib_abc\n0.5.2"]
     pip-requirements-parser["pip-requirements-parser\n32.0.1"]
     pip["pip\n25.3"]
     pipdeptree["pipdeptree\n2.30.0"]
+    platformdirs["platformdirs\n4.5.0"]
     protobuf["protobuf\n5.29.5"]
+    psycopg2-binary["psycopg2-binary\n2.9.11"]
     py-serializable["py-serializable\n2.1.0"]
     pydantic-core["pydantic_core\n2.41.5"]
     pydantic["pydantic\n2.12.4"]
@@ -83,6 +95,7 @@ flowchart TD
     universal-pathlib["universal_pathlib\n0.3.6"]
     uri-template["uri-template\n1.3.0"]
     urllib3["urllib3\n2.5.0"]
+    virtualenv["virtualenv\n20.35.4"]
     watchdog["watchdog\n5.0.3"]
     webcolors["webcolors\n25.10.0"]
     alembic -- ">=1.4.0" --> sqlalchemy
@@ -130,6 +143,11 @@ flowchart TD
     dagster -- "any" --> structlog
     dagster -- "any" --> tabulate
     dagster -- "any" --> universal-pathlib
+    dagster-postgres -- "==1.9.11" --> dagster
+    dagster-postgres -- "any" --> psycopg2-binary
+    dependency-groups -- "any" --> packaging
+    docker -- ">=1.26.0" --> urllib3
+    docker -- ">=2.26.0" --> requests
     docker-compose-graph -- "any" --> graphviz
     docker-compose-graph -- "any" --> jinja2
     docker-compose-graph -- "any" --> pydot
@@ -150,7 +168,24 @@ flowchart TD
     license-expression -- ">=4.0" --> boolean-py
     mako -- ">=0.9.2" --> markupsafe
     markdown-it-py -- "~=0.1" --> mdurl
+    nox -- ">=1.1" --> dependency-groups
+    nox -- ">=1.9.4,<4" --> argcomplete
+    nox -- ">=2.6.1,<7" --> colorlog
+    nox -- ">=20.15" --> virtualenv
+    nox -- ">=21" --> packaging
+    nox -- ">=24.1" --> attrs
+    nox -- ">=4" --> humanize
+    openstudiolandscapes -- "==1.9.11" --> dagster
+    openstudiolandscapes -- "any" --> dagster-postgres
+    openstudiolandscapes -- "any" --> docker
+    openstudiolandscapes -- "any" --> docker-compose-graph
+    openstudiolandscapes -- "any" --> gitpython
+    openstudiolandscapes -- "any" --> nox
+    openstudiolandscapes -- "any" --> pydot
+    openstudiolandscapes -- "any" --> pyyaml
+    openstudiolandscapes -- "any" --> snakemd
     openstudiolandscapes-kitsu -- "==1.9.11" --> dagster
+    openstudiolandscapes-kitsu -- "any" --> backoff
     openstudiolandscapes-kitsu -- "any" --> docker-compose-graph
     openstudiolandscapes-kitsu -- "any" --> gitpython
     openstudiolandscapes-kitsu -- "any" --> pyyaml
@@ -183,4 +218,7 @@ flowchart TD
     typing-inspection -- ">=4.12.0" --> typing-extensions
     universal-pathlib -- ">=0.5.1,<0.6.0" --> pathlib-abc
     universal-pathlib -- ">=2024.5.0" --> fsspec
+    virtualenv -- ">=0.3.7,<1" --> distlib
+    virtualenv -- ">=3.12.2,<4" --> filelock
+    virtualenv -- ">=3.9.1,<5" --> platformdirs
 
