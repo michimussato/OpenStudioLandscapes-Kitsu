@@ -50,9 +50,7 @@ DOCUMENTATION = [
 FEATURE_CONFIGS = {
     OpenStudioLandscapesConfig.DEFAULT: {
         "DOCKER_USE_CACHE": DOCKER_USE_CACHE,
-        "HOSTNAME": "kitsu",
-        "TELEPORT_ENTRY_POINT_HOST": "{{HOSTNAME}}",  # Either a hardcoded str or a ref to a Variable (with double {{ }}!)
-        "TELEPORT_ENTRY_POINT_PORT": "{{KITSU_PORT_HOST}}",  # Either a hardcoded str or a ref to a Variable (with double {{ }}!)
+        # "HOSTNAME": "kitsu",
         # https://zou.cg-wire.com/jobs/#enabling-job-queue
         "KITSU_ENABLE_JOB_QUEUE": True,
         # Todo:
