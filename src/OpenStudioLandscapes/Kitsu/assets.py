@@ -3,7 +3,6 @@ import json
 import pathlib
 import shutil
 import textwrap
-import time
 import urllib.parse
 from typing import Any, Generator, List, MutableMapping
 
@@ -33,7 +32,6 @@ from OpenStudioLandscapes.engine.common_assets.group_out import get_group_out
 from OpenStudioLandscapes.engine.constants import *
 from OpenStudioLandscapes.engine.enums import *
 from OpenStudioLandscapes.engine.utils import *
-from OpenStudioLandscapes.engine.utils.docker import *
 
 from OpenStudioLandscapes.Kitsu.constants import *
 
@@ -185,7 +183,7 @@ def pip_packages(
 
     _pip_packages: list = []
 
-    if env["OPENSTUDIOLANDSCAPES_KITSU__ENABLE_JOB_QUEUE"]:
+    if env["KITSU_ENABLE_JOB_QUEUE"]:
 
         _pip_packages.extend(
             [
@@ -411,7 +409,7 @@ def inject_postgres_conf(
     """ """
 
     postgres_conf = pathlib.Path(
-        env["OPENSTUDIOLANDSCAPES_KITSU__POSTGRES_CONF"],
+        env["KITSU_POSTGRES_CONF"],
     )
 
     with open(
@@ -629,7 +627,7 @@ def supervisord_conf(
         """
     )
 
-    if env["OPENSTUDIOLANDSCAPES_KITSU__ENABLE_JOB_QUEUE"]:
+    if env["KITSU_ENABLE_JOB_QUEUE"]:
         supervisord_conf_str += textwrap.dedent(
             """
             [program:kitsu-job-queue]
@@ -734,7 +732,7 @@ def compose_kitsu(
         network_dict = {"networks": list(compose_networks.get("networks", {}).keys())}
         ports_dict = {
             "ports": [
-                f"${{OPENSTUDIOLANDSCAPES_KITSU__PORT_HOST}}:{env['OPENSTUDIOLANDSCAPES_KITSU__PORT_CONTAINER']}",
+                f"{env['KITSU_PORT_HOST']}:{env['KITSU_PORT_CONTAINER']}",
             ]
         }
     elif "network_mode" in compose_networks:
@@ -749,7 +747,7 @@ def compose_kitsu(
     if not KITSUDB_INSIDE_CONTAINER:
 
         kitsu_db_dir_host = (
-            pathlib.Path(env["OPENSTUDIOLANDSCAPES_KITSU__DATABASE_INSTALL_DESTINATION"]) / "postgresql"
+            pathlib.Path(env["KITSU_DATABASE_INSTALL_DESTINATION"]) / "postgresql"
         )
         kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
         context.log.info(f"Directory {kitsu_db_dir_host.as_posix()} created.")
@@ -760,7 +758,7 @@ def compose_kitsu(
         )
 
         kitsu_previews_host = (
-            pathlib.Path(env["OPENSTUDIOLANDSCAPES_KITSU__DATABASE_INSTALL_DESTINATION"]) / "previews"
+            pathlib.Path(env["KITSU_DATABASE_INSTALL_DESTINATION"]) / "previews"
         )
         kitsu_previews_host.mkdir(parents=True, exist_ok=True)
         context.log.info(f"Directory {kitsu_previews_host.as_posix()} created.")
@@ -796,30 +794,31 @@ def compose_kitsu(
     }
 
     service_name = "kitsu"
-    container_name = "--".join([service_name, env.get("LANDSCAPE", "default")])
-    # host_name = ".".join(
-    #     [env["OPENSTUDIOLANDSCAPES_KITSU__HOSTNAME"] or service_name, env["OPENSTUDIOLANDSCAPES__DOMAIN_LAN"]]
-    # )
+    container_name, host_name = get_docker_compose_names(
+        context=context,
+        service_name=service_name,
+        landscape_id=env.get("LANDSCAPE", "default"),
+        domain_lan=env.get("OPENSTUDIOLANDSCAPES__DOMAIN_LAN"),
+    )
 
     docker_dict = {
         "services": {
             service_name: {
                 "container_name": container_name,
-                "hostname": service_name,
-                "domainname": "${OPENSTUDIOLANDSCAPES__DOMAIN_LAN}",
+                "hostname": host_name,
+                "domainname": env["OPENSTUDIOLANDSCAPES__DOMAIN_LAN"],
                 "restart": DockerComposePolicies.RESTART_POLICY.ALWAYS.value,
-                "env_file": "./.env",
-                # "environment": {
-                #     # https://zou.cg-wire.com/
-                #     # "LC_ALL": "C.UTF-8",
-                #     # "LANG": "C.UTF-8",
-                #     "KITSU_ADMIN": "${OPENSTUDIOLANDSCAPES_KITSU__ADMIN_USER}",
-                #     "DB_PASSWORD": "${OPENSTUDIOLANDSCAPES_KITSU__DB_PASSWORD}",
-                #     "SECRET_KEY": "${OPENSTUDIOLANDSCAPES_KITSU__SECRET_KEY}",
-                #     "PREVIEW_FOLDER": "${OPENSTUDIOLANDSCAPES_KITSU__PREVIEW_FOLDER}",
-                #     "TMP_DIR": "${OPENSTUDIOLANDSCAPES_KITSU__TMP_DIR}",
-                #     "ENABLE_JOB_QUEUE": "${OPENSTUDIOLANDSCAPES_KITSU__ENABLE_JOB_QUEUE}",
-                # },
+                "environment": {
+                    # https://zou.cg-wire.com/
+                    # "LC_ALL": "C.UTF-8",
+                    # "LANG": "C.UTF-8",
+                    "KITSU_ADMIN": env["KITSU_ADMIN_USER"],
+                    "DB_PASSWORD": env["KITSU_DB_PASSWORD"],
+                    "SECRET_KEY": env["KITSU_SECRET_KEY"],
+                    "PREVIEW_FOLDER": env["KITSU_PREVIEW_FOLDER"],
+                    "TMP_DIR": env["KITSU_TMP_DIR"],
+                    "ENABLE_JOB_QUEUE": env["KITSU_ENABLE_JOB_QUEUE"],
+                },
                 # "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"
                 # % (build["image_name"], build["image_tags"][0]),
                 "image": "%s%s:%s"
@@ -914,7 +913,7 @@ def compose_init_db(
     #     ports_dict = {}
 
     kitsu_db_dir_host = (
-        pathlib.Path(env["OPENSTUDIOLANDSCAPES_KITSU__DATABASE_INSTALL_DESTINATION"]) / "postgresql"
+        pathlib.Path(env["KITSU_DATABASE_INSTALL_DESTINATION"]) / "postgresql"
     )
     kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
 
@@ -954,26 +953,29 @@ def compose_init_db(
     }
 
     service_name = "kitsu-init-db"
-    container_name = "--".join([service_name, env.get("LANDSCAPE", "default")])
-    # host_name = ".".join([service_name, env["OPENSTUDIOLANDSCAPES__DOMAIN_LAN"]])
+    container_name, host_name = get_docker_compose_names(
+        context=context,
+        service_name=service_name,
+        landscape_id=env.get("LANDSCAPE", "default"),
+        domain_lan=env.get("OPENSTUDIOLANDSCAPES__DOMAIN_LAN"),
+    )
 
     docker_dict = {
         "services": {
             service_name: {
                 "container_name": container_name,
-                "hostname": service_name,
-                "domainname": "${OPENSTUDIOLANDSCAPES__DOMAIN_LAN}",
-                "env_file": "./.env",
-                # "environment": {
-                #     # https://zou.cg-wire.com/
-                #     # "LC_ALL": "C.UTF-8",
-                #     # "LANG": "C.UTF-8",
-                #     "KITSU_ADMIN": "${OPENSTUDIOLANDSCAPES_KITSU__ADMIN_USER}",
-                #     "DB_PASSWORD": "${OPENSTUDIOLANDSCAPES_KITSU__DB_PASSWORD}",
-                #     "SECRET_KEY": "${OPENSTUDIOLANDSCAPES_KITSU__SECRET_KEY}",
-                #     "PREVIEW_FOLDER": "${OPENSTUDIOLANDSCAPES_KITSU__PREVIEW_FOLDER}",
-                #     "TMP_DIR": "${OPENSTUDIOLANDSCAPES_KITSU__TMP_DIR}",
-                # },
+                "hostname": host_name,
+                "domainname": env["OPENSTUDIOLANDSCAPES__DOMAIN_LAN"],
+                "environment": {
+                    # https://zou.cg-wire.com/
+                    # "LC_ALL": "C.UTF-8",
+                    # "LANG": "C.UTF-8",
+                    "KITSU_ADMIN": env["KITSU_ADMIN_USER"],
+                    "DB_PASSWORD": env["KITSU_DB_PASSWORD"],
+                    "SECRET_KEY": env["KITSU_SECRET_KEY"],
+                    "PREVIEW_FOLDER": env["KITSU_PREVIEW_FOLDER"],
+                    "TMP_DIR": env["KITSU_TMP_DIR"],
+                },
                 "restart": DockerComposePolicies.RESTART_POLICY.NO.value,
                 # "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"
                 # % (build["image_name"], build["image_tags"][0]),
