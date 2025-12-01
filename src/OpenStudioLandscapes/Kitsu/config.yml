@@ -1,7 +1,9 @@
 # The default Admin user name
+# Changing this value does not seem to have an effect
 kitsu_admin_user: admin@example.com
-kitsu_postgres_conf: "{DOT_FEATURES}/{FEATURE}/.payload/config/etc/postresql/14/main/postgresql.conf"
+# Changing this value does not seem to have an effect
 kitsu_db_password: mysecretpassword
+kitsu_postgres_conf: "{DOT_FEATURES}/{FEATURE}/.payload/config/etc/postgresql/14/main/postgresql.conf"
 kitsu_enable_job_queue: true
 kitsu_port_container: 80
 kitsu_port_host: 4545

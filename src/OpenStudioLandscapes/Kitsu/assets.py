@@ -99,11 +99,15 @@ docker_config_json = get_docker_config_json(
         "env": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
         ),
+        # "CONFIG_STORE": AssetIn(
+        #     AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG_STORE"]),
+        # ),
     },
 )
 def compose_networks(
     context: AssetExecutionContext,
     env: dict,  # pylint: disable=redefined-outer-name
+    # CONFIG_STORE: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[
     Output[MutableMapping[str, MutableMapping[str, MutableMapping[str, str]]]]
     | AssetMaterialization,
@@ -366,20 +370,24 @@ def apt_packages(
 @asset(
     **ASSET_HEADER,
     ins={
-        "env": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
+        # "env": AssetIn(
+        #     AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
+        # ),
+        "CONFIG_STORE": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG_STORE"]),
         ),
     },
     description="`boto3` is required if `ENABLE_JOB_QUEUE = True`. More info here: https://zou.cg-wire.com/jobs/",
 )
 def pip_packages(
     context: AssetExecutionContext,
-    env: dict,  # pylint: disable=redefined-outer-name
+    # env: dict,  # pylint: disable=redefined-outer-name
+    CONFIG_STORE: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[list] | AssetMaterialization, None, None]:
 
     _pip_packages: list = []
 
-    if env["KITSU_ENABLE_JOB_QUEUE"]:
+    if CONFIG_STORE.kitsu_enable_job_queue:
 
         _pip_packages.extend(
             [
@@ -427,6 +435,9 @@ def pip_packages(
         "inject_postgres_conf": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "inject_postgres_conf"]),
         ),
+        # "CONFIG_STORE": AssetIn(
+        #     AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG_STORE"]),
+        # ),
     },
 )
 def build_docker_image(
@@ -439,6 +450,7 @@ def build_docker_image(
     pip_packages: list,  # pylint: disable=redefined-outer-name
     script_init_db: pathlib.Path,  # pylint: disable=redefined-outer-name
     inject_postgres_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
+    # CONFIG_STORE: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
     """ """
 
@@ -592,21 +604,23 @@ def build_docker_image(
 @asset(
     **ASSET_HEADER,
     ins={
-        "env": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
+        # "env": AssetIn(
+        #     AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
+        # ),
+        "CONFIG_STORE": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG_STORE"]),
         ),
     },
     description="",
 )
 def inject_postgres_conf(
     context: AssetExecutionContext,
-    env: dict,  # pylint: disable=redefined-outer-name
+    # env: dict,  # pylint: disable=redefined-outer-name
+    CONFIG_STORE: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
 
-    postgres_conf = pathlib.Path(
-        env["KITSU_POSTGRES_CONF"],
-    )
+    postgres_conf = CONFIG_STORE.kitsu_postgres_conf
 
     with open(
         file=postgres_conf,
@@ -633,12 +647,16 @@ def inject_postgres_conf(
         "env": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
         ),
+        # "CONFIG_STORE": AssetIn(
+        #     AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG_STORE"]),
+        # ),
     },
     description="",
 )
 def script_init_db(
     context: AssetExecutionContext,
     env: dict,  # pylint: disable=redefined-outer-name
+    # CONFIG_STORE: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
 
@@ -735,12 +753,16 @@ def script_init_db(
         "env": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
         ),
+        "CONFIG_STORE": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG_STORE"]),
+        ),
     },
     description="",
 )
 def supervisord_conf(
     context: AssetExecutionContext,
     env: dict,  # pylint: disable=redefined-outer-name
+    CONFIG_STORE: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """
     We create a custom `/etc/supervisord.conf` file that launches `rq worker` if
@@ -823,7 +845,7 @@ def supervisord_conf(
         """
     )
 
-    if env["KITSU_ENABLE_JOB_QUEUE"]:
+    if CONFIG_STORE.kitsu_enable_job_queue:
         supervisord_conf_str += textwrap.dedent(
             """
             [program:kitsu-job-queue]
@@ -910,6 +932,9 @@ def supervisord_conf(
         "supervisord_conf": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "supervisord_conf"]),
         ),
+        "CONFIG_STORE": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG_STORE"]),
+        ),
     },
 )
 def compose_kitsu(
@@ -918,6 +943,7 @@ def compose_kitsu(
     build: dict,  # pylint: disable=redefined-outer-name
     compose_networks: dict,  # pylint: disable=redefined-outer-name
     supervisord_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
+    CONFIG_STORE: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[dict] | AssetMaterialization, None, None]:
     """ """
 
@@ -928,7 +954,7 @@ def compose_kitsu(
         network_dict = {"networks": list(compose_networks.get("networks", {}).keys())}
         ports_dict = {
             "ports": [
-                f"{env['KITSU_PORT_HOST']}:{env['KITSU_PORT_CONTAINER']}",
+                f"{CONFIG_STORE.kitsu_port_host}:{CONFIG_STORE.kitsu_port_container}",
             ]
         }
     elif "network_mode" in compose_networks:
@@ -943,7 +969,7 @@ def compose_kitsu(
     if not KITSUDB_INSIDE_CONTAINER:
 
         kitsu_db_dir_host = (
-            pathlib.Path(env["KITSU_DATABASE_INSTALL_DESTINATION"]) / "postgresql"
+            CONFIG_STORE.kitsu_database_install_destination / "postgresql"
         )
         kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
         context.log.info(f"Directory {kitsu_db_dir_host.as_posix()} created.")
@@ -954,7 +980,7 @@ def compose_kitsu(
         )
 
         kitsu_previews_host = (
-            pathlib.Path(env["KITSU_DATABASE_INSTALL_DESTINATION"]) / "previews"
+            CONFIG_STORE.kitsu_database_install_destination / "previews"
         )
         kitsu_previews_host.mkdir(parents=True, exist_ok=True)
         context.log.info(f"Directory {kitsu_previews_host.as_posix()} created.")
@@ -1008,12 +1034,12 @@ def compose_kitsu(
                     # https://zou.cg-wire.com/
                     # "LC_ALL": "C.UTF-8",
                     # "LANG": "C.UTF-8",
-                    "KITSU_ADMIN": env["KITSU_ADMIN_USER"],
-                    "DB_PASSWORD": env["KITSU_DB_PASSWORD"],
-                    "SECRET_KEY": env["KITSU_SECRET_KEY"],
-                    "PREVIEW_FOLDER": env["KITSU_PREVIEW_FOLDER"],
-                    "TMP_DIR": env["KITSU_TMP_DIR"],
-                    "ENABLE_JOB_QUEUE": env["KITSU_ENABLE_JOB_QUEUE"],
+                    "KITSU_ADMIN": CONFIG_STORE.kitsu_admin_user,
+                    "DB_PASSWORD": CONFIG_STORE.kitsu_db_password,
+                    "SECRET_KEY": CONFIG_STORE.kitsu_secret_key,
+                    "PREVIEW_FOLDER": CONFIG_STORE.kitsu_preview_folder.as_posix(),
+                    "TMP_DIR": CONFIG_STORE.kitsu_tmp_dir.as_posix(),
+                    "ENABLE_JOB_QUEUE": CONFIG_STORE.kitsu_enable_job_queue,
                 },
                 # "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"
                 # % (build["image_name"], build["image_tags"][0]),
@@ -1074,6 +1100,9 @@ def compose_kitsu(
         "build": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "build_docker_image"]),
         ),
+        "CONFIG_STORE": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG_STORE"]),
+        ),
     },
     deps=[
         AssetKey([*ASSET_HEADER["key_prefix"], "script_init_db"]),
@@ -1085,6 +1114,7 @@ def compose_init_db(
     context: AssetExecutionContext,
     env: dict,  # pylint: disable=redefined-outer-name
     build: dict,  # pylint: disable=redefined-outer-name
+    CONFIG_STORE: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
     """ """
 
@@ -1109,7 +1139,7 @@ def compose_init_db(
     #     ports_dict = {}
 
     kitsu_db_dir_host = (
-        pathlib.Path(env["KITSU_DATABASE_INSTALL_DESTINATION"]) / "postgresql"
+        CONFIG_STORE.kitsu_database_install_destination / "postgresql"
     )
     kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
 
@@ -1166,11 +1196,11 @@ def compose_init_db(
                     # https://zou.cg-wire.com/
                     # "LC_ALL": "C.UTF-8",
                     # "LANG": "C.UTF-8",
-                    "KITSU_ADMIN": env["KITSU_ADMIN_USER"],
-                    "DB_PASSWORD": env["KITSU_DB_PASSWORD"],
-                    "SECRET_KEY": env["KITSU_SECRET_KEY"],
-                    "PREVIEW_FOLDER": env["KITSU_PREVIEW_FOLDER"],
-                    "TMP_DIR": env["KITSU_TMP_DIR"],
+                    "KITSU_ADMIN": CONFIG_STORE.kitsu_admin_user,
+                    "DB_PASSWORD": CONFIG_STORE.kitsu_db_password,
+                    "SECRET_KEY": CONFIG_STORE.kitsu_secret_key,
+                    "PREVIEW_FOLDER": CONFIG_STORE.kitsu_preview_folder.as_posix(),
+                    "TMP_DIR": CONFIG_STORE.kitsu_tmp_dir.as_posix(),
                 },
                 "restart": DockerComposePolicies.RESTART_POLICY.NO.value,
                 # "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"
