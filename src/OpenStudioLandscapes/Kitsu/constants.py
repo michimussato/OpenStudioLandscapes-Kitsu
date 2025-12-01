@@ -1,6 +1,7 @@
 __all__ = [
     "DOCKER_USE_CACHE",
     "KITSUDB_INSIDE_CONTAINER",
+    "FEATURE",
     "ASSET_HEADER",
     "FEATURE_CONFIGS",
 ]
