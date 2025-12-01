@@ -53,64 +53,6 @@ FEATURE_CONFIGS = {
         "DOCKER_USE_CACHE": DOCKER_USE_CACHE,
         # "HOSTNAME": "kitsu",
         # https://zou.cg-wire.com/jobs/#enabling-job-queue
-        "KITSU_ENABLE_JOB_QUEUE": True,
-        # Todo:
-        #  - [x] Report Kitsu bug:
-        #        https://github.com/cgwire/zou/issues/960
-        #        Not OK:
-        #        (env) root@kitsu:/opt/zou# zou create-admin --password openstudiolandscapes kitsu@openstudiolandscapes.com
-        #        Email is not valid.
-        #        OK:
-        #        (env) root@kitsu:/opt/zou# zou create-admin --password openstudiolandscapes kitsu@openstudio.com
-        #        Admin successfully created.
-        "KITSU_ADMIN_USER": "admin@example.com",
-        "KITSU_DB_PASSWORD": "mysecretpassword",
-        "KITSU_SECRET_KEY": "yourrandomsecretkey",
-        "KITSU_PREVIEW_FOLDER": "/opt/zou/previews",  # Default: "/opt/zou/previews"
-        "KITSU_TMP_DIR": "/opt/zou/tmp",  # Default: "/opt/zou/tmp"
-        "KITSU_PORT_HOST": "4545",
-        "KITSU_PORT_CONTAINER": "80",
-        f"KITSU_POSTGRES_CONF": pathlib.Path(
-            # /etc/postgresql/14/main/postgresql.conf
-            "{DOT_FEATURES}",
-            FEATURE,
-            ".payload",
-            "config",
-            "etc",
-            "postgresql",
-            "14",
-            "main",
-            "postgresql.conf",
-        )
-        .expanduser()
-        .as_posix(),
-        "KITSU_DATABASE_INSTALL_DESTINATION": {
-            #################################################################
-            # Kitsu Postgresql DB will be created in (hardcoded):
-            #################################################################
-            #################################################################
-            # Inside Landscape:
-            FeatureVolumeType.CONTAINED: pathlib.Path(
-                "{DOT_LANDSCAPES}",
-                "{LANDSCAPE}",
-                f"{GROUP}__{'__'.join(KEY)}",
-                "data",
-                "kitsu",
-            )
-            .expanduser()
-            .as_posix(),
-            #################################################################
-            # In Landscapes root:
-            FeatureVolumeType.SHARED: pathlib.Path(
-                "{DOT_LANDSCAPES}",
-                "{DOT_SHARED_VOLUMES}",
-                f"{GROUP}__{'__'.join(KEY)}",
-                "data",
-                "kitsu",
-            )
-            .expanduser()
-            .as_posix(),
-        }[FeatureVolumeType.CONTAINED],
     }
 }
 # @formatter:on
