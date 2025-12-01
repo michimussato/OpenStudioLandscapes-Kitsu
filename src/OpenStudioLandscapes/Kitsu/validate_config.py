@@ -20,9 +20,11 @@ class Config(BaseModel):
         if value == "admin@example.com":
             return value
         else:
-            raise ValueError("`kitsu_admin_user` (as the initial default) "
-                             "must be `admin@example.com` for now. Other "
-                             "values will render Kitsu inoperable")
+            raise ValueError(
+                "`kitsu_admin_user` (as the initial default) "
+                "must be `admin@example.com` for now. Other "
+                "values will render Kitsu inoperable"
+            )
 
     @field_validator("kitsu_db_password")
     @classmethod
@@ -30,9 +32,11 @@ class Config(BaseModel):
         if value == "mysecretpassword":
             return value
         else:
-            raise ValueError("`kitsu_db_password` (as the initial default) "
-                             "must be `mysecretpassword` for now. Other "
-                             "values will render Kitsu inoperable")
+            raise ValueError(
+                "`kitsu_db_password` (as the initial default) "
+                "must be `mysecretpassword` for now. Other "
+                "values will render Kitsu inoperable"
+            )
 
     @field_validator("kitsu_port_container")
     @classmethod
@@ -40,8 +44,10 @@ class Config(BaseModel):
         if value == 80:
             return value
         else:
-            raise ValueError("`kitsu_port_container` must be set "
-                             "to 80 for now. Other values will render Kitsu inoperable.")
+            raise ValueError(
+                "`kitsu_port_container` must be set "
+                "to 80 for now. Other values will render Kitsu inoperable."
+            )
 
     @field_validator("kitsu_postgres_conf")
     @classmethod
