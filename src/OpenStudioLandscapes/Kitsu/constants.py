@@ -24,7 +24,6 @@ LOGGER = get_dagster_logger(__name__)
 
 from OpenStudioLandscapes.engine.constants import DOCKER_USE_CACHE_GLOBAL
 from OpenStudioLandscapes.engine.enums import (
-    FeatureVolumeType,
     OpenStudioLandscapesConfig,
 )
 

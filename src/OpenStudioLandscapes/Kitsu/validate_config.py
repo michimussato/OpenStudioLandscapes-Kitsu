@@ -49,11 +49,11 @@ class Config(BaseModel):
                 "to 80 for now. Other values will render Kitsu inoperable."
             )
 
-    @field_validator("kitsu_postgres_conf")
-    @classmethod
-    def ensure_valid__kitsu_postgres_conf(cls, value: pathlib.PosixPath):
-        if value.exists():
-            return value
-        else:
-            raise ValueError(f"`kitsu_postgres_conf` ({value.as_posix()}) "
-                             f"does not exist.")
+    # @field_validator("kitsu_postgres_conf")
+    # @classmethod
+    # def ensure_valid__kitsu_postgres_conf(cls, value: pathlib.PosixPath):
+    #     if value.exists():
+    #         return value
+    #     else:
+    #         raise ValueError(f"`kitsu_postgres_conf` ({value.as_posix()}) "
+    #                          f"does not exist.")
