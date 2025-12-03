@@ -33,6 +33,7 @@ from OpenStudioLandscapes.engine.common_assets.env import get_env
 from OpenStudioLandscapes.engine.common_assets.feature_out import get_feature_out
 from OpenStudioLandscapes.engine.common_assets.group_in import get_group_in
 from OpenStudioLandscapes.engine.common_assets.group_out import get_group_out
+from OpenStudioLandscapes.engine.config.validate_config import ConfigEngine
 from OpenStudioLandscapes.engine.constants import *
 from OpenStudioLandscapes.engine.enums import *
 from OpenStudioLandscapes.engine.utils import *
@@ -40,6 +41,7 @@ from OpenStudioLandscapes.engine.utils.docker.compose_dicts import *
 
 from OpenStudioLandscapes.Kitsu.constants import *
 from OpenStudioLandscapes.Kitsu.validate_config import Config
+from OpenStudioLandscapes.engine.config.validate_config import DockerRegistryConfig
 
 constants = get_constants(
     ASSET_HEADER=ASSET_HEADER,
@@ -99,15 +101,15 @@ docker_config_json = get_docker_config_json(
         "env": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
         ),
-        # "CONFIG_STORE": AssetIn(
-        #     AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG_STORE"]),
+        # "CONFIG": AssetIn(
+        #     AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         # ),
     },
 )
 def compose_networks(
     context: AssetExecutionContext,
     env: dict,  # pylint: disable=redefined-outer-name
-    # CONFIG_STORE: Config,  # pylint: disable=redefined-outer-name
+    # CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[
     Output[MutableMapping[str, MutableMapping[str, MutableMapping[str, str]]]]
     | AssetMaterialization,
@@ -132,9 +134,9 @@ def compose_networks(
         metadata={
             "__".join(context.asset_key.path): MetadataValue.json(docker_dict),
             "compose_network_mode": MetadataValue.text(compose_network_mode.value),
-            "docker_dict": MetadataValue.md(
-                f"```json\n{json.dumps(docker_dict, indent=2)}\n```"
-            ),
+            # "docker_dict": MetadataValue.md(
+            #     f"```json\n{json.dumps(docker_dict, indent=2)}\n```"
+            # ),
             "docker_yaml": MetadataValue.md(f"```shell\n{docker_yaml}\n```"),
         },
     )
@@ -150,7 +152,7 @@ def compose_networks(
         """
     )
 )
-def CONFIG_DEFAULT(
+def CONFIG_BLUEPRINT(
     context: AssetExecutionContext,
 ) -> Generator[
     Output[str] | AssetMaterialization,
@@ -158,7 +160,7 @@ def CONFIG_DEFAULT(
     None,
 ]:
 
-    with open(pathlib.Path(__file__).parent / "config.yml") as fr:
+    with open(pathlib.Path(__file__).parent / "config_blueprint.yml") as fr:
         # This is str so that comments are read as well
         config_str: str = fr.read()
 
@@ -205,8 +207,11 @@ def CONFIG_DEFAULT(
         "env": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
         ),
+        "group_in": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
+        ),
         "CONFIG_DEFAULT": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG_DEFAULT"]),
+            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG_BLUEPRINT"]),
         ),
     },
     description=textwrap.dedent(
@@ -217,9 +222,10 @@ def CONFIG_DEFAULT(
         """
     )
 )
-def CONFIG_STORE(
+def CONFIG(
     context: AssetExecutionContext,
     env: dict,  # pylint: disable=redefined-outer-name
+    group_in: dict,  # pylint: disable=redefined-outer-name
     CONFIG_DEFAULT: str,  # pylint: disable=redefined-outer-name
 ) -> Generator[
     Output[Config]
@@ -228,9 +234,12 @@ def CONFIG_STORE(
     None,
 ]:
 
-    configs_root = pathlib.Path(EnvVar("OPENSTUDIOLANDSCAPES__CONFIGSTORE_ROOT").get_value(), f"{ASSET_HEADER['group_name']}__{'__'.join(ASSET_HEADER['key_prefix'])}").expanduser().resolve()
-    config_yml = pathlib.Path(configs_root / "config.yml")
-    configs_root.mkdir(parents=True, exist_ok=True)
+    config_engine: ConfigEngine = group_in.pop("config_engine")
+    configs_root: pathlib.Path = config_engine.openstudiolandscapes__configstore_root
+
+    configs_root_feature = pathlib.Path(configs_root, f"{ASSET_HEADER['group_name']}__{'__'.join(ASSET_HEADER['key_prefix'])}").expanduser().resolve()
+    configs_root_feature.mkdir(parents=True, exist_ok=True)
+    config_yml = pathlib.Path(configs_root_feature / "config.yml")
 
     # config_result = CONFIG_DEFAULT.copy()
     config_default_ = yaml.safe_load(CONFIG_DEFAULT)
@@ -264,11 +273,13 @@ def CONFIG_STORE(
                 # Layer the dicts on top of each other
                 # to create the resulting Config
                 # Todo:
-                #  - [ ] is that a safe operation?
-                **{
-                    **config_default_,
-                    **config_store,
-                }
+                #  - [x] is that a safe operation?
+                #        -> No
+                # **{
+                #     **config_default_,
+                #     **config_store,
+                # },
+                **config_store
             )
             context.log.debug(f"Validated.")
         except ValidationError as err:
@@ -293,7 +304,7 @@ def CONFIG_STORE(
         },
     )
 
-    context.log.error(f"{config_expanded = }")
+    # context.log.debug(f"{config_expanded = }")
 
     try:
         # Final validation of the parsed configs
@@ -373,8 +384,8 @@ def apt_packages(
         # "env": AssetIn(
         #     AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
         # ),
-        "CONFIG_STORE": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG_STORE"]),
+        "CONFIG": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         ),
     },
     description="`boto3` is required if `ENABLE_JOB_QUEUE = True`. More info here: https://zou.cg-wire.com/jobs/",
@@ -382,12 +393,12 @@ def apt_packages(
 def pip_packages(
     context: AssetExecutionContext,
     # env: dict,  # pylint: disable=redefined-outer-name
-    CONFIG_STORE: Config,  # pylint: disable=redefined-outer-name
+    CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[list] | AssetMaterialization, None, None]:
 
     _pip_packages: list = []
 
-    if CONFIG_STORE.kitsu_enable_job_queue:
+    if CONFIG.kitsu_enable_job_queue:
 
         _pip_packages.extend(
             [
@@ -415,14 +426,14 @@ def pip_packages(
             AssetKey([*ASSET_HEADER["key_prefix"], "docker_config_json"]),
         ),
         "group_in": AssetIn(
-            AssetKey([*ASSET_HEADER_BASE["key_prefix"], str(GroupIn.BASE_IN)])
+            AssetKey([*ASSET_HEADER["key_prefix"], "group_in"])
         ),
         # "docker_image": AssetIn(
         #     AssetKey([*ASSET_HEADER["key_prefix"], "docker_image"])
         # ),
-        "docker_config": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "docker_config"])
-        ),
+        # "docker_config": AssetIn(
+        #     AssetKey([*ASSET_HEADER["key_prefix"], "docker_config"])
+        # ),
         "apt_packages": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "apt_packages"]),
         ),
@@ -435,8 +446,8 @@ def pip_packages(
         "inject_postgres_conf": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "inject_postgres_conf"]),
         ),
-        # "CONFIG_STORE": AssetIn(
-        #     AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG_STORE"]),
+        # "CONFIG": AssetIn(
+        #     AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         # ),
     },
 )
@@ -445,14 +456,19 @@ def build_docker_image(
     env: dict,  # pylint: disable=redefined-outer-name
     docker_config_json: pathlib.Path,  # pylint: disable=redefined-outer-name
     group_in: dict,  # pylint: disable=redefined-outer-name
-    docker_config: DockerConfig,  # pylint: disable=redefined-outer-name
+    # docker_config: DockerRegistryConfig,  # pylint: disable=redefined-outer-name
+    # docker_config: dict,  # pylint: disable=redefined-outer-name
     apt_packages: dict[str, list[str]],  # pylint: disable=redefined-outer-name
     pip_packages: list,  # pylint: disable=redefined-outer-name
     script_init_db: pathlib.Path,  # pylint: disable=redefined-outer-name
     inject_postgres_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
-    # CONFIG_STORE: Config,  # pylint: disable=redefined-outer-name
+    # CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
     """ """
+
+    config_engine: ConfigEngine = group_in.pop("config_engine")
+
+    docker_config: DockerRegistryConfig = config_engine.openstudiolandscapes__docker_config.docker_registry_config
 
     docker_image: dict = group_in["docker_image"]
 
@@ -607,8 +623,8 @@ def build_docker_image(
         # "env": AssetIn(
         #     AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
         # ),
-        "CONFIG_STORE": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG_STORE"]),
+        "CONFIG": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         ),
     },
     description="",
@@ -616,11 +632,11 @@ def build_docker_image(
 def inject_postgres_conf(
     context: AssetExecutionContext,
     # env: dict,  # pylint: disable=redefined-outer-name
-    CONFIG_STORE: Config,  # pylint: disable=redefined-outer-name
+    CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
 
-    postgres_conf = CONFIG_STORE.kitsu_postgres_conf
+    postgres_conf = CONFIG.kitsu_postgres_conf
 
     with open(
         file=postgres_conf,
@@ -647,8 +663,8 @@ def inject_postgres_conf(
         "env": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
         ),
-        # "CONFIG_STORE": AssetIn(
-        #     AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG_STORE"]),
+        # "CONFIG": AssetIn(
+        #     AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         # ),
     },
     description="",
@@ -656,7 +672,7 @@ def inject_postgres_conf(
 def script_init_db(
     context: AssetExecutionContext,
     env: dict,  # pylint: disable=redefined-outer-name
-    # CONFIG_STORE: Config,  # pylint: disable=redefined-outer-name
+    # CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
 
@@ -753,8 +769,8 @@ def script_init_db(
         "env": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
         ),
-        "CONFIG_STORE": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG_STORE"]),
+        "CONFIG": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         ),
     },
     description="",
@@ -762,7 +778,7 @@ def script_init_db(
 def supervisord_conf(
     context: AssetExecutionContext,
     env: dict,  # pylint: disable=redefined-outer-name
-    CONFIG_STORE: Config,  # pylint: disable=redefined-outer-name
+    CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """
     We create a custom `/etc/supervisord.conf` file that launches `rq worker` if
@@ -845,7 +861,7 @@ def supervisord_conf(
         """
     )
 
-    if CONFIG_STORE.kitsu_enable_job_queue:
+    if CONFIG.kitsu_enable_job_queue:
         supervisord_conf_str += textwrap.dedent(
             """
             [program:kitsu-job-queue]
@@ -932,8 +948,8 @@ def supervisord_conf(
         "supervisord_conf": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "supervisord_conf"]),
         ),
-        "CONFIG_STORE": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG_STORE"]),
+        "CONFIG": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         ),
     },
 )
@@ -943,7 +959,7 @@ def compose_kitsu(
     build: dict,  # pylint: disable=redefined-outer-name
     compose_networks: dict,  # pylint: disable=redefined-outer-name
     supervisord_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
-    CONFIG_STORE: Config,  # pylint: disable=redefined-outer-name
+    CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[dict] | AssetMaterialization, None, None]:
     """ """
 
@@ -954,7 +970,7 @@ def compose_kitsu(
         network_dict = {"networks": list(compose_networks.get("networks", {}).keys())}
         ports_dict = {
             "ports": [
-                f"{CONFIG_STORE.kitsu_port_host}:{CONFIG_STORE.kitsu_port_container}",
+                f"{CONFIG.kitsu_port_host}:{CONFIG.kitsu_port_container}",
             ]
         }
     elif "network_mode" in compose_networks:
@@ -969,7 +985,7 @@ def compose_kitsu(
     if not KITSUDB_INSIDE_CONTAINER:
 
         kitsu_db_dir_host = (
-            CONFIG_STORE.kitsu_database_install_destination / "postgresql"
+            CONFIG.kitsu_database_install_destination / "postgresql"
         )
         kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
         context.log.info(f"Directory {kitsu_db_dir_host.as_posix()} created.")
@@ -980,7 +996,7 @@ def compose_kitsu(
         )
 
         kitsu_previews_host = (
-            CONFIG_STORE.kitsu_database_install_destination / "previews"
+            CONFIG.kitsu_database_install_destination / "previews"
         )
         kitsu_previews_host.mkdir(parents=True, exist_ok=True)
         context.log.info(f"Directory {kitsu_previews_host.as_posix()} created.")
@@ -1034,12 +1050,12 @@ def compose_kitsu(
                     # https://zou.cg-wire.com/
                     # "LC_ALL": "C.UTF-8",
                     # "LANG": "C.UTF-8",
-                    "KITSU_ADMIN": CONFIG_STORE.kitsu_admin_user,
-                    "DB_PASSWORD": CONFIG_STORE.kitsu_db_password,
-                    "SECRET_KEY": CONFIG_STORE.kitsu_secret_key,
-                    "PREVIEW_FOLDER": CONFIG_STORE.kitsu_preview_folder.as_posix(),
-                    "TMP_DIR": CONFIG_STORE.kitsu_tmp_dir.as_posix(),
-                    "ENABLE_JOB_QUEUE": CONFIG_STORE.kitsu_enable_job_queue,
+                    "KITSU_ADMIN": CONFIG.kitsu_admin_user,
+                    "DB_PASSWORD": CONFIG.kitsu_db_password,
+                    "SECRET_KEY": CONFIG.kitsu_secret_key,
+                    "PREVIEW_FOLDER": CONFIG.kitsu_preview_folder.as_posix(),
+                    "TMP_DIR": CONFIG.kitsu_tmp_dir.as_posix(),
+                    "ENABLE_JOB_QUEUE": CONFIG.kitsu_enable_job_queue,
                 },
                 # "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"
                 # % (build["image_name"], build["image_tags"][0]),
@@ -1100,8 +1116,8 @@ def compose_kitsu(
         "build": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "build_docker_image"]),
         ),
-        "CONFIG_STORE": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG_STORE"]),
+        "CONFIG": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         ),
     },
     deps=[
@@ -1114,7 +1130,7 @@ def compose_init_db(
     context: AssetExecutionContext,
     env: dict,  # pylint: disable=redefined-outer-name
     build: dict,  # pylint: disable=redefined-outer-name
-    CONFIG_STORE: Config,  # pylint: disable=redefined-outer-name
+    CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
     """ """
 
@@ -1139,7 +1155,7 @@ def compose_init_db(
     #     ports_dict = {}
 
     kitsu_db_dir_host = (
-        CONFIG_STORE.kitsu_database_install_destination / "postgresql"
+        CONFIG.kitsu_database_install_destination / "postgresql"
     )
     kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
 
@@ -1196,11 +1212,11 @@ def compose_init_db(
                     # https://zou.cg-wire.com/
                     # "LC_ALL": "C.UTF-8",
                     # "LANG": "C.UTF-8",
-                    "KITSU_ADMIN": CONFIG_STORE.kitsu_admin_user,
-                    "DB_PASSWORD": CONFIG_STORE.kitsu_db_password,
-                    "SECRET_KEY": CONFIG_STORE.kitsu_secret_key,
-                    "PREVIEW_FOLDER": CONFIG_STORE.kitsu_preview_folder.as_posix(),
-                    "TMP_DIR": CONFIG_STORE.kitsu_tmp_dir.as_posix(),
+                    "KITSU_ADMIN": CONFIG.kitsu_admin_user,
+                    "DB_PASSWORD": CONFIG.kitsu_db_password,
+                    "SECRET_KEY": CONFIG.kitsu_secret_key,
+                    "PREVIEW_FOLDER": CONFIG.kitsu_preview_folder.as_posix(),
+                    "TMP_DIR": CONFIG.kitsu_tmp_dir.as_posix(),
                 },
                 "restart": DockerComposePolicies.RESTART_POLICY.NO.value,
                 # "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"

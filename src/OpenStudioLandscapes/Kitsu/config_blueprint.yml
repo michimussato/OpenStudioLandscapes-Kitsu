@@ -30,3 +30,4 @@ kitsu_tmp_dir: /opt/zou/tmp
 illegal_option: "i will be ignored"
 ignored_option: "i will be ignored"
 
+compose_scope: license_server

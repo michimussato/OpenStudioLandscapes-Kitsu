@@ -2,6 +2,9 @@ import pathlib
 
 from pydantic import BaseModel, field_validator
 
+from OpenStudioLandscapes.engine.enums import ComposeScope
+
+
 class Config(BaseModel):
     kitsu_admin_user: str
     kitsu_postgres_conf: pathlib.Path
@@ -13,6 +16,7 @@ class Config(BaseModel):
     kitsu_preview_folder: pathlib.Path
     kitsu_secret_key: str
     kitsu_tmp_dir: pathlib.Path
+    compose_scope: ComposeScope
 
     @field_validator("kitsu_admin_user")
     @classmethod
