@@ -41,7 +41,7 @@ from OpenStudioLandscapes.engine.utils.docker.compose_dicts import *
 
 from OpenStudioLandscapes.Kitsu.constants import *
 from OpenStudioLandscapes.Kitsu.validate_config import Config
-from OpenStudioLandscapes.engine.config.validate_config import DockerRegistryConfig
+from OpenStudioLandscapes.engine.config.validate_config import DockerRegistryConfig, DockerConfigModel
 
 constants = get_constants(
     ASSET_HEADER=ASSET_HEADER,
@@ -468,7 +468,7 @@ def build_docker_image(
 
     config_engine: ConfigEngine = group_in.pop("config_engine")
 
-    docker_config: DockerRegistryConfig = config_engine.openstudiolandscapes__docker_config.docker_registry_config
+    docker_config: DockerConfigModel = config_engine.openstudiolandscapes__docker_config
 
     docker_image: dict = group_in["docker_image"]
 
