@@ -15,7 +15,6 @@ from dagster import (
     AssetIn,
     AssetKey,
     AssetMaterialization,
-    # EnvVar,
     MetadataValue,
     Output,
     asset,
@@ -25,7 +24,6 @@ from OpenStudioLandscapes.engine.common_assets.constants import get_constants
 from OpenStudioLandscapes.engine.common_assets.docker_compose_graph import (
     get_docker_compose_graph,
 )
-# from OpenStudioLandscapes.engine.common_assets.docker_config import get_docker_config
 from OpenStudioLandscapes.engine.common_assets.docker_config_json import (
     get_docker_config_json,
 )
@@ -46,11 +44,6 @@ from OpenStudioLandscapes.engine.config.validate_config import DockerConfigModel
 constants = get_constants(
     ASSET_HEADER=ASSET_HEADER,
 )
-
-
-# docker_config = get_docker_config(
-#     ASSET_HEADER=ASSET_HEADER,
-# )
 
 
 group_in = get_group_in(
@@ -371,9 +364,6 @@ def apt_packages(
 @asset(
     **ASSET_HEADER,
     ins={
-        # "env": AssetIn(
-        #     AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
-        # ),
         "CONFIG": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         ),
@@ -382,7 +372,6 @@ def apt_packages(
 )
 def pip_packages(
     context: AssetExecutionContext,
-    # env: dict,  # pylint: disable=redefined-outer-name
     CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[list] | AssetMaterialization, None, None]:
 
@@ -418,12 +407,6 @@ def pip_packages(
         "group_in": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "group_in"])
         ),
-        # "docker_image": AssetIn(
-        #     AssetKey([*ASSET_HEADER["key_prefix"], "docker_image"])
-        # ),
-        # "docker_config": AssetIn(
-        #     AssetKey([*ASSET_HEADER["key_prefix"], "docker_config"])
-        # ),
         "apt_packages": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "apt_packages"]),
         ),
@@ -436,9 +419,6 @@ def pip_packages(
         "inject_postgres_conf": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "inject_postgres_conf"]),
         ),
-        # "CONFIG": AssetIn(
-        #     AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
-        # ),
     },
 )
 def build_docker_image(
@@ -446,13 +426,10 @@ def build_docker_image(
     env: dict,  # pylint: disable=redefined-outer-name
     docker_config_json: pathlib.Path,  # pylint: disable=redefined-outer-name
     group_in: dict,  # pylint: disable=redefined-outer-name
-    # docker_config: DockerRegistryConfig,  # pylint: disable=redefined-outer-name
-    # docker_config: dict,  # pylint: disable=redefined-outer-name
     apt_packages: dict[str, list[str]],  # pylint: disable=redefined-outer-name
     pip_packages: list,  # pylint: disable=redefined-outer-name
     script_init_db: pathlib.Path,  # pylint: disable=redefined-outer-name
     inject_postgres_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
-    # CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
     """ """
 
@@ -610,9 +587,6 @@ def build_docker_image(
 @asset(
     **ASSET_HEADER,
     ins={
-        # "env": AssetIn(
-        #     AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
-        # ),
         "CONFIG": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         ),
@@ -621,7 +595,6 @@ def build_docker_image(
 )
 def inject_postgres_conf(
     context: AssetExecutionContext,
-    # env: dict,  # pylint: disable=redefined-outer-name
     CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
@@ -653,16 +626,12 @@ def inject_postgres_conf(
         "env": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
         ),
-        # "CONFIG": AssetIn(
-        #     AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
-        # ),
     },
     description="",
 )
 def script_init_db(
     context: AssetExecutionContext,
     env: dict,  # pylint: disable=redefined-outer-name
-    # CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
 
