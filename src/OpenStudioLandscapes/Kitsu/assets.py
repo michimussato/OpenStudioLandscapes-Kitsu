@@ -15,7 +15,7 @@ from dagster import (
     AssetIn,
     AssetKey,
     AssetMaterialization,
-    EnvVar,
+    # EnvVar,
     MetadataValue,
     Output,
     asset,
@@ -25,7 +25,7 @@ from OpenStudioLandscapes.engine.common_assets.constants import get_constants
 from OpenStudioLandscapes.engine.common_assets.docker_compose_graph import (
     get_docker_compose_graph,
 )
-from OpenStudioLandscapes.engine.common_assets.docker_config import get_docker_config
+# from OpenStudioLandscapes.engine.common_assets.docker_config import get_docker_config
 from OpenStudioLandscapes.engine.common_assets.docker_config_json import (
     get_docker_config_json,
 )
@@ -41,16 +41,16 @@ from OpenStudioLandscapes.engine.utils.docker.compose_dicts import *
 
 from OpenStudioLandscapes.Kitsu.constants import *
 from OpenStudioLandscapes.Kitsu.validate_config import Config
-from OpenStudioLandscapes.engine.config.validate_config import DockerRegistryConfig, DockerConfigModel
+from OpenStudioLandscapes.engine.config.validate_config import DockerConfigModel
 
 constants = get_constants(
     ASSET_HEADER=ASSET_HEADER,
 )
 
 
-docker_config = get_docker_config(
-    ASSET_HEADER=ASSET_HEADER,
-)
+# docker_config = get_docker_config(
+#     ASSET_HEADER=ASSET_HEADER,
+# )
 
 
 group_in = get_group_in(
@@ -101,15 +101,11 @@ docker_config_json = get_docker_config_json(
         "env": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
         ),
-        # "CONFIG": AssetIn(
-        #     AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
-        # ),
     },
 )
 def compose_networks(
     context: AssetExecutionContext,
     env: dict,  # pylint: disable=redefined-outer-name
-    # CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[
     Output[MutableMapping[str, MutableMapping[str, MutableMapping[str, str]]]]
     | AssetMaterialization,
@@ -134,9 +130,6 @@ def compose_networks(
         metadata={
             "__".join(context.asset_key.path): MetadataValue.json(docker_dict),
             "compose_network_mode": MetadataValue.text(compose_network_mode.value),
-            # "docker_dict": MetadataValue.md(
-            #     f"```json\n{json.dumps(docker_dict, indent=2)}\n```"
-            # ),
             "docker_yaml": MetadataValue.md(f"```shell\n{docker_yaml}\n```"),
         },
     )
@@ -164,10 +157,7 @@ def CONFIG_BLUEPRINT(
         # This is str so that comments are read as well
         config_str: str = fr.read()
 
-    # with open(pathlib.Path(__file__).parent / "config.yml") as fr:
     config = yaml.safe_load(config_str)
-
-    # context.log.debug(f"{config = }")
 
     try:
         context.log.info(f"Validating: {config = }")
@@ -951,6 +941,9 @@ def supervisord_conf(
         "CONFIG": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         ),
+        "group_in": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
+        ),
     },
 )
 def compose_kitsu(
@@ -960,8 +953,11 @@ def compose_kitsu(
     compose_networks: dict,  # pylint: disable=redefined-outer-name
     supervisord_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
     CONFIG: Config,  # pylint: disable=redefined-outer-name
+    group_in: dict,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[dict] | AssetMaterialization, None, None]:
     """ """
+
+    config_engine: ConfigEngine = group_in.pop("config_engine")
 
     network_dict = {}
     ports_dict = {}
@@ -1036,7 +1032,7 @@ def compose_kitsu(
         context=context,
         service_name=service_name,
         landscape_id=env.get("LANDSCAPE", "default"),
-        domain_lan=env.get("OPENSTUDIOLANDSCAPES__DOMAIN_LAN"),
+        domain_lan=config_engine.openstudiolandscapes__domain_lan,
     )
 
     docker_dict = {
@@ -1044,7 +1040,7 @@ def compose_kitsu(
             service_name: {
                 "container_name": container_name,
                 "hostname": host_name,
-                "domainname": env["OPENSTUDIOLANDSCAPES__DOMAIN_LAN"],
+                "domainname": config_engine.openstudiolandscapes__domain_lan,
                 "restart": DockerComposePolicies.RESTART_POLICY.ALWAYS.value,
                 "environment": {
                     # https://zou.cg-wire.com/
@@ -1119,6 +1115,9 @@ def compose_kitsu(
         "CONFIG": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         ),
+        "group_in": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
+        ),
     },
     deps=[
         AssetKey([*ASSET_HEADER["key_prefix"], "script_init_db"]),
@@ -1131,8 +1130,11 @@ def compose_init_db(
     env: dict,  # pylint: disable=redefined-outer-name
     build: dict,  # pylint: disable=redefined-outer-name
     CONFIG: Config,  # pylint: disable=redefined-outer-name
+    group_in: dict,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
     """ """
+
+    config_engine: ConfigEngine = group_in.pop("config_engine")
 
     # network_dict = {}
     # ports_dict = {}
@@ -1199,7 +1201,7 @@ def compose_init_db(
         context=context,
         service_name=service_name,
         landscape_id=env.get("LANDSCAPE", "default"),
-        domain_lan=env.get("OPENSTUDIOLANDSCAPES__DOMAIN_LAN"),
+        domain_lan=config_engine.openstudiolandscapes__domain_lan,
     )
 
     docker_dict = {
@@ -1207,7 +1209,7 @@ def compose_init_db(
             service_name: {
                 "container_name": container_name,
                 "hostname": host_name,
-                "domainname": env["OPENSTUDIOLANDSCAPES__DOMAIN_LAN"],
+                "domainname": config_engine.openstudiolandscapes__domain_lan,
                 "environment": {
                     # https://zou.cg-wire.com/
                     # "LC_ALL": "C.UTF-8",
@@ -1283,30 +1285,30 @@ def compose_maps(
     )
 
 
-@asset(
-    **ASSET_HEADER,
-    ins={
-        "features_in": AssetIn(AssetKey([*ASSET_HEADER["key_prefix"], "group_in"])),
-    },
-)
-def docker_image(
-    context: AssetExecutionContext,
-    features_in: dict,
-) -> Generator[Output[dict] | AssetMaterialization, None, None]:
-
-    context.log.info(features_in)
-
-    _docker_image: dict = features_in.pop("docker_image")
-    context.log.info(_docker_image)
-
-    yield Output(_docker_image)
-
-    yield AssetMaterialization(
-        asset_key=context.asset_key,
-        metadata={
-            "docker_image": MetadataValue.json(_docker_image),
-        },
-    )
+# @asset(
+#     **ASSET_HEADER,
+#     ins={
+#         "features_in": AssetIn(AssetKey([*ASSET_HEADER["key_prefix"], "group_in"])),
+#     },
+# )
+# def docker_image(
+#     context: AssetExecutionContext,
+#     features_in: dict,
+# ) -> Generator[Output[dict] | AssetMaterialization, None, None]:
+#
+#     context.log.info(features_in)
+#
+#     _docker_image: dict = features_in.pop("docker_image")
+#     context.log.info(_docker_image)
+#
+#     yield Output(_docker_image)
+#
+#     yield AssetMaterialization(
+#         asset_key=context.asset_key,
+#         metadata={
+#             "docker_image": MetadataValue.json(_docker_image),
+#         },
+#     )
 
 
 @asset(
