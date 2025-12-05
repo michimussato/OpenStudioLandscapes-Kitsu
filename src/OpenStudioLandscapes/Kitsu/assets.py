@@ -78,6 +78,7 @@ feature_out = get_feature_out(
         "env": dict,
         "compose": dict,
         "group_in": dict,
+        "CONFIG": Config,
     },
 )
 
@@ -129,6 +130,12 @@ def compose_networks(
 
 @asset(
     **ASSET_HEADER,
+    deps=[
+        # This dep is needed for this Asset
+        # to be evaluated AFTER
+        # upstream Features (Asset Groups)
+        AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
+    ],
     description=textwrap.dedent(
         """
         Loads the default `config.yml` that comes with

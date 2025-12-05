@@ -1,9 +1,7 @@
 __all__ = [
-    "DOCKER_USE_CACHE",
     "KITSUDB_INSIDE_CONTAINER",
     "FEATURE",
     "ASSET_HEADER",
-    "FEATURE_CONFIGS",
 ]
 
 import pathlib
@@ -22,12 +20,10 @@ from dagster import (
 
 LOGGER = get_dagster_logger(__name__)
 
-from OpenStudioLandscapes.engine.constants import DOCKER_USE_CACHE_GLOBAL
 from OpenStudioLandscapes.engine.enums import (
     OpenStudioLandscapesConfig,
 )
 
-DOCKER_USE_CACHE = DOCKER_USE_CACHE_GLOBAL or False
 KITSUDB_INSIDE_CONTAINER = False
 
 
@@ -46,16 +42,6 @@ DOCUMENTATION = [
     "https://github.com/cgwire/kitsu-docker",
 ]
 
-# @formatter:off
-FEATURE_CONFIGS = {
-    OpenStudioLandscapesConfig.DEFAULT: {
-        "DOCKER_USE_CACHE": DOCKER_USE_CACHE,
-        # "HOSTNAME": "kitsu",
-        # https://zou.cg-wire.com/jobs/#enabling-job-queue
-    }
-}
-# @formatter:on
-
 
 # Todo:
 #  - [ ] move to common_assets
@@ -65,11 +51,6 @@ FEATURE_CONFIGS = {
         "NAME": AssetOut(
             **ASSET_HEADER,
             dagster_type=str,
-            description="",
-        ),
-        "FEATURE_CONFIGS": AssetOut(
-            **ASSET_HEADER,
-            dagster_type=dict,
             description="",
         ),
         "DOCKER_COMPOSE": AssetOut(
@@ -95,20 +76,6 @@ def constants_multi_asset(
     None,
 ]:
     """ """
-
-    yield Output(
-        output_name="FEATURE_CONFIGS",
-        value=FEATURE_CONFIGS,
-    )
-
-    yield AssetMaterialization(
-        asset_key=context.asset_key_for_output("FEATURE_CONFIGS"),
-        metadata={
-            "__".join(
-                context.asset_key_for_output("FEATURE_CONFIGS").path
-            ): MetadataValue.json(FEATURE_CONFIGS),
-        },
-    )
 
     yield Output(
         output_name="NAME",
