@@ -31,7 +31,7 @@ from OpenStudioLandscapes.engine.common_assets.env import get_env
 from OpenStudioLandscapes.engine.common_assets.feature_out import get_feature_out
 from OpenStudioLandscapes.engine.common_assets.group_in import get_group_in
 from OpenStudioLandscapes.engine.common_assets.group_out import get_group_out
-from OpenStudioLandscapes.engine.config.validate_config import ConfigEngine
+from OpenStudioLandscapes.engine.config.validate_config import ConfigEngine, DockerConfigModel
 from OpenStudioLandscapes.engine.constants import *
 from OpenStudioLandscapes.engine.enums import *
 from OpenStudioLandscapes.engine.utils import *
@@ -39,7 +39,6 @@ from OpenStudioLandscapes.engine.utils.docker.compose_dicts import *
 
 from OpenStudioLandscapes.Kitsu.constants import *
 from OpenStudioLandscapes.Kitsu.validate_config import Config
-from OpenStudioLandscapes.engine.config.validate_config import DockerConfigModel
 
 constants = get_constants(
     ASSET_HEADER=ASSET_HEADER,
@@ -368,7 +367,14 @@ def apt_packages(
             AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         ),
     },
-    description="`boto3` is required if `ENABLE_JOB_QUEUE = True`. More info here: https://zou.cg-wire.com/jobs/",
+    description=textwrap.dedent(
+        """
+        `boto3` is required if `kitsu_enable_job_queue` is `true`.
+        
+        Reference:
+        - [https://zou.cg-wire.com/jobs/]()
+        """
+    ),
 )
 def pip_packages(
     context: AssetExecutionContext,
