@@ -40,6 +40,11 @@ class Config(FeatureBaseModel):
         frozen=False,
     )
     kitsu_database_install_destination: pathlib.Path = Field()
+    kitsu_db_inside_container: bool = Field(
+        default=False,
+        description="The Kitsu database inside container; the database will not be persistent. "
+                    "Helpful for testing.",
+    )
     kitsu_preview_folder: pathlib.Path = Field(description="The Kitsu Preview folder.")
     kitsu_secret_key: str = Field(description="Kitsu Secret Key.")
     kitsu_tmp_dir: pathlib.Path = Field(description="Kitsu TMP directory.")

@@ -20,7 +20,6 @@ from dagster import (
     asset,
 )
 from OpenStudioLandscapes.engine.common_assets.compose import get_compose
-from OpenStudioLandscapes.engine.common_assets.constants import get_constants
 from OpenStudioLandscapes.engine.common_assets.docker_compose_graph import (
     get_docker_compose_graph,
 )
@@ -41,10 +40,6 @@ from OpenStudioLandscapes.Kitsu.constants import *
 from OpenStudioLandscapes.Kitsu.config.models import Config
 
 from OpenStudioLandscapes.Kitsu.config import dist
-
-constants = get_constants(
-    ASSET_HEADER=ASSET_HEADER,
-)
 
 
 group_in = get_group_in(
@@ -288,9 +283,6 @@ def CONFIG(
     config_expanded = expand_dict_vars(
         dict_to_expand=config.copy(),
         kv={
-            # "GROUP": ASSET_HEADER["group_name"],
-            # "KEY": '__'.join(ASSET_HEADER["key_prefix"]),
-            # "DIST_NAME": dist.name,
             "FEATURE": dist.name,
             **env,
         },
@@ -963,7 +955,7 @@ def compose_kitsu(
         ]
     }
 
-    if not KITSUDB_INSIDE_CONTAINER:
+    if not CONFIG.kitsu_db_inside_container:
 
         kitsu_db_dir_host = (
             CONFIG.kitsu_database_install_destination / "postgresql"
@@ -997,7 +989,7 @@ def compose_kitsu(
 
         volume_dir_host_rel_path = get_relative_path_via_common_root(
             context=context,
-            path_src=pathlib.Path(env["DOCKER_COMPOSE"]),
+            path_src=CONFIG.docker_compose,
             path_dst=pathlib.Path(host),
             path_common_root=pathlib.Path(env["DOT_LANDSCAPES"]),
         )
@@ -1166,7 +1158,7 @@ def compose_init_db(
 
         volume_dir_host_rel_path = get_relative_path_via_common_root(
             context=context,
-            path_src=pathlib.Path(env["DOCKER_COMPOSE"]),
+            path_src=CONFIG.docker_compose,
             path_dst=pathlib.Path(host),
             path_common_root=pathlib.Path(env["DOT_LANDSCAPES"]),
         )
