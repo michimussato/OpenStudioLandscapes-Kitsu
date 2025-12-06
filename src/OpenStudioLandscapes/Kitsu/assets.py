@@ -227,7 +227,6 @@ def CONFIG(
     configs_root_feature.mkdir(parents=True, exist_ok=True)
     config_yml = pathlib.Path(configs_root_feature / "config.yml")
 
-    # config_result = CONFIG_DEFAULT.copy()
     config_default_ = yaml.safe_load(CONFIG_DEFAULT)
 
     # This is valid as we checked it already
@@ -278,7 +277,6 @@ def CONFIG(
             raise ValidationError from err
 
     config = config_store_validated.model_dump(mode="python")
-    # config.update(config_store_validated.model_dump(mode="python"))
 
     config_expanded = expand_dict_vars(
         dict_to_expand=config.copy(),
@@ -287,8 +285,6 @@ def CONFIG(
             **env,
         },
     )
-
-    # context.log.debug(f"{config_expanded = }")
 
     try:
         # Final validation of the parsed configs
@@ -321,13 +317,9 @@ def CONFIG(
     yield AssetMaterialization(
         asset_key=context.asset_key,
         metadata={
-            # "__".join(context.asset_key.path): MetadataValue.json(config_validated.model_dump(mode="json")),
             "__".join(context.asset_key.path): MetadataValue.md(f"```json\n{json.dumps(config_validated.model_dump(mode='json'), indent=2, default=str)}\n```"),
             "config_yml": MetadataValue.path(config_yml),
-            # "config_raw": MetadataValue.json(json.loads(json.dumps(config, default=str))),
             "config_raw": MetadataValue.md(f"```json\n{json.dumps(config, indent=2, default=str)}\n```"),
-            # "config_resolved": MetadataValue.json(json.loads(json.dumps(config_expanded, default=str))),
-            # "diff": MetadataValue.json(json.loads(json.dumps(diff, default=str))),
             "diff": MetadataValue.md(f"```json\n{json.dumps(diff, indent=2, default=str)}\n```"),
         },
     )

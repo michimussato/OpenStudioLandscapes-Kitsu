@@ -2,7 +2,6 @@
 group_name: "Kitsu"
 key_prefixes:
   - "Kitsu"
-docker_compose: "{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/docker_compose/docker-compose.yml"
 #    "__".join(context.asset_key_for_output("DOCKER_COMPOSE").path),
 #    "docker_compose",
 #    "docker-compose.yml",
