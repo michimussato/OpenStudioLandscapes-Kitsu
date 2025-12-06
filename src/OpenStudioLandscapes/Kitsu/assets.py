@@ -31,14 +31,16 @@ from OpenStudioLandscapes.engine.common_assets.env import get_env
 from OpenStudioLandscapes.engine.common_assets.feature_out import get_feature_out
 from OpenStudioLandscapes.engine.common_assets.group_in import get_group_in
 from OpenStudioLandscapes.engine.common_assets.group_out import get_group_out
-from OpenStudioLandscapes.engine.config.validate_config import ConfigEngine, DockerConfigModel
+from OpenStudioLandscapes.engine.config.models import ConfigEngine, DockerConfigModel
 from OpenStudioLandscapes.engine.constants import *
 from OpenStudioLandscapes.engine.enums import *
 from OpenStudioLandscapes.engine.utils import *
 from OpenStudioLandscapes.engine.utils.docker.compose_dicts import *
 
 from OpenStudioLandscapes.Kitsu.constants import *
-from OpenStudioLandscapes.Kitsu.validate_config import Config
+from OpenStudioLandscapes.Kitsu.config.models import Config
+
+from OpenStudioLandscapes.Kitsu.config import dist
 
 constants = get_constants(
     ASSET_HEADER=ASSET_HEADER,
@@ -152,7 +154,7 @@ def CONFIG_BLUEPRINT(
     None,
 ]:
 
-    with open(pathlib.Path(__file__).parent / "config_blueprint.yml") as fr:
+    with open(pathlib.Path(__file__).parent / "config" / "config_blueprint.yml") as fr:
         # This is str so that comments are read as well
         config_str: str = fr.read()
 
@@ -166,7 +168,7 @@ def CONFIG_BLUEPRINT(
         context.log.error(
             "Config Validation failed. "
             "The default `config.yml` for "
-            f"{FEATURE} contains "
+            f"{dist.name} contains "
             "errors, missing and/or illegal parameters."
         )
         raise ValidationError from err
@@ -226,7 +228,7 @@ def CONFIG(
     config_engine: ConfigEngine = group_in.pop("config_engine")
     configs_root: pathlib.Path = config_engine.openstudiolandscapes__configstore_root
 
-    configs_root_feature = pathlib.Path(configs_root, f"{ASSET_HEADER['group_name']}__{'__'.join(ASSET_HEADER['key_prefix'])}").expanduser().resolve()
+    configs_root_feature = pathlib.Path(configs_root, dist.name).expanduser().resolve()
     configs_root_feature.mkdir(parents=True, exist_ok=True)
     config_yml = pathlib.Path(configs_root_feature / "config.yml")
 
@@ -275,7 +277,7 @@ def CONFIG(
             context.log.error(
                 "Config Validation failed. "
                 f"The custom `config.yml` ({config_yml.as_posix()}) for "
-                f"{FEATURE} contains "
+                f"{dist.name} contains "
                 "errors, missing and/or illegal parameters."
             )
             raise ValidationError from err
@@ -286,9 +288,10 @@ def CONFIG(
     config_expanded = expand_dict_vars(
         dict_to_expand=config.copy(),
         kv={
-            "GROUP": ASSET_HEADER["group_name"],
-            "KEY": '__'.join(ASSET_HEADER["key_prefix"]),
-            "FEATURE": FEATURE,
+            # "GROUP": ASSET_HEADER["group_name"],
+            # "KEY": '__'.join(ASSET_HEADER["key_prefix"]),
+            # "DIST_NAME": dist.name,
+            "FEATURE": dist.name,
             **env,
         },
     )
@@ -304,7 +307,7 @@ def CONFIG(
         context.log.error(
             "Config Validation failed. "
             f"The parsed config for "
-            f"{FEATURE} contains "
+            f"{dist.name} contains "
             "errors, missing and/or illegal parameters."
         )
         raise ValidationError from err

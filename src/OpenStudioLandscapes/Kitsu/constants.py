@@ -48,11 +48,11 @@ DOCUMENTATION = [
 @multi_asset(
     name=f"constants_{GROUP}",
     outs={
-        "NAME": AssetOut(
-            **ASSET_HEADER,
-            dagster_type=str,
-            description="",
-        ),
+        # "NAME": AssetOut(
+        #     **ASSET_HEADER,
+        #     dagster_type=str,
+        #     description="",
+        # ),
         "DOCKER_COMPOSE": AssetOut(
             **ASSET_HEADER,
             dagster_type=pathlib.Path,
@@ -77,19 +77,19 @@ def constants_multi_asset(
 ]:
     """ """
 
-    yield Output(
-        output_name="NAME",
-        value=__name__,
-    )
-
-    yield AssetMaterialization(
-        asset_key=context.asset_key_for_output("NAME"),
-        metadata={
-            "__".join(context.asset_key_for_output("NAME").path): MetadataValue.path(
-                __name__
-            ),
-        },
-    )
+    # yield Output(
+    #     output_name="NAME",
+    #     value=__name__,
+    # )
+    #
+    # yield AssetMaterialization(
+    #     asset_key=context.asset_key_for_output("NAME"),
+    #     metadata={
+    #         "__".join(context.asset_key_for_output("NAME").path): MetadataValue.path(
+    #             __name__
+    #         ),
+    #     },
+    # )
 
     docker_compose = pathlib.Path(
         "{DOT_LANDSCAPES}",

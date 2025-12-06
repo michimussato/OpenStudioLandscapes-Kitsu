@@ -1,19 +1,48 @@
 import pathlib
 
-from pydantic import BaseModel, field_validator
+from pydantic import (
+    Field,
+    EmailStr,
+    SecretStr,
+    field_validator, PositiveInt,
+)
+
+from OpenStudioLandscapes.engine.config.models import FeatureBaseModel
+from OpenStudioLandscapes.Kitsu.config import dist
 
 
-class Config(BaseModel):
-    kitsu_admin_user: str
-    kitsu_postgres_conf: pathlib.Path
-    kitsu_db_password: str
-    kitsu_enable_job_queue: bool
-    kitsu_port_container: int
-    kitsu_port_host: int
-    kitsu_database_install_destination: pathlib.Path
-    kitsu_preview_folder: pathlib.Path
-    kitsu_secret_key: str
-    kitsu_tmp_dir: pathlib.Path
+class Config(FeatureBaseModel):
+    feature_name: str = dist.name
+
+    kitsu_admin_user: EmailStr = Field(
+        default="admin@example.com",
+        description="The Kitsu Admin Email.",
+        frozen=True,
+    )
+    # kitsu_db_password: SecretStr
+    # The above exception was caused by the following exception:
+    # AttributeError: 'str' object has no attribute 'get_secret_value'
+    kitsu_db_password: str = Field(
+        default="mysecretpassword",
+        description="The Postgres database password.",
+        frozen=True,
+    )
+    kitsu_postgres_conf: pathlib.Path = Field(description="The Kitsu Postgres configuration file.")
+    kitsu_enable_job_queue: bool = Field(description="Enable Kitsu Job Queue?")
+    kitsu_port_container: PositiveInt = Field(
+        default=80,
+        description="The Kitsu container port.",
+        frozen=True,
+    )
+    kitsu_port_host: PositiveInt = Field(
+        default=4545,
+        description="The Kitsu host port.",
+        frozen=False,
+    )
+    kitsu_database_install_destination: pathlib.Path = Field()
+    kitsu_preview_folder: pathlib.Path = Field(description="The Kitsu Preview folder.")
+    kitsu_secret_key: str = Field(description="Kitsu Secret Key.")
+    kitsu_tmp_dir: pathlib.Path = Field(description="Kitsu TMP directory.")
 
     @field_validator("kitsu_admin_user")
     @classmethod
