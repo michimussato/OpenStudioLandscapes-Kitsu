@@ -422,7 +422,7 @@ def build_docker_image(
     docker_file = pathlib.Path(
         env["DOT_LANDSCAPES"],
         env.get("LANDSCAPE", "default"),
-        f"{ASSET_HEADER['group_name']}__{'__'.join(ASSET_HEADER['key_prefix'])}",
+        f"{dist.name}",
         "__".join(context.asset_key.path),
         "Dockerfiles",
         "Dockerfile",
@@ -679,7 +679,7 @@ def script_init_db(
     init_db_script = pathlib.Path(
         env["DOT_LANDSCAPES"],
         env.get("LANDSCAPE", "default"),
-        f"{ASSET_HEADER['group_name']}__{'__'.join(ASSET_HEADER['key_prefix'])}",
+        f"{dist.name}",
         "__".join(context.asset_key.path),
         "init_db.sh",
     )
@@ -848,7 +848,7 @@ def supervisord_conf(
     supervisord_conf_script = pathlib.Path(
         env["DOT_LANDSCAPES"],
         env.get("LANDSCAPE", "default"),
-        f"{ASSET_HEADER['group_name']}__{'__'.join(ASSET_HEADER['key_prefix'])}",
+        f"{dist.name}",
         "__".join(context.asset_key.path),
         "supervisord.conf",
     )
