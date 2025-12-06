@@ -23,10 +23,6 @@ from OpenStudioLandscapes.engine.common_assets.compose import get_compose
 from OpenStudioLandscapes.engine.common_assets.docker_compose_graph import (
     get_docker_compose_graph,
 )
-from OpenStudioLandscapes.engine.common_assets.docker_config_json import (
-    get_docker_config_json,
-)
-from OpenStudioLandscapes.engine.common_assets.env import get_env
 from OpenStudioLandscapes.engine.common_assets.feature_out import get_feature_out
 from OpenStudioLandscapes.engine.common_assets.group_in import get_group_in
 from OpenStudioLandscapes.engine.common_assets.group_out import get_group_out
@@ -49,11 +45,6 @@ group_in = get_group_in(
 )
 
 
-env = get_env(
-    ASSET_HEADER=ASSET_HEADER,
-)
-
-
 group_out = get_group_out(
     ASSET_HEADER=ASSET_HEADER,
 )
@@ -72,7 +63,6 @@ compose = get_compose(
 feature_out = get_feature_out(
     ASSET_HEADER=ASSET_HEADER,
     feature_out_ins={
-        "env": dict,
         "compose": dict,
         "group_in": dict,
         "CONFIG": Config,
@@ -80,28 +70,25 @@ feature_out = get_feature_out(
 )
 
 
-docker_config_json = get_docker_config_json(
-    ASSET_HEADER=ASSET_HEADER,
-)
-
-
 @asset(
     **ASSET_HEADER,
     ins={
-        "env": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
+        "group_in": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
         ),
     },
 )
 def compose_networks(
     context: AssetExecutionContext,
-    env: dict,  # pylint: disable=redefined-outer-name
+    group_in: dict,  # pylint: disable=redefined-outer-name
 ) -> Generator[
     Output[MutableMapping[str, MutableMapping[str, MutableMapping[str, str]]]]
     | AssetMaterialization,
     None,
     None,
 ]:
+
+    env: dict = group_in.pop("env")
 
     compose_network_mode = DockerComposePolicies.NETWORK_MODE.BRIDGE
 
@@ -190,9 +177,6 @@ def CONFIG_BLUEPRINT(
 @asset(
     **ASSET_HEADER,
     ins={
-        "env": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
-        ),
         "group_in": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
         ),
@@ -210,7 +194,6 @@ def CONFIG_BLUEPRINT(
 )
 def CONFIG(
     context: AssetExecutionContext,
-    env: dict,  # pylint: disable=redefined-outer-name
     group_in: dict,  # pylint: disable=redefined-outer-name
     CONFIG_DEFAULT: str,  # pylint: disable=redefined-outer-name
 ) -> Generator[
@@ -219,6 +202,8 @@ def CONFIG(
     None,
     None,
 ]:
+
+    env: dict = group_in.pop("env")
 
     config_engine: ConfigEngine = group_in.pop("config_engine")
     configs_root: pathlib.Path = config_engine.openstudiolandscapes__configstore_root
@@ -398,12 +383,6 @@ def pip_packages(
 @asset(
     **ASSET_HEADER,
     ins={
-        "env": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
-        ),
-        "docker_config_json": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "docker_config_json"]),
-        ),
         "group_in": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "group_in"])
         ),
@@ -423,8 +402,6 @@ def pip_packages(
 )
 def build_docker_image(
     context: AssetExecutionContext,
-    env: dict,  # pylint: disable=redefined-outer-name
-    docker_config_json: pathlib.Path,  # pylint: disable=redefined-outer-name
     group_in: dict,  # pylint: disable=redefined-outer-name
     apt_packages: dict[str, list[str]],  # pylint: disable=redefined-outer-name
     pip_packages: list,  # pylint: disable=redefined-outer-name
@@ -432,6 +409,9 @@ def build_docker_image(
     inject_postgres_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
     """ """
+
+    env: dict = group_in.pop("env")
+    docker_config_json: pathlib.Path = group_in.pop("docker_config_json")
 
     config_engine: ConfigEngine = group_in.pop("config_engine")
 
@@ -623,17 +603,19 @@ def inject_postgres_conf(
 @asset(
     **ASSET_HEADER,
     ins={
-        "env": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
+        "group_in": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
         ),
     },
     description="",
 )
 def script_init_db(
     context: AssetExecutionContext,
-    env: dict,  # pylint: disable=redefined-outer-name
+    group_in: dict,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
+
+    env: dict = group_in.pop("env")
 
     init_db = {}
 
@@ -725,8 +707,8 @@ def script_init_db(
 @asset(
     **ASSET_HEADER,
     ins={
-        "env": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
+        "group_in": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
         ),
         "CONFIG": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
@@ -736,7 +718,7 @@ def script_init_db(
 )
 def supervisord_conf(
     context: AssetExecutionContext,
-    env: dict,  # pylint: disable=redefined-outer-name
+    group_in: dict,  # pylint: disable=redefined-outer-name
     CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """
@@ -756,6 +738,8 @@ def supervisord_conf(
      Birth: 2025-05-21 19:10:33.080676825 +0000
     ```
     """
+
+    env: dict = group_in.pop("env")
 
     supervisord_conf_str = textwrap.dedent(
         """\
@@ -895,9 +879,6 @@ def supervisord_conf(
 @asset(
     **ASSET_HEADER,
     ins={
-        "env": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
-        ),
         "build": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "build_docker_image"]),
         ),
@@ -917,7 +898,6 @@ def supervisord_conf(
 )
 def compose_kitsu(
     context: AssetExecutionContext,
-    env: dict,  # pylint: disable=redefined-outer-name
     build: dict,  # pylint: disable=redefined-outer-name
     compose_networks: dict,  # pylint: disable=redefined-outer-name
     supervisord_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
@@ -925,6 +905,8 @@ def compose_kitsu(
     group_in: dict,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[dict] | AssetMaterialization, None, None]:
     """ """
+
+    env: dict = group_in.pop("env")
 
     config_engine: ConfigEngine = group_in.pop("config_engine")
 
@@ -1075,9 +1057,6 @@ def compose_kitsu(
 @asset(
     **ASSET_HEADER,
     ins={
-        "env": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "env"]),
-        ),
         "build": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "build_docker_image"]),
         ),
@@ -1096,12 +1075,13 @@ def compose_kitsu(
 )
 def compose_init_db(
     context: AssetExecutionContext,
-    env: dict,  # pylint: disable=redefined-outer-name
     build: dict,  # pylint: disable=redefined-outer-name
     CONFIG: Config,  # pylint: disable=redefined-outer-name
     group_in: dict,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
     """ """
+
+    env: dict = group_in.pop("env")
 
     config_engine: ConfigEngine = group_in.pop("config_engine")
 
