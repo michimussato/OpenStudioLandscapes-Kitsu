@@ -3,7 +3,7 @@ import pathlib
 from pydantic import (
     Field,
     EmailStr,
-    SecretStr,
+    # SecretStr,
     field_validator, PositiveInt,
 )
 
@@ -13,6 +13,8 @@ from OpenStudioLandscapes.Kitsu.config import dist
 
 class Config(FeatureBaseModel):
     feature_name: str = dist.name
+    compose_scope: str = "default"
+    definitions: str = "OpenStudioLandscapes.Kitsu.definitions"
 
     kitsu_admin_user: EmailStr = Field(
         default="admin@example.com",
