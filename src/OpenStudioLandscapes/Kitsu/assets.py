@@ -4,7 +4,7 @@ import pathlib
 import shutil
 import textwrap
 import urllib.parse
-from typing import Any, Generator, List, MutableMapping
+from typing import Any, Generator, MutableMapping
 
 from deepdiff import DeepDiff
 from pydantic_core._pydantic_core import ValidationError
@@ -28,6 +28,7 @@ from OpenStudioLandscapes.engine.common_assets.group_in import get_group_in
 from OpenStudioLandscapes.engine.common_assets.group_out import get_group_out
 from OpenStudioLandscapes.engine.config.models import ConfigEngine, DockerConfigModel
 from OpenStudioLandscapes.engine.constants import *
+from OpenStudioLandscapes.engine.discovery.discovery import *
 from OpenStudioLandscapes.engine.enums import *
 from OpenStudioLandscapes.engine.utils import *
 from OpenStudioLandscapes.engine.utils.docker.compose_dicts import *
@@ -35,7 +36,7 @@ from OpenStudioLandscapes.engine.utils.docker.compose_dicts import *
 from OpenStudioLandscapes.Kitsu.constants import *
 from OpenStudioLandscapes.Kitsu.config.models import Config, CONFIG_STR
 
-from OpenStudioLandscapes.Kitsu import dist
+from OpenStudioLandscapes.Kitsu import package, dist
 
 
 group_in = get_group_in(
@@ -149,37 +150,92 @@ def CONFIG(
 
     config_engine: ConfigEngine = group_in.pop("config_engine")
 
-    # https://jsschools.com/python/5-powerful-python-libraries-for-efficient-file-han/
-    config_yml_object = config_engine.openstudiolandscapes__configstore_root.expanduser().resolve() / dist.name / "config.yml"
-    if not config_yml_object.exists():
-        config_yml_object.parent.mkdir(parents=True, exist_ok=True)
-        config_yml_object.touch(exist_ok=True)
-        config_yml_object.write_text(CONFIG_STR)
-    config_dict: dict = yaml.safe_load(config_yml_object.read_text())
+    for FEATURE in FUNCTIONAL_FEATURES:
+        # context.log.error(f"{package = }")
+        # package = 'OpenStudioLandscapes-Kitsu'
+        package_discovered: str = FEATURE["package"]
+        context.log.error(f"{package_discovered = }")
+        # package_discovered = 'OpenStudioLandscapes-Kitsu.src.OpenStudioLandscapes.Kitsu'
+        if package_discovered.split(".")[0] == package:
+            config_validated: Config = FEATURE["Config"]
+            break
+    else:
+        LOGGER.error(f"No Config found for {package}")
+        raise Exception(f"No Config found for {package}")
 
-    config_expanded = expand_dict_vars(
-        dict_to_expand=config_dict.copy(),
-        kv={
-            "FEATURE": dist.name,
-            **env,
-        },
+    # EXPAND VARS
+    config_validated.docker_compose = pathlib.Path(
+        config_validated
+        .docker_compose
+        .as_posix()
+        .format(
+            **{
+                "FEATURE": dist.name,
+                **env,
+            }
+        )
+    )
+    config_validated.kitsu_postgres_conf = pathlib.Path(
+        config_validated
+        .kitsu_postgres_conf
+        .as_posix()
+        .format(
+            **{
+                "FEATURE": dist.name,
+                **env,
+            }
+        )
+    )
+    config_validated.kitsu_database_install_destination = pathlib.Path(
+        config_validated
+        .kitsu_database_install_destination
+        .as_posix()
+        .format(
+            **{
+                "FEATURE": dist.name,
+                **env,
+            }
+        )
     )
 
-    try:
-        context.log.info(f"Validating: {config_expanded = }")
-        config_validated = Config(
-            config_file_path=config_yml_object,
-            **config_expanded,
-        )
-        context.log.debug(f"Validated.")
-    except ValidationError as err:
-        context.log.error(
-            "Config Validation failed. "
-            f"The parsed config for "
-            f"{dist.name} contains "
-            "errors, missing and/or illegal parameters."
-        )
-        raise ValidationError from err
+    # # https://jsschools.com/python/5-powerful-python-libraries-for-efficient-file-han/
+    # config_yml_object = config_engine.openstudiolandscapes__configstore_root.expanduser().resolve() / dist.name / "config.yml"
+    # if not config_yml_object.exists():
+    #     config_yml_object.parent.mkdir(parents=True, exist_ok=True)
+    #     config_yml_object.touch(exist_ok=True)
+    #     config_yml_object.write_text(CONFIG_STR)
+    # config_dict: dict = yaml.safe_load(config_yml_object.read_text())
+    #
+    # docker_compose: pathlib.Path = pathlib.Path("{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/%s" % "__".join(context.asset_key.path))
+    #
+    # config_dict["docker_compose"] = docker_compose
+    #
+    # config_expanded = expand_dict_vars(
+    #     dict_to_expand=config_dict.copy(),
+    #     kv={
+    #         "FEATURE": dist.name,
+    #         **env,
+    #     },
+    # )
+    #
+    # try:
+    #     context.log.info(f"Validating: {config_expanded = }")
+    #     config_validated = Config(
+    #         config_file_path=config_yml_object,
+    #         # docker_compose="",
+    #         **config_expanded,
+    #     )
+    #     context.log.debug(f"Validated.")
+    #     context.log.debug(f"{Config = }")
+    #     # context.pdb.set_trace()
+    # except ValidationError as err:
+    #     context.log.error(
+    #         "Config Validation failed. "
+    #         f"The parsed config for "
+    #         f"{dist.name} contains "
+    #         "errors, missing and/or illegal parameters."
+    #     )
+    #     raise ValidationError from err
 
     yield Output(config_validated)
 
@@ -187,9 +243,10 @@ def CONFIG(
         asset_key=context.asset_key,
         metadata={
             "__".join(context.asset_key.path): MetadataValue.md(f"```json\n{json.dumps(config_validated.model_dump(mode='json'), indent=2, default=str)}\n```"),
-            "config_yml_path": MetadataValue.path(config_yml_object),
-            "config_dict_expanded": MetadataValue.md(f"```json\n{json.dumps(config_expanded, indent=2, default=str)}\n```"),
-            "config_dict_raw": MetadataValue.md(f"```json\n{json.dumps(config_dict, indent=2, default=str)}\n```"),
+            # "config_yml_path": MetadataValue.path(config_yml_object),
+            # "config_dict_expanded": MetadataValue.md(f"```json\n{json.dumps(config_expanded, indent=2, default=str)}\n```"),
+            # "config_dict_raw": MetadataValue.md(f"```json\n{json.dumps(config_validated.model_dump(), indent=2, default=str)}\n```"),
+            "env": MetadataValue.md(f"```shell\n{json.dumps(env, indent=2, default=str)}\n```"),
         },
     )
 
@@ -451,6 +508,9 @@ def build_docker_image(
 @asset(
     **ASSET_HEADER,
     ins={
+        # "group_in": AssetIn(
+        #     AssetKey([*ASSET_HEADER["key_prefix"], "group_in"])
+        # ),
         "CONFIG": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         ),
@@ -459,11 +519,25 @@ def build_docker_image(
 )
 def inject_postgres_conf(
     context: AssetExecutionContext,
+    # group_in: dict,  # pylint: disable=redefined-outer-name
     CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
 
+    # env: dict = group_in.pop("env")
+
     postgres_conf = CONFIG.kitsu_postgres_conf
+    # postgres_conf = pathlib.Path(
+    #     CONFIG
+    #     .kitsu_postgres_conf
+    #     .as_posix()
+    #     .format(
+    #         **{
+    #             "FEATURE": dist.name,
+    #             **env,
+    #         }
+    #     )
+    # )
 
     with open(
         file=postgres_conf,
@@ -818,6 +892,17 @@ def compose_kitsu(
         kitsu_db_dir_host = (
             CONFIG.kitsu_database_install_destination / "postgresql"
         )
+        # kitsu_db_dir_host = pathlib.Path(
+        #     CONFIG
+        #     .kitsu_database_install_destination
+        #     .as_posix()
+        #     .format(
+        #         **{
+        #             "FEATURE": dist.name,
+        #             **env,
+        #         }
+        #     )
+        # ) / "postgresql"
         kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
         context.log.info(f"Directory {kitsu_db_dir_host.as_posix()} created.")
 
@@ -829,6 +914,17 @@ def compose_kitsu(
         kitsu_previews_host = (
             CONFIG.kitsu_database_install_destination / "previews"
         )
+        # kitsu_previews_host = pathlib.Path(
+        #     CONFIG
+        #     .kitsu_database_install_destination
+        #     .as_posix()
+        #     .format(
+        #         **{
+        #             "FEATURE": dist.name,
+        #             **env,
+        #         }
+        #     )
+        # ) / "previews"
         kitsu_previews_host.mkdir(parents=True, exist_ok=True)
         context.log.info(f"Directory {kitsu_previews_host.as_posix()} created.")
 
@@ -845,9 +941,25 @@ def compose_kitsu(
 
         host, container = v.split(":", maxsplit=1)
 
+        # docker_compose = pathlib.Path(
+        #     CONFIG
+        #     .docker_compose
+        #     .as_posix()
+        #     .format(
+        #         **{
+        #             "FEATURE": dist.name,
+        #             **env,
+        #         }
+        #     )
+        # )
+        #
+        # context.log.error(f"{CONFIG.docker_compose}")
+        # context.log.error(f"{docker_compose}")
+
         volume_dir_host_rel_path = get_relative_path_via_common_root(
             context=context,
             path_src=CONFIG.docker_compose,
+            # path_src=docker_compose,
             path_dst=pathlib.Path(host),
             path_common_root=pathlib.Path(env["DOT_LANDSCAPES"]),
         )
@@ -992,6 +1104,17 @@ def compose_init_db(
     kitsu_db_dir_host = (
         CONFIG.kitsu_database_install_destination / "postgresql"
     )
+    # kitsu_db_dir_host = pathlib.Path(
+    #     CONFIG
+    #     .kitsu_database_install_destination
+    #     .as_posix()
+    #     .format(
+    #         **{
+    #             "FEATURE": dist.name,
+    #             **env,
+    #         }
+    #     )
+    # ) / "postgresql"
     kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
 
     # Is:
@@ -1012,9 +1135,25 @@ def compose_init_db(
 
         host, container = v.split(":", maxsplit=1)
 
+        # docker_compose = pathlib.Path(
+        #     CONFIG
+        #     .docker_compose
+        #     .as_posix()
+        #     .format(
+        #         **{
+        #             "FEATURE": dist.name,
+        #             **env,
+        #         }
+        #     )
+        # )
+        #
+        # context.log.error(f"{CONFIG.docker_compose}")
+        # context.log.error(f"{docker_compose}")
+
         volume_dir_host_rel_path = get_relative_path_via_common_root(
             context=context,
             path_src=CONFIG.docker_compose,
+            # path_src=docker_compose,
             path_dst=pathlib.Path(host),
             path_common_root=pathlib.Path(env["DOT_LANDSCAPES"]),
         )

@@ -10,6 +10,7 @@ from pydantic import (
 
 from OpenStudioLandscapes.engine.config.models import FeatureBaseModel
 from OpenStudioLandscapes.Kitsu import dist
+# from OpenStudioLandscapes.engine.path import ExpandablePath
 
 
 CONFIG_STR = textwrap.dedent(
@@ -81,6 +82,7 @@ class Config(FeatureBaseModel):
         description="The Postgres database password.",
         frozen=True,
     )
+    # kitsu_postgres_conf: ExpandablePath = Field(description="The Kitsu Postgres configuration file.")
     kitsu_postgres_conf: pathlib.Path = Field(description="The Kitsu Postgres configuration file.")
     kitsu_enable_job_queue: bool = Field(description="Enable Kitsu Job Queue?")
     kitsu_port_container: PositiveInt = Field(

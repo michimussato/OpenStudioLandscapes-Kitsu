@@ -10,8 +10,8 @@ else:
 
 try:
     # Change here if project is renamed and does not equal the package name
-    pkg: str = Path(__file__).parent.parent.parent.parent.name
-    dist: Distribution = metadata.distribution(pkg)
+    package: str = Path(__file__).parent.parent.parent.parent.name
+    dist: Distribution = metadata.distribution(package)
     __version__: str = version(dist.name)
 except PackageNotFoundError:  # pragma: no cover
     __version__: str = "unknown"
