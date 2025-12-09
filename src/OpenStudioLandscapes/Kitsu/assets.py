@@ -33,9 +33,9 @@ from OpenStudioLandscapes.engine.utils import *
 from OpenStudioLandscapes.engine.utils.docker.compose_dicts import *
 
 from OpenStudioLandscapes.Kitsu.constants import *
-from OpenStudioLandscapes.Kitsu.config.models import Config
+from OpenStudioLandscapes.Kitsu.config.models import Config, CONFIG_STR
 
-from OpenStudioLandscapes.Kitsu.config import dist
+from OpenStudioLandscapes.Kitsu import dist
 
 
 group_in = get_group_in(
@@ -114,88 +114,30 @@ def compose_networks(
 
 @asset(
     **ASSET_HEADER,
-    deps=[
-        # This dep is needed for this Asset
-        # to be evaluated AFTER
-        # upstream Features (Asset Groups)
-        AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
-    ],
-    description=textwrap.dedent(
-        """
-        Loads the default `config.yml` that comes with
-        the Feature itself. Contents are being validated
-        against a `pydantic.BaseModel` in this step.
-        """
-    )
-)
-def CONFIG_BLUEPRINT(
-    context: AssetExecutionContext,
-) -> Generator[
-    Output[str] | AssetMaterialization,
-    None,
-    None,
-]:
-
-    with open(pathlib.Path(__file__).parent / "config" / "config_blueprint.yml") as fr:
-        # This is str so that comments are read as well
-        config_str: str = fr.read()
-
-    config = yaml.safe_load(config_str)
-
-    try:
-        context.log.info(f"Validating: {config = }")
-        _config_validated = Config(**config)
-        context.log.debug(f"Validated.")
-    except ValidationError as err:
-        context.log.error(
-            "Config Validation failed. "
-            "The default `config.yml` for "
-            f"{dist.name} contains "
-            "errors, missing and/or illegal parameters."
-        )
-        raise ValidationError from err
-
-    yield Output(config_str)
-
-    diff = DeepDiff(
-        config,
-        # We don't want to compare expanded
-        # with non-expanded dicts - creates too
-        # much noise in the diff
-        _config_validated.model_dump(mode="json")
-    )
-
-    yield AssetMaterialization(
-        asset_key=context.asset_key,
-        metadata={
-            "__".join(context.asset_key.path): MetadataValue.md(f"```yaml\n{config_str}\n```"),
-            "diff": MetadataValue.md(f"```json\n{json.dumps(diff, indent=2, default=str)}\n```"),
-        },
-    )
-
-
-@asset(
-    **ASSET_HEADER,
     ins={
         "group_in": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
         ),
-        "CONFIG_DEFAULT": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG_BLUEPRINT"]),
-        ),
     },
     description=textwrap.dedent(
-        """
-        Reads options from a custom `config.yml`.
-        If the custom `config.yml` does not exist, it 
-        will be created locally containing default options.
-        """
+        f"""
+Reads options from a custom `config.yml`.
+If the custom `config.yml` does not exist, it 
+will be created locally containing default options.
+
+---
+
+For reference, the default `config.yml` looks as follows:
+        
+```yaml
+{CONFIG_STR}
+```
+"""
     )
 )
 def CONFIG(
     context: AssetExecutionContext,
     group_in: dict,  # pylint: disable=redefined-outer-name
-    CONFIG_DEFAULT: str,  # pylint: disable=redefined-outer-name
 ) -> Generator[
     Output[Config]
     | AssetMaterialization,
@@ -206,65 +148,17 @@ def CONFIG(
     env: dict = group_in.pop("env")
 
     config_engine: ConfigEngine = group_in.pop("config_engine")
-    configs_root: pathlib.Path = config_engine.openstudiolandscapes__configstore_root
 
-    configs_root_feature = pathlib.Path(configs_root, dist.name).expanduser().resolve()
-    configs_root_feature.mkdir(parents=True, exist_ok=True)
-    config_yml = pathlib.Path(configs_root_feature / "config.yml")
-
-    config_default_ = yaml.safe_load(CONFIG_DEFAULT)
-
-    # This is valid as we checked it already
-    config_base = Config(**config_default_)
-
-    if not config_yml.exists():
-        context.log.info(
-            f"No existing config file found. "
-            f"Creating {config_yml.as_posix()}..."
-        )
-        with open(config_yml, "w") as fw:
-            # Just write the exact same
-            # contents to the new file
-            fw.write(CONFIG_DEFAULT)
-            # No need to re-validate
-            # config_validated = Config(**config_base)
-    else:
-        context.log.info(f"Skipping config file creation.")
-
-    context.log.info(
-        f"Reading {config_yml.as_posix()}..."
-    )
-    with open(config_yml, "r") as fr:
-        config_store = yaml.safe_load(fr)
-
-        try:
-            context.log.info(f"Validating: {config_store = }")
-            config_store_validated = Config(
-                # Layer the dicts on top of each other
-                # to create the resulting Config
-                # Todo:
-                #  - [x] is that a safe operation?
-                #        -> No
-                # **{
-                #     **config_default_,
-                #     **config_store,
-                # },
-                **config_store
-            )
-            context.log.debug(f"Validated.")
-        except ValidationError as err:
-            context.log.error(
-                "Config Validation failed. "
-                f"The custom `config.yml` ({config_yml.as_posix()}) for "
-                f"{dist.name} contains "
-                "errors, missing and/or illegal parameters."
-            )
-            raise ValidationError from err
-
-    config = config_store_validated.model_dump(mode="python")
+    # https://jsschools.com/python/5-powerful-python-libraries-for-efficient-file-han/
+    config_yml_object = config_engine.openstudiolandscapes__configstore_root.expanduser().resolve() / dist.name / "config.yml"
+    if not config_yml_object.exists():
+        config_yml_object.parent.mkdir(parents=True, exist_ok=True)
+        config_yml_object.touch(exist_ok=True)
+        config_yml_object.write_text(CONFIG_STR)
+    config_dict: dict = yaml.safe_load(config_yml_object.read_text())
 
     config_expanded = expand_dict_vars(
-        dict_to_expand=config.copy(),
+        dict_to_expand=config_dict.copy(),
         kv={
             "FEATURE": dist.name,
             **env,
@@ -272,9 +166,11 @@ def CONFIG(
     )
 
     try:
-        # Final validation of the parsed configs
         context.log.info(f"Validating: {config_expanded = }")
-        config_validated = Config(**config_expanded)
+        config_validated = Config(
+            config_file_path=config_yml_object,
+            **config_expanded,
+        )
         context.log.debug(f"Validated.")
     except ValidationError as err:
         context.log.error(
@@ -287,25 +183,13 @@ def CONFIG(
 
     yield Output(config_validated)
 
-    diff = DeepDiff(
-        t1={
-            **config_store,
-            **config_base.model_dump(mode="json")},
-        # We don't want to compare expanded
-        # with non-expanded dicts - creates too
-        # much noise in the diff
-        t2={
-            **config_store_validated.model_dump(mode="json"),
-        },
-    )
-
     yield AssetMaterialization(
         asset_key=context.asset_key,
         metadata={
             "__".join(context.asset_key.path): MetadataValue.md(f"```json\n{json.dumps(config_validated.model_dump(mode='json'), indent=2, default=str)}\n```"),
-            "config_yml": MetadataValue.path(config_yml),
-            "config_raw": MetadataValue.md(f"```json\n{json.dumps(config, indent=2, default=str)}\n```"),
-            "diff": MetadataValue.md(f"```json\n{json.dumps(diff, indent=2, default=str)}\n```"),
+            "config_yml_path": MetadataValue.path(config_yml_object),
+            "config_dict_expanded": MetadataValue.md(f"```json\n{json.dumps(config_expanded, indent=2, default=str)}\n```"),
+            "config_dict_raw": MetadataValue.md(f"```json\n{json.dumps(config_dict, indent=2, default=str)}\n```"),
         },
     )
 
