@@ -1,13 +1,11 @@
 import copy
 import json
-import pathlib
 import shutil
 import textwrap
 import urllib.parse
-from typing import Any, Generator, MutableMapping
+from typing import Any, Generator, MutableMapping, Dict
 
 from deepdiff import DeepDiff
-from pydantic_core._pydantic_core import ValidationError
 
 import yaml
 from dagster import (
@@ -163,41 +161,37 @@ def CONFIG(
         LOGGER.error(f"No Config found for {package}")
         raise Exception(f"No Config found for {package}")
 
-    # EXPAND VARS
-    config_validated.docker_compose = pathlib.Path(
-        config_validated
-        .docker_compose
-        .as_posix()
-        .format(
-            **{
-                "FEATURE": dist.name,
-                **env,
-            }
-        )
-    )
-    config_validated.kitsu_postgres_conf = pathlib.Path(
-        config_validated
-        .kitsu_postgres_conf
-        .as_posix()
-        .format(
-            **{
-                "FEATURE": dist.name,
-                **env,
-            }
-        )
-    )
-    config_validated.kitsu_database_install_destination = pathlib.Path(
-        config_validated
-        .kitsu_database_install_destination
-        .as_posix()
-        .format(
-            **{
-                "FEATURE": dist.name,
-                **env,
-            }
-        )
-    )
+    # Todo
+    #  - [ ] Do we want `env` in the Config?
+    #  - [ ] Do we want `config_engine` in the Config?
+    config_validated.env = env
+    config_validated.config_engine = config_engine
 
+    # Todo
+    #  - [ ] `config.yml` file creation
+    if config_validated.config_file_path.exists():
+        config_loaded: Dict = yaml.safe_load(config_validated.config_file_path.read_text())
+        config_validated_bak = config_validated
+        context.log.error(f"{config_validated_bak = }")
+        # config_validated_bak = Feature(["env={'GIT_ROOT': '/home/michael/git/repos/OpenStudioLandscapes', 'DOT_LANDSCAPES': '/home/michael/git/repos/OpenStudioLandscapes/.landscapes', 'DOT_SHARED_VOLUMES': '.shared_volumes', 'DOT_FEATURES': '/home/michael/git/repos/OpenStudioLandscapes/.features', 'DOT_OVERRIDES': '/home/michael/git/repos/OpenStudioLandscapes/.landscapes/2025-12-10-02-00-16-6ade1a6ff98a4f08923f6c8d1095f55f/.overrides', 'AUTHOR': 'michimussato@gmail.com', 'CREATED_BY': 'michael', 'CREATED_ON': 'lenovo', 'CREATED_AT': '2025-12-10_02-00-21', 'TIMEZONE': 'Europe/Zurich', 'DEFAULT_CONFIG_DBPATH': '/data/configdb', 'PYTHON_MAJ': '3', 'PYTHON_MIN': '11', 'PYTHON_PAT': '11', 'LANDSCAPE': '2025-12-10-02-00-16-6ade1a6ff98a4f08923f6c8d1095f55f'}", "config_engine=openstudiolandscapes__docker_config=DockerConfigModel(use_registry=True, no_cache=False, docker_registry_config=DockerRegistryConfig(docker_push=True, docker_pull=True, docker_repository_name='openstudiolandscapes', docker_registry_access='public', docker_registry_protocol='https', docker_registry_fqdn='registry.openstudiolandscapes.lan', docker_registry_port=5000, docker_registry_username='registry-user', docker_registry_password='registry-password')) openstudiolandscapes__repository_root=PosixPath('/home/michael/git/repos/OpenStudioLandscapes') openstudiolandscapes__configstore_root=PosixPath('~/.config/OpenStudioLandscapes/config-store') openstudiolandscapes__domain_lan='openstudiolandscapes.lan'", 'enabled=True', 'registry=http', 'compose_scope=default', 'feature_name=OpenStudioLandscapes-Kitsu', 'group_name=Kitsu', "key_prefixes=['Kitsu']", 'docker_compose={DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/docker_compose/docker-compose.yml', 'definitions=OpenStudioLandscapes.Kitsu.definitions', 'kitsu_admin_user=admin@example.com', 'kitsu_db_password=mysecretpassword', 'kitsu_postgres_conf={DOT_FEATURES}/{FEATURE}/.payload/config/etc/postgresql/14/main/postgresql.conf', 'kitsu_enable_job_queue=True', 'kitsu_port_container=80', 'kitsu_port_host=4545', 'kitsu_database_install_destination={DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/kitsu', 'kitsu_db_inside_container=False', 'kitsu_preview_folder=/opt/zou/previews', 'kitsu_secret_key=yourrandomsecretkey', 'kitsu_tmp_dir=/opt/zou/tmp'])
+        # Create a new Config from the old one and overwrite values from the yml
+        # Todo
+        #  - [ ] test with nested dicts
+        config_validated = Config(
+            **{
+                **config_validated_bak.model_dump(),
+                **config_loaded,
+            }
+        )
+        context.log.error(f"{config_validated = }")
+        config_validated.env = env
+        config_validated.config_engine = config_engine
+        # config_validated = Feature(["env={'GIT_ROOT': '/home/michael/git/repos/OpenStudioLandscapes', 'DOT_LANDSCAPES': '/home/michael/git/repos/OpenStudioLandscapes/.landscapes', 'DOT_SHARED_VOLUMES': '.shared_volumes', 'DOT_FEATURES': '/home/michael/git/repos/OpenStudioLandscapes/.features', 'DOT_OVERRIDES': '/home/michael/git/repos/OpenStudioLandscapes/.landscapes/2025-12-10-02-00-16-6ade1a6ff98a4f08923f6c8d1095f55f/.overrides', 'AUTHOR': 'michimussato@gmail.com', 'CREATED_BY': 'michael', 'CREATED_ON': 'lenovo', 'CREATED_AT': '2025-12-10_02-00-21', 'TIMEZONE': 'Europe/Zurich', 'DEFAULT_CONFIG_DBPATH': '/data/configdb', 'PYTHON_MAJ': '3', 'PYTHON_MIN': '11', 'PYTHON_PAT': '11', 'LANDSCAPE': '2025-12-10-02-00-16-6ade1a6ff98a4f08923f6c8d1095f55f'}", "config_engine=openstudiolandscapes__docker_config=DockerConfigModel(use_registry=True, no_cache=False, docker_registry_config=DockerRegistryConfig(docker_push=True, docker_pull=True, docker_repository_name='openstudiolandscapes', docker_registry_access=<DockerRegistryAccess.public: 'public'>, docker_registry_protocol=<DockerRegistryProtocol.https: 'https'>, docker_registry_fqdn='registry.openstudiolandscapes.lan', docker_registry_port=5000, docker_registry_username='registry-user', docker_registry_password='registry-password')) openstudiolandscapes__repository_root=PosixPath('/home/michael/git/repos/OpenStudioLandscapes') openstudiolandscapes__configstore_root=PosixPath('~/.config/OpenStudioLandscapes/config-store') openstudiolandscapes__domain_lan='openstudiolandscapes.lan'", 'enabled=True', 'registry=http', 'compose_scope=default', 'feature_name=OpenStudioLandscapes-Kitsu', 'group_name=Kitsu', "key_prefixes=['Kitsu']", 'docker_compose={DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/docker_compose/docker-compose.yml', 'definitions=OpenStudioLandscapes.Kitsu.definitions', 'kitsu_admin_user=admin@example.com', 'kitsu_db_password=mysecretpassword', 'kitsu_postgres_conf={DOT_FEATURES}/{FEATURE}/.payload/config/etc/postgresql/14/main/postgresql.conf', 'kitsu_enable_job_queue=True', 'kitsu_port_container=80', 'kitsu_port_host=4545', 'kitsu_database_install_destination={DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/kitsu', 'kitsu_db_inside_container=False', 'kitsu_preview_folder=/opt/zou/previews', 'kitsu_secret_key=yourrandomsecretkey', 'kitsu_tmp_dir=/opt/zou/tmp'])
+    else:
+        config_validated.config_file_path.write_text(CONFIG_STR)
+        # with open(, "w") as fw:
+        #     yaml.dump(config_validated.model_dump(exclude=set("env")), stream=fw)
+    # config_validated.config_file_path.write_text()
     # # https://jsschools.com/python/5-powerful-python-libraries-for-efficient-file-han/
     # config_yml_object = config_engine.openstudiolandscapes__configstore_root.expanduser().resolve() / dist.name / "config.yml"
     # if not config_yml_object.exists():
@@ -526,18 +520,7 @@ def inject_postgres_conf(
 
     # env: dict = group_in.pop("env")
 
-    postgres_conf = CONFIG.kitsu_postgres_conf
-    # postgres_conf = pathlib.Path(
-    #     CONFIG
-    #     .kitsu_postgres_conf
-    #     .as_posix()
-    #     .format(
-    #         **{
-    #             "FEATURE": dist.name,
-    #             **env,
-    #         }
-    #     )
-    # )
+    postgres_conf = CONFIG.kitsu_postgres_conf_expanded
 
     with open(
         file=postgres_conf,
@@ -665,9 +648,6 @@ def script_init_db(
 @asset(
     **ASSET_HEADER,
     ins={
-        "group_in": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
-        ),
         "CONFIG": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         ),
@@ -676,7 +656,6 @@ def script_init_db(
 )
 def supervisord_conf(
     context: AssetExecutionContext,
-    group_in: dict,  # pylint: disable=redefined-outer-name
     CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """
@@ -696,8 +675,6 @@ def supervisord_conf(
      Birth: 2025-05-21 19:10:33.080676825 +0000
     ```
     """
-
-    env: dict = group_in.pop("env")
 
     supervisord_conf_str = textwrap.dedent(
         """\
@@ -804,9 +781,9 @@ def supervisord_conf(
     )
 
     supervisord_conf_script = pathlib.Path(
-        env["DOT_LANDSCAPES"],
-        env.get("LANDSCAPE", "default"),
-        f"{dist.name}",
+        CONFIG.env["DOT_LANDSCAPES"],
+        CONFIG.env.get("LANDSCAPE", "default"),
+        CONFIG.feature_name,
         "__".join(context.asset_key.path),
         "supervisord.conf",
     )
@@ -890,19 +867,8 @@ def compose_kitsu(
     if not CONFIG.kitsu_db_inside_container:
 
         kitsu_db_dir_host = (
-            CONFIG.kitsu_database_install_destination / "postgresql"
+            CONFIG.kitsu_database_install_destination_expanded / "postgresql"
         )
-        # kitsu_db_dir_host = pathlib.Path(
-        #     CONFIG
-        #     .kitsu_database_install_destination
-        #     .as_posix()
-        #     .format(
-        #         **{
-        #             "FEATURE": dist.name,
-        #             **env,
-        #         }
-        #     )
-        # ) / "postgresql"
         kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
         context.log.info(f"Directory {kitsu_db_dir_host.as_posix()} created.")
 
@@ -912,19 +878,8 @@ def compose_kitsu(
         )
 
         kitsu_previews_host = (
-            CONFIG.kitsu_database_install_destination / "previews"
+            CONFIG.kitsu_database_install_destination_expanded / "previews"
         )
-        # kitsu_previews_host = pathlib.Path(
-        #     CONFIG
-        #     .kitsu_database_install_destination
-        #     .as_posix()
-        #     .format(
-        #         **{
-        #             "FEATURE": dist.name,
-        #             **env,
-        #         }
-        #     )
-        # ) / "previews"
         kitsu_previews_host.mkdir(parents=True, exist_ok=True)
         context.log.info(f"Directory {kitsu_previews_host.as_posix()} created.")
 
@@ -958,8 +913,7 @@ def compose_kitsu(
 
         volume_dir_host_rel_path = get_relative_path_via_common_root(
             context=context,
-            path_src=CONFIG.docker_compose,
-            # path_src=docker_compose,
+            path_src=CONFIG.docker_compose_expanded,
             path_dst=pathlib.Path(host),
             path_common_root=pathlib.Path(env["DOT_LANDSCAPES"]),
         )
@@ -1102,19 +1056,8 @@ def compose_init_db(
     #     ports_dict = {}
 
     kitsu_db_dir_host = (
-        CONFIG.kitsu_database_install_destination / "postgresql"
+        CONFIG.kitsu_database_install_destination_expanded / "postgresql"
     )
-    # kitsu_db_dir_host = pathlib.Path(
-    #     CONFIG
-    #     .kitsu_database_install_destination
-    #     .as_posix()
-    #     .format(
-    #         **{
-    #             "FEATURE": dist.name,
-    #             **env,
-    #         }
-    #     )
-    # ) / "postgresql"
     kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
 
     # Is:
@@ -1135,25 +1078,9 @@ def compose_init_db(
 
         host, container = v.split(":", maxsplit=1)
 
-        # docker_compose = pathlib.Path(
-        #     CONFIG
-        #     .docker_compose
-        #     .as_posix()
-        #     .format(
-        #         **{
-        #             "FEATURE": dist.name,
-        #             **env,
-        #         }
-        #     )
-        # )
-        #
-        # context.log.error(f"{CONFIG.docker_compose}")
-        # context.log.error(f"{docker_compose}")
-
         volume_dir_host_rel_path = get_relative_path_via_common_root(
             context=context,
-            path_src=CONFIG.docker_compose,
-            # path_src=docker_compose,
+            path_src=CONFIG.docker_compose_expanded,
             path_dst=pathlib.Path(host),
             path_common_root=pathlib.Path(env["DOT_LANDSCAPES"]),
         )

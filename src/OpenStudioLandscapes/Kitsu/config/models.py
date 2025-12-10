@@ -4,13 +4,15 @@ import textwrap
 from pydantic import (
     Field,
     EmailStr,
-    # SecretStr,
     field_validator, PositiveInt,
 )
 
+from dagster import get_dagster_logger
+
+LOGGER = get_dagster_logger(__name__)
+
 from OpenStudioLandscapes.engine.config.models import FeatureBaseModel
 from OpenStudioLandscapes.Kitsu import dist
-# from OpenStudioLandscapes.engine.path import ExpandablePath
 
 
 CONFIG_STR = textwrap.dedent(
@@ -82,7 +84,6 @@ class Config(FeatureBaseModel):
         description="The Postgres database password.",
         frozen=True,
     )
-    # kitsu_postgres_conf: ExpandablePath = Field(description="The Kitsu Postgres configuration file.")
     kitsu_postgres_conf: pathlib.Path = Field(description="The Kitsu Postgres configuration file.")
     kitsu_enable_job_queue: bool = Field(description="Enable Kitsu Job Queue?")
     kitsu_port_container: PositiveInt = Field(
@@ -139,6 +140,49 @@ class Config(FeatureBaseModel):
                 "`kitsu_port_container` must be set "
                 "to 80 for now. Other values will render Kitsu inoperable."
             )
+
+    # EXPANDABLE PATHS
+    @property
+    def kitsu_postgres_conf_expanded(self) -> pathlib.Path:
+        LOGGER.debug(f"{self.env = }")
+        if self.env is None:
+            raise KeyError("`env` is `None`.")
+            # return un-expanded path if `self.env` is None
+            return self.kitsu_postgres_conf
+        LOGGER.debug(f"Expanding {self.kitsu_postgres_conf}...")
+        ret = pathlib.Path(
+            self.kitsu_postgres_conf
+            .expanduser()
+            .as_posix()
+            .format(
+                **{
+                    "FEATURE": self.feature_name,
+                    **self.env,
+                }
+            )
+        )
+        return ret
+
+    @property
+    def kitsu_database_install_destination_expanded(self) -> pathlib.Path:
+        LOGGER.debug(f"{self.env = }")
+        if self.env is None:
+            raise KeyError("`env` is `None`.")
+            # return un-expanded path if `self.env` is None
+            return self.kitsu_postgres_conf
+        LOGGER.debug(f"Expanding {self.kitsu_database_install_destination}...")
+        ret = pathlib.Path(
+            self.kitsu_database_install_destination
+            .expanduser()
+            .as_posix()
+            .format(
+                **{
+                    "FEATURE": self.feature_name,
+                    **self.env,
+                }
+            )
+        )
+        return ret
 
     # def export(self, destination: pathlib.Path):
     #
