@@ -4,7 +4,7 @@ import json
 import shutil
 import textwrap
 import urllib.parse
-from typing import Any, Generator, MutableMapping, List
+from typing import Any, Generator, MutableMapping, List, Dict
 
 from deepdiff import DeepDiff
 
@@ -148,98 +148,45 @@ def CONFIG(
 
     env: dict = group_in.pop("env")
 
-    config_engine: ConfigEngine = group_in.pop("config_engine")
-    # config_yml_object = OPENSTUDIOLANDSCAPES__CONFIGSTORE_ROOT.expanduser() / dist.name / "config.yml"
+    def get_feature_base_model(
+        context: AssetExecutionContext,
+        discovered_models: Dict[str, discovery.OpenStudioLandscapesDiscoveredFeature],
+    ) -> discovery.FeatureBaseModel:
+        """
+        We are not create a new Config object for this Feature. It
+        was pre-made during the bootstrapping process.
+        We just need to find it in the `discovery.DISCOVERED_MODELS` dict.
 
-    package: str
-    feature: discovery.OpenStudioLandscapesDiscoveredFeature
-    for package, feature in discovery.DISCOVERED_MODELS.items():
-        # package = 'OpenStudioLandscapes-Kitsu'
-        # package_discovered: str = package
-        # context.log.error(f"{package_discovered = }")
-        # package_discovered = 'OpenStudioLandscapes-Kitsu.src.OpenStudioLandscapes.Kitsu'
-        if package.split(".")[0] == package_:
-            # context.log.info(f"{package = }")
-            # context.log.info(f"{feature = }")
-            config_validated: discovery.FeatureBaseModel = feature.config
-            config_validated.config_engine = config_engine
-            config_validated.env = env
-            context.log.info(f"{package = }")
-            context.log.info(f"{feature = }")
-            break
-    else:
-        context.log.error(f"No Config found for {package_}")
-        raise Exception(f"No Config found for {package_}")
+        Find the OpenStudioLandscapesFeature from the discovered models
+        that matches the package name and return its Config object.
 
-    # # Todo
-    # #  - [ ] Do we want `env` in the Config?
-    # #  - [ ] Do we want `config_engine` in the Config?
-    # config_validated.env = env
-    # # config_validated.config_engine = config_engine
-    #
-    # # Todo
-    # #  - [ ] `config.yml` file creation
-    # if config_validated.config_file_path.exists():
-    #     config_loaded: Dict = yaml.safe_load(config_validated.config_file_path.read_text())
-    #     config_validated_bak = config_validated
-    #     context.log.error(f"{config_validated_bak = }")
-    #     # config_validated_bak = Feature(["env={'GIT_ROOT': '/home/michael/git/repos/OpenStudioLandscapes', 'DOT_LANDSCAPES': '/home/michael/git/repos/OpenStudioLandscapes/.landscapes', 'DOT_SHARED_VOLUMES': '.shared_volumes', 'DOT_FEATURES': '/home/michael/git/repos/OpenStudioLandscapes/.features', 'DOT_OVERRIDES': '/home/michael/git/repos/OpenStudioLandscapes/.landscapes/2025-12-10-02-00-16-6ade1a6ff98a4f08923f6c8d1095f55f/.overrides', 'AUTHOR': 'michimussato@gmail.com', 'CREATED_BY': 'michael', 'CREATED_ON': 'lenovo', 'CREATED_AT': '2025-12-10_02-00-21', 'TIMEZONE': 'Europe/Zurich', 'DEFAULT_CONFIG_DBPATH': '/data/configdb', 'PYTHON_MAJ': '3', 'PYTHON_MIN': '11', 'PYTHON_PAT': '11', 'LANDSCAPE': '2025-12-10-02-00-16-6ade1a6ff98a4f08923f6c8d1095f55f'}", "config_engine=openstudiolandscapes__docker_config=DockerConfigModel(use_registry=True, no_cache=False, docker_registry_config=DockerRegistryConfig(docker_push=True, docker_pull=True, docker_repository_name='openstudiolandscapes', docker_registry_access='public', docker_registry_protocol='https', docker_registry_fqdn='registry.openstudiolandscapes.lan', docker_registry_port=5000, docker_registry_username='registry-user', docker_registry_password='registry-password')) openstudiolandscapes__repository_root=PosixPath('/home/michael/git/repos/OpenStudioLandscapes') openstudiolandscapes__configstore_root=PosixPath('~/.config/OpenStudioLandscapes/config-store') openstudiolandscapes__domain_lan='openstudiolandscapes.lan'", 'enabled=True', 'registry=http', 'compose_scope=default', 'feature_name=OpenStudioLandscapes-Kitsu', 'group_name=Kitsu', "key_prefixes=['Kitsu']", 'docker_compose={DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/docker_compose/docker-compose.yml', 'definitions=OpenStudioLandscapes.Kitsu.definitions', 'kitsu_admin_user=admin@example.com', 'kitsu_db_password=mysecretpassword', 'kitsu_postgres_conf={DOT_FEATURES}/{FEATURE}/.payload/config/etc/postgresql/14/main/postgresql.conf', 'kitsu_enable_job_queue=True', 'kitsu_port_container=80', 'kitsu_port_host=4545', 'kitsu_database_install_destination={DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/kitsu', 'kitsu_db_inside_container=False', 'kitsu_preview_folder=/opt/zou/previews', 'kitsu_secret_key=yourrandomsecretkey', 'kitsu_tmp_dir=/opt/zou/tmp'])
-    #     # Create a new Config from the old one and overwrite values from the yml
-    #     # Todo
-    #     #  - [ ] test with nested dicts
-    #     config_validated = Config(
-    #         **{
-    #             **config_validated_bak.model_dump(),
-    #             **config_loaded,
-    #         }
-    #     )
-    #     context.log.error(f"{config_validated = }")
-    #     config_validated.env = env
-    #     # config_validated.config_engine = config_engine
-    #     # config_validated = Feature(["env={'GIT_ROOT': '/home/michael/git/repos/OpenStudioLandscapes', 'DOT_LANDSCAPES': '/home/michael/git/repos/OpenStudioLandscapes/.landscapes', 'DOT_SHARED_VOLUMES': '.shared_volumes', 'DOT_FEATURES': '/home/michael/git/repos/OpenStudioLandscapes/.features', 'DOT_OVERRIDES': '/home/michael/git/repos/OpenStudioLandscapes/.landscapes/2025-12-10-02-00-16-6ade1a6ff98a4f08923f6c8d1095f55f/.overrides', 'AUTHOR': 'michimussato@gmail.com', 'CREATED_BY': 'michael', 'CREATED_ON': 'lenovo', 'CREATED_AT': '2025-12-10_02-00-21', 'TIMEZONE': 'Europe/Zurich', 'DEFAULT_CONFIG_DBPATH': '/data/configdb', 'PYTHON_MAJ': '3', 'PYTHON_MIN': '11', 'PYTHON_PAT': '11', 'LANDSCAPE': '2025-12-10-02-00-16-6ade1a6ff98a4f08923f6c8d1095f55f'}", "config_engine=openstudiolandscapes__docker_config=DockerConfigModel(use_registry=True, no_cache=False, docker_registry_config=DockerRegistryConfig(docker_push=True, docker_pull=True, docker_repository_name='openstudiolandscapes', docker_registry_access=<DockerRegistryAccess.public: 'public'>, docker_registry_protocol=<DockerRegistryProtocol.https: 'https'>, docker_registry_fqdn='registry.openstudiolandscapes.lan', docker_registry_port=5000, docker_registry_username='registry-user', docker_registry_password='registry-password')) openstudiolandscapes__repository_root=PosixPath('/home/michael/git/repos/OpenStudioLandscapes') openstudiolandscapes__configstore_root=PosixPath('~/.config/OpenStudioLandscapes/config-store') openstudiolandscapes__domain_lan='openstudiolandscapes.lan'", 'enabled=True', 'registry=http', 'compose_scope=default', 'feature_name=OpenStudioLandscapes-Kitsu', 'group_name=Kitsu', "key_prefixes=['Kitsu']", 'docker_compose={DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/docker_compose/docker-compose.yml', 'definitions=OpenStudioLandscapes.Kitsu.definitions', 'kitsu_admin_user=admin@example.com', 'kitsu_db_password=mysecretpassword', 'kitsu_postgres_conf={DOT_FEATURES}/{FEATURE}/.payload/config/etc/postgresql/14/main/postgresql.conf', 'kitsu_enable_job_queue=True', 'kitsu_port_container=80', 'kitsu_port_host=4545', 'kitsu_database_install_destination={DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/kitsu', 'kitsu_db_inside_container=False', 'kitsu_preview_folder=/opt/zou/previews', 'kitsu_secret_key=yourrandomsecretkey', 'kitsu_tmp_dir=/opt/zou/tmp'])
-    # else:
-    #     config_validated.config_file_path.write_text(CONFIG_STR)
-    #     # with open(, "w") as fw:
-    #     #     yaml.dump(config_validated.model_dump(exclude=set("env")), stream=fw)
-    # # config_validated.config_file_path.write_text()
-    # # # https://jsschools.com/python/5-powerful-python-libraries-for-efficient-file-han/
-    # # config_yml_object = config_engine.openstudiolandscapes__configstore_root.expanduser().resolve() / dist.name / "config.yml"
-    # # if not config_yml_object.exists():
-    # #     config_yml_object.parent.mkdir(parents=True, exist_ok=True)
-    # #     config_yml_object.touch(exist_ok=True)
-    # #     config_yml_object.write_text(CONFIG_STR)
-    # # config_dict: dict = yaml.safe_load(config_yml_object.read_text())
-    # #
-    # # docker_compose: pathlib.Path = pathlib.Path("{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/%s" % "__".join(context.asset_key.path))
-    # #
-    # # config_dict["docker_compose"] = docker_compose
-    # #
-    # # config_expanded = expand_dict_vars(
-    # #     dict_to_expand=config_dict.copy(),
-    # #     kv={
-    # #         "FEATURE": dist.name,
-    # #         **env,
-    # #     },
-    # # )
-    # #
-    # # try:
-    # #     context.log.info(f"Validating: {config_expanded = }")
-    # #     config_validated = Config(
-    # #         config_file_path=config_yml_object,
-    # #         # docker_compose="",
-    # #         **config_expanded,
-    # #     )
-    # #     context.log.debug(f"Validated.")
-    # #     context.log.debug(f"{Config = }")
-    # #     # context.pdb.set_trace()
-    # # except ValidationError as err:
-    # #     context.log.error(
-    # #         "Config Validation failed. "
-    # #         f"The parsed config for "
-    # #         f"{dist.name} contains "
-    # #         "errors, missing and/or illegal parameters."
-    # #     )
-    # #     raise ValidationError from err
+        Returns:
+            discovery.OpenStudioLandscapesFeature
+
+        Raises:
+            ValueError
+        """
+
+        # Todo
+        #  - [ ] This is a bit of a naive approach and could be done better
+
+        for package, feature in discovered_models.items():
+            # package = 'OpenStudioLandscapes-Kitsu'
+            # package_discovered: str = package
+            # context.log.error(f"{package_discovered = }")
+            # package_discovered = 'OpenStudioLandscapes-Kitsu.src.OpenStudioLandscapes.Kitsu'
+            if package.split(".")[0] == package_:
+                feature_config: discovery.FeatureBaseModel = feature.config
+                return feature_config
+        else:
+            context.log.error(f"No Config found for {package_}")
+            raise ValueError(f"No Config found for {package_}")
+
+    config_validated: discovery.FeatureBaseModel = get_feature_base_model(
+        context=context,
+        discovered_models=discovery.DISCOVERED_MODELS,
+    )
+    config_validated.env = env
 
     yield Output(config_validated)
 
@@ -247,10 +194,6 @@ def CONFIG(
         asset_key=context.asset_key,
         metadata={
             "__".join(context.asset_key.path): MetadataValue.md(f"```json\n{json.dumps(config_validated.model_dump(mode='json'), indent=2, default=str)}\n```"),
-            # "config_yml_path": MetadataValue.path(config_yml_object),
-            # "config_dict_expanded": MetadataValue.md(f"```json\n{json.dumps(config_expanded, indent=2, default=str)}\n```"),
-            # "config_dict_raw": MetadataValue.md(f"```json\n{json.dumps(config_validated.model_dump(), indent=2, default=str)}\n```"),
-            # "env": MetadataValue.md(f"```shell\n{json.dumps(env, indent=2, default=str)}\n```"),
         },
     )
 
