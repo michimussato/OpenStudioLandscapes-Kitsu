@@ -31,11 +31,11 @@ import OpenStudioLandscapes.engine.discovery.discovery as discovery
 from OpenStudioLandscapes.engine.enums import *
 from OpenStudioLandscapes.engine.utils import *
 from OpenStudioLandscapes.engine.utils.docker.compose_dicts import *
+from OpenStudioLandscapes.engine.discovery.get_feature_base_model import get_feature_base_model
 
 from OpenStudioLandscapes.Kitsu.constants import *
 from OpenStudioLandscapes.Kitsu.config.models import Config, CONFIG_STR
 
-from OpenStudioLandscapes.Kitsu import package as package_
 from OpenStudioLandscapes.Kitsu import dist
 
 
@@ -148,43 +148,10 @@ def CONFIG(
 
     env: dict = group_in.pop("env")
 
-    def get_feature_base_model(
-        context: AssetExecutionContext,
-        discovered_models: Dict[str, discovery.OpenStudioLandscapesDiscoveredFeature],
-    ) -> discovery.FeatureBaseModel:
-        """
-        We are not create a new Config object for this Feature. It
-        was pre-made during the bootstrapping process.
-        We just need to find it in the `discovery.DISCOVERED_MODELS` dict.
-
-        Find the OpenStudioLandscapesFeature from the discovered models
-        that matches the package name and return its Config object.
-
-        Returns:
-            discovery.OpenStudioLandscapesFeature
-
-        Raises:
-            ValueError
-        """
-
-        # Todo
-        #  - [ ] This is a bit of a naive approach and could be done better
-
-        for package, feature in discovered_models.items():
-            # package = 'OpenStudioLandscapes-Kitsu'
-            # package_discovered: str = package
-            # context.log.error(f"{package_discovered = }")
-            # package_discovered = 'OpenStudioLandscapes-Kitsu.src.OpenStudioLandscapes.Kitsu'
-            if package.split(".")[0] == package_:
-                feature_config: discovery.FeatureBaseModel = feature.config
-                return feature_config
-        else:
-            context.log.error(f"No Config found for {package_}")
-            raise ValueError(f"No Config found for {package_}")
-
     config_validated: discovery.FeatureBaseModel = get_feature_base_model(
         context=context,
         discovered_models=discovery.DISCOVERED_MODELS,
+        distribution=dist,
     )
     config_validated.env = env
 
