@@ -74,14 +74,14 @@ feature_out = get_feature_out(
 @asset(
     **ASSET_HEADER,
     ins={
-        "group_in": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
+        "CONFIG": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         ),
     },
 )
 def compose_networks(
     context: AssetExecutionContext,
-    group_in: dict,  # pylint: disable=redefined-outer-name
+    CONFIG: Config,
 ) -> Generator[
     Output[MutableMapping[str, MutableMapping[str, MutableMapping[str, str]]]]
     | AssetMaterialization,
@@ -89,7 +89,7 @@ def compose_networks(
     None,
 ]:
 
-    env: dict = group_in.pop("env")
+    env: dict = CONFIG.env
 
     compose_network_mode = DockerComposePolicies.NETWORK_MODE.BRIDGE
 
@@ -160,7 +160,9 @@ def CONFIG(
     yield AssetMaterialization(
         asset_key=context.asset_key,
         metadata={
-            "__".join(context.asset_key.path): MetadataValue.md(f"```json\n{json.dumps(config_validated.model_dump(mode='json'), indent=2, default=str)}\n```"),
+            "__".join(context.asset_key.path): MetadataValue.md(
+                f"```json\n{config_validated.model_dump_json(fallback=str, indent=2)}\n```"
+            ),
         },
     )
 
@@ -269,10 +271,13 @@ def build_docker_image(
 ) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
     """ """
 
+    # Todo
+    #  - [ ] Can we integrate into CONFIG?
+    #        - group_in.pop("docker_config_json")
+    #        - group_in["docker_image"]
+
     env: dict = CONFIG.env
     docker_config_json: pathlib.Path = group_in.pop("docker_config_json")
-    # Todo
-    #  - [ ] docker_config_json: pathlib.Path = CONFIG.config_engine.openstudiolandscapes__docker_config?
 
     config_engine: ConfigEngine = CONFIG.config_engine
 
@@ -470,19 +475,19 @@ def inject_postgres_conf(
 @asset(
     **ASSET_HEADER,
     ins={
-        "group_in": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
+        "CONFIG": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         ),
     },
     description="",
 )
 def script_init_db(
     context: AssetExecutionContext,
-    group_in: dict,  # pylint: disable=redefined-outer-name
+    CONFIG: Config,
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
 
-    env: dict = group_in.pop("env")
+    env: dict = CONFIG.env
 
     init_db = {}
 
@@ -752,9 +757,6 @@ def supervisord_conf(
         "CONFIG": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         ),
-        "group_in": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
-        ),
     },
 )
 def compose_kitsu(
@@ -763,13 +765,12 @@ def compose_kitsu(
     compose_networks: dict,  # pylint: disable=redefined-outer-name
     supervisord_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
     CONFIG: Config,  # pylint: disable=redefined-outer-name
-    group_in: dict,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[dict] | AssetMaterialization, None, None]:
     """ """
 
-    env: dict = group_in.pop("env")
+    env: dict = CONFIG.env
 
-    config_engine: ConfigEngine = group_in.pop("config_engine")
+    config_engine: ConfigEngine = CONFIG.config_engine
 
     network_dict = {}
     ports_dict = {}
@@ -939,9 +940,6 @@ def compose_kitsu(
         "CONFIG": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         ),
-        "group_in": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "group_in"]),
-        ),
     },
     deps=[
         AssetKey([*ASSET_HEADER["key_prefix"], "script_init_db"]),
@@ -953,13 +951,12 @@ def compose_init_db(
     context: AssetExecutionContext,
     build: dict,  # pylint: disable=redefined-outer-name
     CONFIG: Config,  # pylint: disable=redefined-outer-name
-    group_in: dict,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
     """ """
 
-    env: dict = group_in.pop("env")
+    env: dict = CONFIG.env
 
-    config_engine: ConfigEngine = group_in.pop("config_engine")
+    config_engine: ConfigEngine = CONFIG.config_engine
 
     # network_dict = {}
     # ports_dict = {}
