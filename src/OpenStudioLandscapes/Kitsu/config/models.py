@@ -1,5 +1,4 @@
 import pathlib
-import textwrap
 
 from pydantic import (
     Field,
@@ -15,53 +14,8 @@ from OpenStudioLandscapes.engine.config.models import FeatureBaseModel
 from OpenStudioLandscapes.Kitsu import dist
 
 
-CONFIG_STR = textwrap.dedent(
-    """
-    # Base Information
-    group_name: "Kitsu"
-    key_prefixes:
-      - "Kitsu"
-    #    "__".join(context.asset_key_for_output("DOCKER_COMPOSE").path),
-    #    "docker_compose",
-    #    "docker-compose.yml",
-    
-    # The default Admin user name
-    # Todo:
-    #  - [x] Report Kitsu bug:
-    #        https://github.com/cgwire/zou/issues/960
-    #        Not OK:
-    #        (env) root@kitsu:/opt/zou# zou create-admin --password openstudiolandscapes kitsu@openstudiolandscapes.com
-    #        Email is not valid.
-    #        OK:
-    #        (env) root@kitsu:/opt/zou# zou create-admin --password openstudiolandscapes kitsu@openstudio.com
-    #        Admin successfully created.
-    ## Changing this value does not seem to have an effect
-    #kitsu_admin_user: admin@example.com
-    ## Changing this value does not seem to have an effect
-    #kitsu_db_password: mysecretpassword
-    kitsu_postgres_conf: "{DOT_FEATURES}/{FEATURE}/.payload/config/etc/postgresql/14/main/postgresql.conf"
-    
-    # https://zou.cg-wire.com/jobs/#enabling-job-queue
-    kitsu_enable_job_queue: true
-    kitsu_port_container: 80
-    kitsu_port_host: 4545
-    
-    # Inside Landscape (ephemeral):
-    kitsu_database_install_destination: "{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/kitsu"
-    # In Landscapes root:
-    #kitsu_database_install_destination: "{DOT_LANDSCAPES}/{DOT_SHARED_VOLUMES}/{GROUP}__{KEY}/data/kitsu"
-    kitsu_preview_folder: /opt/zou/previews
-    kitsu_secret_key: yourrandomsecretkey
-    kitsu_tmp_dir: /opt/zou/tmp
-    # these options will be dropped as they don't match the BaseModel
-    illegal_option: "i will be ignored"
-    ignored_option: "i will be ignored"
-    
-    # Todo
-    #  - [ ] define arbitrary compose_scope here
-    #compose_scope: default
-    """
-)
+config_default = pathlib.Path(__file__).parent.joinpath("config_default.yml")
+CONFIG_STR = config_default.read_text()
 
 
 class Config(FeatureBaseModel):
