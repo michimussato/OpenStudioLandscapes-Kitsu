@@ -241,6 +241,9 @@ def pip_packages(
         "group_in": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "group_in"])
         ),
+        "CONFIG": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
+        ),
         "apt_packages": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "apt_packages"]),
         ),
@@ -258,6 +261,7 @@ def pip_packages(
 def build_docker_image(
     context: AssetExecutionContext,
     group_in: dict,  # pylint: disable=redefined-outer-name
+    CONFIG: Config,  # pylint: disable=redefined-outer-name
     apt_packages: dict[str, list[str]],  # pylint: disable=redefined-outer-name
     pip_packages: list,  # pylint: disable=redefined-outer-name
     script_init_db: pathlib.Path,  # pylint: disable=redefined-outer-name
@@ -265,10 +269,12 @@ def build_docker_image(
 ) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
     """ """
 
-    env: dict = group_in.pop("env")
+    env: dict = CONFIG.env
     docker_config_json: pathlib.Path = group_in.pop("docker_config_json")
+    # Todo
+    #  - [ ] docker_config_json: pathlib.Path = CONFIG.config_engine.openstudiolandscapes__docker_config?
 
-    config_engine: ConfigEngine = group_in.pop("config_engine")
+    config_engine: ConfigEngine = CONFIG.config_engine
 
     docker_config: DockerConfigModel = config_engine.openstudiolandscapes__docker_config
 
