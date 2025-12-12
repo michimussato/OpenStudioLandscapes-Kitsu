@@ -1,7 +1,7 @@
 # Base Information
-group_name: "Kitsu"
+group_name: "OpenStudioLandscapes_Kitsu"
 key_prefixes:
-  - "Kitsu"
+  - "OpenStudioLandscapes_Kitsu"
 #    "__".join(context.asset_key_for_output("DOCKER_COMPOSE").path),
 #    "docker_compose",
 #    "docker-compose.yml",
