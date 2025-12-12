@@ -1,13 +1,12 @@
-import pathlib
 import copy
 import json
+import pathlib
 import shutil
 import textwrap
 import urllib.parse
-from typing import Any, Generator, MutableMapping, List
+from typing import Any, Generator, List, MutableMapping
 
-from deepdiff import DeepDiff
-
+import OpenStudioLandscapes.engine.discovery.discovery as discovery
 import yaml
 from dagster import (
     AssetExecutionContext,
@@ -18,6 +17,7 @@ from dagster import (
     Output,
     asset,
 )
+from deepdiff import DeepDiff
 from OpenStudioLandscapes.engine.common_assets.compose import get_compose
 from OpenStudioLandscapes.engine.common_assets.docker_compose_graph import (
     get_docker_compose_graph,
@@ -27,17 +27,16 @@ from OpenStudioLandscapes.engine.common_assets.group_in import get_group_in
 from OpenStudioLandscapes.engine.common_assets.group_out import get_group_out
 from OpenStudioLandscapes.engine.config.models import ConfigEngine, DockerConfigModel
 from OpenStudioLandscapes.engine.constants import *
-import OpenStudioLandscapes.engine.discovery.discovery as discovery
+from OpenStudioLandscapes.engine.discovery.get_feature_base_model import (
+    get_feature_base_model,
+)
 from OpenStudioLandscapes.engine.enums import *
 from OpenStudioLandscapes.engine.utils import *
 from OpenStudioLandscapes.engine.utils.docker.compose_dicts import *
-from OpenStudioLandscapes.engine.discovery.get_feature_base_model import get_feature_base_model
-
-from OpenStudioLandscapes.Kitsu.constants import *
-from OpenStudioLandscapes.Kitsu.config.models import Config, CONFIG_STR
 
 from OpenStudioLandscapes.Kitsu import dist
-
+from OpenStudioLandscapes.Kitsu.config.models import CONFIG_STR, Config
+from OpenStudioLandscapes.Kitsu.constants import *
 
 group_in = get_group_in(
     ASSET_HEADER=ASSET_HEADER,
@@ -134,14 +133,13 @@ For reference, the default `config.yml` looks as follows:
 {CONFIG_STR}
 ```
 """
-    )
+    ),
 )
 def CONFIG(
     context: AssetExecutionContext,
     group_in: dict,  # pylint: disable=redefined-outer-name
 ) -> Generator[
-    Output[discovery.FeatureBaseModel]
-    | AssetMaterialization,
+    Output[discovery.FeatureBaseModel] | AssetMaterialization,
     None,
     None,
 ]:
@@ -244,9 +242,7 @@ def pip_packages(
 @asset(
     **ASSET_HEADER,
     ins={
-        "group_in": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "group_in"])
-        ),
+        "group_in": AssetIn(AssetKey([*ASSET_HEADER["key_prefix"], "group_in"])),
         "CONFIG": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         ),

@@ -1,18 +1,18 @@
 import pathlib
 
-from pydantic import (
-    Field,
-    EmailStr,
-    field_validator, PositiveInt,
-)
-
 from dagster import get_dagster_logger
+from pydantic import (
+    EmailStr,
+    Field,
+    PositiveInt,
+    field_validator,
+)
 
 LOGGER = get_dagster_logger(__name__)
 
 from OpenStudioLandscapes.engine.config.models import FeatureBaseModel
-from OpenStudioLandscapes.Kitsu import dist
 
+from OpenStudioLandscapes.Kitsu import dist
 
 config_default = pathlib.Path(__file__).parent.joinpath("config_default.yml")
 CONFIG_STR = config_default.read_text()
@@ -50,7 +50,9 @@ class Config(FeatureBaseModel):
         description="The Postgres database password.",
         frozen=True,
     )
-    kitsu_postgres_conf: pathlib.Path = Field(description="The Kitsu Postgres configuration file.")
+    kitsu_postgres_conf: pathlib.Path = Field(
+        description="The Kitsu Postgres configuration file."
+    )
     kitsu_enable_job_queue: bool = Field(description="Enable Kitsu Job Queue?")
     kitsu_port_container: PositiveInt = Field(
         default=80,
@@ -66,7 +68,7 @@ class Config(FeatureBaseModel):
     kitsu_db_inside_container: bool = Field(
         default=False,
         description="The Kitsu database inside container; the database will not be persistent. "
-                    "Helpful for testing.",
+        "Helpful for testing.",
     )
     kitsu_preview_folder: pathlib.Path = Field(description="The Kitsu Preview folder.")
     kitsu_secret_key: str = Field(description="Kitsu Secret Key.")
@@ -117,8 +119,7 @@ class Config(FeatureBaseModel):
             return self.kitsu_postgres_conf
         LOGGER.debug(f"Expanding {self.kitsu_postgres_conf}...")
         ret = pathlib.Path(
-            self.kitsu_postgres_conf
-            .expanduser()
+            self.kitsu_postgres_conf.expanduser()
             .as_posix()
             .format(
                 **{
@@ -138,8 +139,7 @@ class Config(FeatureBaseModel):
             return self.kitsu_postgres_conf
         LOGGER.debug(f"Expanding {self.kitsu_database_install_destination}...")
         ret = pathlib.Path(
-            self.kitsu_database_install_destination
-            .expanduser()
+            self.kitsu_database_install_destination.expanduser()
             .as_posix()
             .format(
                 **{
