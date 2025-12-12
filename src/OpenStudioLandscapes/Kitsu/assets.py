@@ -66,7 +66,7 @@ feature_out = get_feature_out(
     feature_out_ins={
         "compose": dict,
         "group_in": dict,
-        "CONFIG": Config,
+        "CONFIG": discovery.FeatureBaseModel,
     },
 )
 
@@ -81,7 +81,7 @@ feature_out = get_feature_out(
 )
 def compose_networks(
     context: AssetExecutionContext,
-    CONFIG: Config,
+    CONFIG: discovery.FeatureBaseModel,
 ) -> Generator[
     Output[MutableMapping[str, MutableMapping[str, MutableMapping[str, str]]]]
     | AssetMaterialization,
@@ -151,8 +151,12 @@ def CONFIG(
     config_validated: discovery.FeatureBaseModel = get_feature_base_model(
         context=context,
         discovered_models=discovery.DISCOVERED_MODELS,
-        distribution=dist,
+        search_instance_type=Config,
     )
+
+    # Make sure the config is an instance of a Kitsu Config
+    assert isinstance(config_validated, Config)
+
     config_validated.env = env
 
     yield Output(config_validated)
@@ -214,7 +218,7 @@ def apt_packages(
 )
 def pip_packages(
     context: AssetExecutionContext,
-    CONFIG: Config,  # pylint: disable=redefined-outer-name
+    CONFIG: discovery.FeatureBaseModel,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[list] | AssetMaterialization, None, None]:
 
     _pip_packages: list = []
@@ -263,7 +267,7 @@ def pip_packages(
 def build_docker_image(
     context: AssetExecutionContext,
     group_in: dict,  # pylint: disable=redefined-outer-name
-    CONFIG: Config,  # pylint: disable=redefined-outer-name
+    CONFIG: discovery.FeatureBaseModel,  # pylint: disable=redefined-outer-name
     apt_packages: dict[str, list[str]],  # pylint: disable=redefined-outer-name
     pip_packages: list,  # pylint: disable=redefined-outer-name
     script_init_db: pathlib.Path,  # pylint: disable=redefined-outer-name
@@ -433,9 +437,6 @@ def build_docker_image(
 @asset(
     **ASSET_HEADER,
     ins={
-        # "group_in": AssetIn(
-        #     AssetKey([*ASSET_HEADER["key_prefix"], "group_in"])
-        # ),
         "CONFIG": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         ),
@@ -444,12 +445,9 @@ def build_docker_image(
 )
 def inject_postgres_conf(
     context: AssetExecutionContext,
-    # group_in: dict,  # pylint: disable=redefined-outer-name
-    CONFIG: Config,  # pylint: disable=redefined-outer-name
+    CONFIG: discovery.FeatureBaseModel,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
-
-    # env: dict = group_in.pop("env")
 
     postgres_conf = CONFIG.kitsu_postgres_conf_expanded
 
@@ -483,7 +481,7 @@ def inject_postgres_conf(
 )
 def script_init_db(
     context: AssetExecutionContext,
-    CONFIG: Config,
+    CONFIG: discovery.FeatureBaseModel,
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
 
@@ -587,7 +585,7 @@ def script_init_db(
 )
 def supervisord_conf(
     context: AssetExecutionContext,
-    CONFIG: Config,  # pylint: disable=redefined-outer-name
+    CONFIG: discovery.FeatureBaseModel,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """
     We create a custom `/etc/supervisord.conf` file that launches `rq worker` if
@@ -764,7 +762,7 @@ def compose_kitsu(
     build: dict,  # pylint: disable=redefined-outer-name
     compose_networks: dict,  # pylint: disable=redefined-outer-name
     supervisord_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
-    CONFIG: Config,  # pylint: disable=redefined-outer-name
+    CONFIG: discovery.FeatureBaseModel,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[dict] | AssetMaterialization, None, None]:
     """ """
 
@@ -950,7 +948,7 @@ def compose_kitsu(
 def compose_init_db(
     context: AssetExecutionContext,
     build: dict,  # pylint: disable=redefined-outer-name
-    CONFIG: Config,  # pylint: disable=redefined-outer-name
+    CONFIG: discovery.FeatureBaseModel,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
     """ """
 
