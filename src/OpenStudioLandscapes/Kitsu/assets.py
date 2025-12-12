@@ -152,9 +152,6 @@ def CONFIG(
         search_instance_type=Config,
     )
 
-    # Make sure the config is an instance of a Kitsu Config
-    assert isinstance(config_validated, Config)
-
     config_validated.env = env
 
     yield Output(config_validated)
