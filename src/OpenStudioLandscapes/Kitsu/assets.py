@@ -4,7 +4,7 @@ import json
 import shutil
 import textwrap
 import urllib.parse
-from typing import Any, Generator, MutableMapping, List, Dict
+from typing import Any, Generator, MutableMapping, List
 
 from deepdiff import DeepDiff
 
@@ -161,7 +161,7 @@ def CONFIG(
         asset_key=context.asset_key,
         metadata={
             "__".join(context.asset_key.path): MetadataValue.md(
-                f"```json\n{config_validated.model_dump_json(fallback=str, indent=2)}\n```"
+                f"```yaml\n{yaml.safe_dump(json.loads(config_validated.model_dump_json(fallback=str, indent=2)))}\n```"
             ),
         },
     )
