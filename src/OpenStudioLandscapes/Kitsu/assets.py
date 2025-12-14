@@ -17,7 +17,6 @@ from dagster import (
     Output,
     asset,
 )
-from deepdiff import DeepDiff
 from OpenStudioLandscapes.engine.common_assets.compose import get_compose
 from OpenStudioLandscapes.engine.common_assets.docker_compose_graph import (
     get_docker_compose_graph,
