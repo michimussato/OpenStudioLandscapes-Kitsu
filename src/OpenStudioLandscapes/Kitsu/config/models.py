@@ -135,20 +135,3 @@ class Config(FeatureBaseModel):
             )
         )
         return ret
-
-    # def export(self, destination: pathlib.Path):
-    #
-    #     with destination.open("w") as f:
-    #         f.write(self.yaml(indent=2))
-    #     return {
-    #         "feature_name": self.feature_name,
-    #     }
-
-    # @field_validator("kitsu_postgres_conf")
-    # @classmethod
-    # def ensure_valid__kitsu_postgres_conf(cls, value: pathlib.PosixPath):
-    #     if value.exists():
-    #         return value
-    #     else:
-    #         raise ValueError(f"`kitsu_postgres_conf` ({value.as_posix()}) "
-    #                          f"does not exist.")
