@@ -1125,7 +1125,7 @@ def cmd_append(
     context: AssetExecutionContext,
 ) -> Generator[Output[dict[str, list[Any]]] | AssetMaterialization | Any, Any, None]:
 
-    ret = {"cmd": [], "exclude_from_quote": []}
+    ret = {"cmd": [], "exclude_from_quote": ["$(which docker)"]}
 
     yield Output(ret)
 
