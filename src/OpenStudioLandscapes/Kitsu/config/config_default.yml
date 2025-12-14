@@ -2,9 +2,8 @@
 group_name: "OpenStudioLandscapes_Kitsu"
 key_prefixes:
   - "OpenStudioLandscapes_Kitsu"
-#    "__".join(context.asset_key_for_output("DOCKER_COMPOSE").path),
-#    "docker_compose",
-#    "docker-compose.yml",
+
+compose_scope: "default"
 
 # The default Admin user name
 # Todo:
@@ -34,10 +33,3 @@ kitsu_database_install_destination: "{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data
 kitsu_preview_folder: /opt/zou/previews
 kitsu_secret_key: yourrandomsecretkey
 kitsu_tmp_dir: /opt/zou/tmp
-# these options will be dropped as they don't match the BaseModel
-illegal_option: "i will be ignored"
-ignored_option: "i will be ignored"
-
-# Todo
-#  - [ ] define arbitrary compose_scope here
-#compose_scope: default
