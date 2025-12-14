@@ -21,7 +21,7 @@ compose_scope: "default"
 # kitsu_admin_user: admin@example.com
 # kitsu_db_password: mysecretpassword
 
-# kitsu_secret_key: yourrandomsecretkey
+kitsu_secret_key: yourrandomsecretkey
 
 kitsu_postgres_conf: "{DOT_FEATURES}/{FEATURE}/.payload/config/etc/postgresql/14/main/postgresql.conf"
 
