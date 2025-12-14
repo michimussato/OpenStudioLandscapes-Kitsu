@@ -18,16 +18,16 @@ compose_scope: "default"
 # Changing these values does not seem to have an effect
 # Hence, they are locked to the following
 # values for now
-kitsu_admin_user: admin@example.com
-kitsu_db_password: mysecretpassword
+# kitsu_admin_user: admin@example.com
+# kitsu_db_password: mysecretpassword
 
-kitsu_secret_key: yourrandomsecretkey
+# kitsu_secret_key: yourrandomsecretkey
 
 kitsu_postgres_conf: "{DOT_FEATURES}/{FEATURE}/.payload/config/etc/postgresql/14/main/postgresql.conf"
 
 # https://zou.cg-wire.com/jobs/#enabling-job-queue
-kitsu_enable_job_queue: true
-kitsu_port_container: 80
+# kitsu_enable_job_queue: true
+# kitsu_port_container: 80
 kitsu_port_host: 4545
 
 # Inside Landscape (ephemeral):
@@ -37,5 +37,5 @@ kitsu_database_install_destination: "{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data
 #  - [ ] does {DOT_SHARED_VOLUMES}/{GROUP}__{KEY} actually resolve? I don't think so...
 #kitsu_database_install_destination: "{DOT_LANDSCAPES}/{DOT_SHARED_VOLUMES}/{GROUP}__{KEY}/data/kitsu"
 
-kitsu_preview_folder: /opt/zou/previews
-kitsu_tmp_dir: /opt/zou/tmp
+# kitsu_preview_folder: /opt/zou/previews
+# kitsu_tmp_dir: /opt/zou/tmp

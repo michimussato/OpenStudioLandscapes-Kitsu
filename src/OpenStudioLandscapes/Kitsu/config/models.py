@@ -39,7 +39,10 @@ class Config(FeatureBaseModel):
     kitsu_postgres_conf: pathlib.Path = Field(
         description="The Kitsu Postgres configuration file."
     )
-    kitsu_enable_job_queue: bool = Field(description="Enable Kitsu Job Queue?")
+    kitsu_enable_job_queue: bool = Field(
+        description="Enable Kitsu Job Queue?",
+        default=True,
+    )
     kitsu_port_container: PositiveInt = Field(
         default=80,
         description="The Kitsu container port.",
@@ -50,15 +53,23 @@ class Config(FeatureBaseModel):
         description="The Kitsu host port.",
         frozen=False,
     )
-    kitsu_database_install_destination: pathlib.Path = Field()
+    kitsu_database_install_destination: pathlib.Path = Field(
+        description="The host side Kitsu database installation destination."
+    )
     kitsu_db_inside_container: bool = Field(
         default=False,
-        description="The Kitsu database inside container; the database will not be persistent. "
-        "Helpful for testing.",
+        description="The Kitsu database inside container; the database will "
+                    "not be persistent. Helpful for testing.",
     )
-    kitsu_preview_folder: pathlib.Path = Field(description="The Kitsu Preview folder.")
+    kitsu_preview_folder: pathlib.Path = Field(
+        description="The Kitsu Preview folder.",
+        default=pathlib.Path("/opt/zou/previews"),
+    )
+    kitsu_tmp_dir: pathlib.Path = Field(
+        description="Kitsu TMP directory.",
+        default=pathlib.Path("/opt/zou/tmp"),
+    )
     kitsu_secret_key: str = Field(description="Kitsu Secret Key.")
-    kitsu_tmp_dir: pathlib.Path = Field(description="Kitsu TMP directory.")
 
     @field_validator("kitsu_admin_user")
     @classmethod
@@ -101,8 +112,7 @@ class Config(FeatureBaseModel):
         LOGGER.debug(f"{self.env = }")
         if self.env is None:
             raise KeyError("`env` is `None`.")
-            # return un-expanded path if `self.env` is None
-            return self.kitsu_postgres_conf
+
         LOGGER.debug(f"Expanding {self.kitsu_postgres_conf}...")
         ret = pathlib.Path(
             self.kitsu_postgres_conf.expanduser()
@@ -121,8 +131,7 @@ class Config(FeatureBaseModel):
         LOGGER.debug(f"{self.env = }")
         if self.env is None:
             raise KeyError("`env` is `None`.")
-            # return un-expanded path if `self.env` is None
-            return self.kitsu_postgres_conf
+
         LOGGER.debug(f"Expanding {self.kitsu_database_install_destination}...")
         ret = pathlib.Path(
             self.kitsu_database_install_destination.expanduser()
