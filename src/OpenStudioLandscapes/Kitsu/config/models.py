@@ -19,22 +19,8 @@ CONFIG_STR = config_default.read_text()
 
 
 class Config(FeatureBaseModel):
-    # """
-    # An instance of this model has to be a singleton class.
-    # There can only be one ConfigEngine instance.
-    #
-    # References:
-    #     - https://www.geeksforgeeks.org/python/singleton-pattern-in-python-a-complete-guide/
-    # """
-    #
-    # def __new__(cls, *args, **kwargs):
-    #     if not hasattr(cls, 'instance'):
-    #         cls.instance = super(Config, cls).__new__(cls)
-    #     return cls.instance
-    # config_str: str = CONFIG_STR
-
     feature_name: str = dist.name
-    # compose_scope: str = "default"
+
     definitions: str = "OpenStudioLandscapes.Kitsu.definitions"
 
     kitsu_admin_user: EmailStr = Field(
