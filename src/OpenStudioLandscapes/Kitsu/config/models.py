@@ -56,13 +56,11 @@ class Config(FeatureBaseModel):
     kitsu_database_install_destination: pathlib.Path = Field(
         description="The host side Kitsu database installation destination."
     )
-    # Todo:
-    #  - [ ] Implement?
-    # kitsu_db_inside_container: bool = Field(
-    #     default=False,
-    #     description="The Kitsu database inside container; the database will "
-    #                 "not be persistent. Helpful for testing.",
-    # )
+    kitsu_db_inside_container: bool = Field(
+        default=False,
+        description="The Kitsu database inside container; the database will "
+                    "not be persistent. Helpful for testing.",
+    )
     kitsu_preview_folder: pathlib.Path = Field(
         description="The Kitsu Preview folder.",
         default=pathlib.Path("/opt/zou/previews"),

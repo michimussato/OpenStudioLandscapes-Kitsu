@@ -79,7 +79,7 @@ feature_out = get_feature_out(
 )
 def compose_networks(
     context: AssetExecutionContext,
-    CONFIG: discovery.FeatureBaseModel,
+    CONFIG: Config,
 ) -> Generator[
     Output[MutableMapping[str, MutableMapping[str, MutableMapping[str, str]]]]
     | AssetMaterialization,
@@ -212,7 +212,7 @@ def apt_packages(
 )
 def pip_packages(
     context: AssetExecutionContext,
-    CONFIG: discovery.FeatureBaseModel,  # pylint: disable=redefined-outer-name
+    CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[list] | AssetMaterialization, None, None]:
 
     _pip_packages: list = []
@@ -259,7 +259,7 @@ def pip_packages(
 def build_docker_image(
     context: AssetExecutionContext,
     group_in: dict,  # pylint: disable=redefined-outer-name
-    CONFIG: discovery.FeatureBaseModel,  # pylint: disable=redefined-outer-name
+    CONFIG: Config,  # pylint: disable=redefined-outer-name
     apt_packages: dict[str, list[str]],  # pylint: disable=redefined-outer-name
     pip_packages: list,  # pylint: disable=redefined-outer-name
     script_init_db: pathlib.Path,  # pylint: disable=redefined-outer-name
@@ -437,7 +437,7 @@ def build_docker_image(
 )
 def inject_postgres_conf(
     context: AssetExecutionContext,
-    CONFIG: discovery.FeatureBaseModel,  # pylint: disable=redefined-outer-name
+    CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
 
@@ -473,7 +473,7 @@ def inject_postgres_conf(
 )
 def script_init_db(
     context: AssetExecutionContext,
-    CONFIG: discovery.FeatureBaseModel,
+    CONFIG: Config,
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
 
@@ -577,7 +577,7 @@ def script_init_db(
 )
 def supervisord_conf(
     context: AssetExecutionContext,
-    CONFIG: discovery.FeatureBaseModel,  # pylint: disable=redefined-outer-name
+    CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """
     We create a custom `/etc/supervisord.conf` file that launches `rq worker` if
@@ -754,7 +754,7 @@ def compose_kitsu(
     build: dict,  # pylint: disable=redefined-outer-name
     compose_networks: dict,  # pylint: disable=redefined-outer-name
     supervisord_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
-    CONFIG: discovery.FeatureBaseModel,  # pylint: disable=redefined-outer-name
+    CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[dict] | AssetMaterialization, None, None]:
     """ """
 
@@ -940,7 +940,7 @@ def compose_kitsu(
 def compose_init_db(
     context: AssetExecutionContext,
     build: dict,  # pylint: disable=redefined-outer-name
-    CONFIG: discovery.FeatureBaseModel,  # pylint: disable=redefined-outer-name
+    CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
     """ """
 
