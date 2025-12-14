@@ -58,6 +58,7 @@ CONFIG = get_feature__CONFIG(
     ASSET_HEADER=ASSET_HEADER,
     CONFIG_STR=CONFIG_STR,
     search_model_of_type=Config,
+    # config_parent=None,
 )
 
 group_in = get_group_in(
