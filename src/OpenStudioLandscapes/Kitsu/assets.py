@@ -1097,32 +1097,6 @@ def compose_maps(
     )
 
 
-# @asset(
-#     **ASSET_HEADER,
-#     ins={
-#         "features_in": AssetIn(AssetKey([*ASSET_HEADER["key_prefix"], "group_in"])),
-#     },
-# )
-# def docker_image(
-#     context: AssetExecutionContext,
-#     features_in: dict,
-# ) -> Generator[Output[dict] | AssetMaterialization, None, None]:
-#
-#     context.log.info(features_in)
-#
-#     _docker_image: dict = features_in.pop("docker_image")
-#     context.log.info(_docker_image)
-#
-#     yield Output(_docker_image)
-#
-#     yield AssetMaterialization(
-#         asset_key=context.asset_key,
-#         metadata={
-#             "docker_image": MetadataValue.json(_docker_image),
-#         },
-#     )
-
-
 @asset(
     **ASSET_HEADER,
     ins={},
