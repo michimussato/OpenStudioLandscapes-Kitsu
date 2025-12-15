@@ -62,12 +62,12 @@ CONFIG = get_feature__CONFIG(
     # config_parent=None,
 )
 
-# Deprecated
-group_in = get_group_in(
-    ASSET_HEADER=ASSET_HEADER,
-    ASSET_HEADER_PARENT=ASSET_HEADER_BASE,
-    input_name=str(GroupIn.BASE_IN),
-)
+# # Deprecated
+# group_in = get_group_in(
+#     ASSET_HEADER=ASSET_HEADER,
+#     ASSET_HEADER_PARENT=ASSET_HEADER_BASE,
+#     input_name=str(GroupIn.BASE_IN),
+# )
 
 
 feature_in = get_feature_in(
@@ -93,15 +93,15 @@ compose = get_compose(
 )
 
 
-# Deprecated
-feature_out = get_feature_out(
-    ASSET_HEADER=ASSET_HEADER,
-    feature_out_ins={
-        "compose": dict,
-        "group_in": dict,
-        "CONFIG": discovery.FeatureBaseModel,
-    },
-)
+# # Deprecated
+# feature_out = get_feature_out(
+#     ASSET_HEADER=ASSET_HEADER,
+#     feature_out_ins={
+#         "compose": dict,
+#         "group_in": dict,
+#         "CONFIG": discovery.FeatureBaseModel,
+#     },
+# )
 
 
 feature_out_v2 = get_feature_out_v2(
