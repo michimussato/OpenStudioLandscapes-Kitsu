@@ -5,7 +5,7 @@ import pathlib
 import shutil
 import textwrap
 import urllib.parse
-from typing import Generator, List, MutableMapping
+from typing import Generator, List, MutableMapping, Dict
 
 import OpenStudioLandscapes.engine.discovery.discovery as discovery
 import yaml
@@ -22,12 +22,13 @@ from OpenStudioLandscapes.engine.common_assets.compose import get_compose
 from OpenStudioLandscapes.engine.common_assets.docker_compose_graph import (
     get_docker_compose_graph,
 )
-from OpenStudioLandscapes.engine.common_assets.feature_out import get_feature_out
-from OpenStudioLandscapes.engine.common_assets.group_in import get_group_in
+from OpenStudioLandscapes.engine.common_assets.feature_out import get_feature_out, get_feature_out_v2
+from OpenStudioLandscapes.engine.common_assets.group_in import get_group_in, get_feature_in
 from OpenStudioLandscapes.engine.common_assets.group_out import get_group_out
 from OpenStudioLandscapes.engine.config.models import ConfigEngine, DockerConfigModel
 from OpenStudioLandscapes.engine.constants import *
 from OpenStudioLandscapes.engine.enums import *
+from OpenStudioLandscapes.engine.link.models import OpenStudioLandscapesFeatureIn
 from OpenStudioLandscapes.engine.utils import *
 from OpenStudioLandscapes.engine.utils.docker.compose_dicts import *
 
@@ -61,10 +62,19 @@ CONFIG = get_feature__CONFIG(
     # config_parent=None,
 )
 
+# Deprecated
 group_in = get_group_in(
     ASSET_HEADER=ASSET_HEADER,
     ASSET_HEADER_PARENT=ASSET_HEADER_BASE,
     input_name=str(GroupIn.BASE_IN),
+)
+
+
+feature_in = get_feature_in(
+    ASSET_HEADER=ASSET_HEADER,
+    ASSET_HEADER_BASE=ASSET_HEADER_BASE,
+    ASSET_HEADER_FEATURE_IN={},
+    # ASSET_HEADERS_PAPRENTS=[],
 )
 
 
@@ -83,6 +93,7 @@ compose = get_compose(
 )
 
 
+# Deprecated
 feature_out = get_feature_out(
     ASSET_HEADER=ASSET_HEADER,
     feature_out_ins={
@@ -90,6 +101,16 @@ feature_out = get_feature_out(
         "group_in": dict,
         "CONFIG": discovery.FeatureBaseModel,
     },
+)
+
+
+feature_out_v2 = get_feature_out_v2(
+    ASSET_HEADER=ASSET_HEADER,
+    # feature_out_ins={
+    #     "compose": Dict,
+    #     "feature_in": OpenStudioLandscapesFeatureIn,
+    #     "CONFIG": discovery.FeatureBaseModel,
+    # },
 )
 
 
@@ -208,10 +229,10 @@ def pip_packages(
 @asset(
     **ASSET_HEADER,
     ins={
-        "group_in": AssetIn(AssetKey([*ASSET_HEADER["key_prefix"], "group_in"])),
-        "CONFIG": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
-        ),
+        "feature_in": AssetIn(AssetKey([*ASSET_HEADER["key_prefix"], "feature_in"])),
+        # "CONFIG": AssetIn(
+        #     AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
+        # ),
         "apt_packages": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "apt_packages"]),
         ),
@@ -228,8 +249,8 @@ def pip_packages(
 )
 def build_docker_image(
     context: AssetExecutionContext,
-    group_in: dict,  # pylint: disable=redefined-outer-name
-    CONFIG: Config,  # pylint: disable=redefined-outer-name
+    feature_in: OpenStudioLandscapesFeatureIn,  # pylint: disable=redefined-outer-name
+    # CONFIG: Config,  # pylint: disable=redefined-outer-name
     apt_packages: dict[str, list[str]],  # pylint: disable=redefined-outer-name
     pip_packages: list,  # pylint: disable=redefined-outer-name
     script_init_db: pathlib.Path,  # pylint: disable=redefined-outer-name
@@ -242,14 +263,14 @@ def build_docker_image(
     #        - group_in.pop("docker_config_json")
     #        - group_in["docker_image"]
 
-    env: dict = CONFIG.env
-    docker_config_json: pathlib.Path = group_in.pop("docker_config_json")
+    env: Dict = feature_in.openstudiolandscapes_base.env
+    docker_config_json: pathlib.Path = feature_in.openstudiolandscapes_base.docker_config_json
 
-    config_engine: ConfigEngine = CONFIG.config_engine
+    config_engine: ConfigEngine = feature_in.openstudiolandscapes_base.config_engine
 
     docker_config: DockerConfigModel = config_engine.openstudiolandscapes__docker_config
 
-    docker_image: dict = group_in["docker_image"]
+    docker_image: Dict = feature_in.openstudiolandscapes_base.docker_image_base
 
     docker_file = pathlib.Path(
         env["DOT_LANDSCAPES"],
