@@ -699,6 +699,9 @@ def supervisord_conf(
 @asset(
     **ASSET_HEADER,
     ins={
+        "CONFIG": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
+        ),
         "build": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "build_docker_image"]),
         ),
@@ -708,17 +711,14 @@ def supervisord_conf(
         "supervisord_conf": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "supervisord_conf"]),
         ),
-        "CONFIG": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
-        ),
     },
 )
 def compose_kitsu(
     context: AssetExecutionContext,
+    CONFIG: Config,  # pylint: disable=redefined-outer-name
     build: dict,  # pylint: disable=redefined-outer-name
     compose_networks: dict,  # pylint: disable=redefined-outer-name
     supervisord_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
-    CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[dict] | AssetMaterialization, None, None]:
     """ """
 
@@ -776,21 +776,6 @@ def compose_kitsu(
     for v in volumes_dict["volumes"]:
 
         host, container = v.split(":", maxsplit=1)
-
-        # docker_compose = pathlib.Path(
-        #     CONFIG
-        #     .docker_compose
-        #     .as_posix()
-        #     .format(
-        #         **{
-        #             "FEATURE": dist.name,
-        #             **env,
-        #         }
-        #     )
-        # )
-        #
-        # context.log.error(f"{CONFIG.docker_compose}")
-        # context.log.error(f"{docker_compose}")
 
         volume_dir_host_rel_path = get_relative_path_via_common_root(
             context=context,
