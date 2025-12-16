@@ -5,7 +5,7 @@ import pathlib
 import shutil
 import textwrap
 import urllib.parse
-from typing import Generator, List, MutableMapping, Dict
+from typing import Generator, List, MutableMapping, Dict, Union
 
 import yaml
 from dagster import (
@@ -15,14 +15,14 @@ from dagster import (
     AssetMaterialization,
     MetadataValue,
     Output,
-    asset,
+    asset, AssetsDefinition,
 )
 from OpenStudioLandscapes.engine.common_assets.compose import get_compose
 from OpenStudioLandscapes.engine.common_assets.docker_compose_graph import (
     get_docker_compose_graph,
 )
 from OpenStudioLandscapes.engine.common_assets.feature_out import get_feature_out_v2
-from OpenStudioLandscapes.engine.common_assets.group_in import get_feature_in
+from OpenStudioLandscapes.engine.common_assets.group_in import get_feature_in, get_feature_in_parent
 from OpenStudioLandscapes.engine.common_assets.group_out import get_group_out
 from OpenStudioLandscapes.engine.config.models import ConfigEngine, DockerConfigModel
 from OpenStudioLandscapes.engine.constants import *
@@ -50,39 +50,49 @@ yaml.SafeDumper.add_multi_representer(
 )
 
 
-compose_scope_group__cmd = get_compose_scope_group__cmd(
+compose_scope_group__cmd: AssetsDefinition = get_compose_scope_group__cmd(
     ASSET_HEADER=ASSET_HEADER,
 )
 
-CONFIG = get_feature__CONFIG(
+CONFIG: AssetsDefinition = get_feature__CONFIG(
     ASSET_HEADER=ASSET_HEADER,
     CONFIG_STR=CONFIG_STR,
     search_model_of_type=Config,
 )
 
-feature_in = get_feature_in(
+feature_in: AssetsDefinition = get_feature_in(
     ASSET_HEADER=ASSET_HEADER,
     ASSET_HEADER_BASE=ASSET_HEADER_BASE,
     ASSET_HEADER_FEATURE_IN={},
 )
 
-group_out = get_group_out(
+group_out: AssetsDefinition = get_group_out(
     ASSET_HEADER=ASSET_HEADER,
 )
 
 
-docker_compose_graph = get_docker_compose_graph(
+docker_compose_graph: AssetsDefinition = get_docker_compose_graph(
     ASSET_HEADER=ASSET_HEADER,
 )
 
 
-compose = get_compose(
+compose: AssetsDefinition = get_compose(
     ASSET_HEADER=ASSET_HEADER,
 )
 
 
-feature_out_v2 = get_feature_out_v2(
+feature_out_v2: AssetsDefinition = get_feature_out_v2(
     ASSET_HEADER=ASSET_HEADER,
+)
+
+
+# Produces
+# - feature_in_parent
+# - CONFIG_PARENT
+# if ConfigParent is or type FeatureBaseModel
+feature_in_parent: Union[AssetsDefinition, None] = get_feature_in_parent(
+    ASSET_HEADER=ASSET_HEADER,
+    config_parent=ConfigParent,
 )
 
 
@@ -202,9 +212,6 @@ def pip_packages(
     **ASSET_HEADER,
     ins={
         "feature_in": AssetIn(AssetKey([*ASSET_HEADER["key_prefix"], "feature_in"])),
-        # "CONFIG": AssetIn(
-        #     AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
-        # ),
         "apt_packages": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "apt_packages"]),
         ),
@@ -222,18 +229,12 @@ def pip_packages(
 def build_docker_image(
     context: AssetExecutionContext,
     feature_in: OpenStudioLandscapesFeatureIn,  # pylint: disable=redefined-outer-name
-    # CONFIG: Config,  # pylint: disable=redefined-outer-name
     apt_packages: dict[str, list[str]],  # pylint: disable=redefined-outer-name
     pip_packages: list,  # pylint: disable=redefined-outer-name
     script_init_db: pathlib.Path,  # pylint: disable=redefined-outer-name
     inject_postgres_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
     """ """
-
-    # Todo
-    #  - [ ] Can we integrate into CONFIG?
-    #        - group_in.pop("docker_config_json")
-    #        - group_in["docker_image"]
 
     env: Dict = feature_in.openstudiolandscapes_base.env
     docker_config_json: pathlib.Path = feature_in.openstudiolandscapes_base.docker_config_json
