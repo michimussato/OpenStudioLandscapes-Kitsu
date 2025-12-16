@@ -7,7 +7,6 @@ import textwrap
 import urllib.parse
 from typing import Generator, List, MutableMapping, Dict
 
-import OpenStudioLandscapes.engine.discovery.discovery as discovery
 import yaml
 from dagster import (
     AssetExecutionContext,
@@ -22,8 +21,8 @@ from OpenStudioLandscapes.engine.common_assets.compose import get_compose
 from OpenStudioLandscapes.engine.common_assets.docker_compose_graph import (
     get_docker_compose_graph,
 )
-from OpenStudioLandscapes.engine.common_assets.feature_out import get_feature_out, get_feature_out_v2
-from OpenStudioLandscapes.engine.common_assets.group_in import get_group_in, get_feature_in
+from OpenStudioLandscapes.engine.common_assets.feature_out import get_feature_out_v2
+from OpenStudioLandscapes.engine.common_assets.group_in import get_feature_in
 from OpenStudioLandscapes.engine.common_assets.group_out import get_group_out
 from OpenStudioLandscapes.engine.config.models import ConfigEngine, DockerConfigModel
 from OpenStudioLandscapes.engine.constants import *
@@ -59,24 +58,13 @@ CONFIG = get_feature__CONFIG(
     ASSET_HEADER=ASSET_HEADER,
     CONFIG_STR=CONFIG_STR,
     search_model_of_type=Config,
-    # config_parent=None,
 )
-
-# # Deprecated
-# group_in = get_group_in(
-#     ASSET_HEADER=ASSET_HEADER,
-#     ASSET_HEADER_PARENT=ASSET_HEADER_BASE,
-#     input_name=str(GroupIn.BASE_IN),
-# )
-
 
 feature_in = get_feature_in(
     ASSET_HEADER=ASSET_HEADER,
     ASSET_HEADER_BASE=ASSET_HEADER_BASE,
     ASSET_HEADER_FEATURE_IN={},
-    # ASSET_HEADERS_PAPRENTS=[],
 )
-
 
 group_out = get_group_out(
     ASSET_HEADER=ASSET_HEADER,
@@ -93,24 +81,8 @@ compose = get_compose(
 )
 
 
-# # Deprecated
-# feature_out = get_feature_out(
-#     ASSET_HEADER=ASSET_HEADER,
-#     feature_out_ins={
-#         "compose": dict,
-#         "group_in": dict,
-#         "CONFIG": discovery.FeatureBaseModel,
-#     },
-# )
-
-
 feature_out_v2 = get_feature_out_v2(
     ASSET_HEADER=ASSET_HEADER,
-    # feature_out_ins={
-    #     "compose": Dict,
-    #     "feature_in": OpenStudioLandscapesFeatureIn,
-    #     "CONFIG": discovery.FeatureBaseModel,
-    # },
 )
 
 
