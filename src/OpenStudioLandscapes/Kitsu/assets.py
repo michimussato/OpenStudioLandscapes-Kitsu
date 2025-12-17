@@ -5,7 +5,7 @@ import pathlib
 import shutil
 import textwrap
 import urllib.parse
-from typing import Generator, List, MutableMapping, Dict, Union
+from typing import Generator, List, Dict, Union
 
 import yaml
 from dagster import (
@@ -108,13 +108,13 @@ def compose_networks(
     context: AssetExecutionContext,
     CONFIG: Config,
 ) -> Generator[
-    Output[MutableMapping[str, MutableMapping[str, MutableMapping[str, str]]]]
+    Output[Dict[str, Dict[str, Dict[str, str]]]]
     | AssetMaterialization,
     None,
     None,
 ]:
 
-    env: dict = CONFIG.env
+    env: Dict = CONFIG.env
 
     compose_network_mode = DockerComposePolicies.NETWORK_MODE.BRIDGE
 
@@ -131,7 +131,6 @@ def compose_networks(
     yield AssetMaterialization(
         asset_key=context.asset_key,
         metadata={
-            "__".join(context.asset_key.path): MetadataValue.json(docker_dict),
             "compose_network_mode": MetadataValue.text(compose_network_mode.value),
             "docker_yaml": MetadataValue.md(f"```shell\n{docker_yaml}\n```"),
         },
@@ -144,7 +143,7 @@ def compose_networks(
 def apt_packages(
     context: AssetExecutionContext,
 ) -> Generator[
-    Output[MutableMapping[str, List[str]]] | AssetMaterialization, None, None
+    Output[Dict[str, List[str]]] | AssetMaterialization, None, None
 ]:
     """ """
 
@@ -186,9 +185,9 @@ def apt_packages(
 def pip_packages(
     context: AssetExecutionContext,
     CONFIG: Config,  # pylint: disable=redefined-outer-name
-) -> Generator[Output[list] | AssetMaterialization, None, None]:
+) -> Generator[Output[List] | AssetMaterialization, None, None]:
 
-    _pip_packages: list = []
+    _pip_packages: List = []
 
     if CONFIG.kitsu_enable_job_queue:
 
@@ -212,6 +211,9 @@ def pip_packages(
     **ASSET_HEADER,
     ins={
         "feature_in": AssetIn(AssetKey([*ASSET_HEADER["key_prefix"], "feature_in"])),
+        "CONFIG": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
+        ),
         "apt_packages": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "apt_packages"]),
         ),
@@ -229,17 +231,19 @@ def pip_packages(
 def build_docker_image(
     context: AssetExecutionContext,
     feature_in: OpenStudioLandscapesFeatureIn,  # pylint: disable=redefined-outer-name
-    apt_packages: dict[str, list[str]],  # pylint: disable=redefined-outer-name
-    pip_packages: list,  # pylint: disable=redefined-outer-name
+    CONFIG: Config,  # pylint: disable=redefined-outer-name
+    apt_packages: Dict[str, List[str]],  # pylint: disable=redefined-outer-name
+    pip_packages: List,  # pylint: disable=redefined-outer-name
     script_init_db: pathlib.Path,  # pylint: disable=redefined-outer-name
     inject_postgres_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
-) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
+) -> Generator[Output[Dict] | AssetMaterialization, None, None]:
     """ """
 
-    env: Dict = feature_in.openstudiolandscapes_base.env
+    env: Dict = CONFIG.env
+
     docker_config_json: pathlib.Path = feature_in.openstudiolandscapes_base.docker_config_json
 
-    config_engine: ConfigEngine = feature_in.openstudiolandscapes_base.config_engine
+    config_engine: ConfigEngine = CONFIG.config_engine
 
     docker_config: DockerConfigModel = config_engine.openstudiolandscapes__docker_config
 
@@ -441,7 +445,7 @@ def script_init_db(
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
 
-    env: dict = CONFIG.env
+    env: Dict = CONFIG.env
 
     init_db = {}
 
@@ -716,13 +720,13 @@ def supervisord_conf(
 def compose_kitsu(
     context: AssetExecutionContext,
     CONFIG: Config,  # pylint: disable=redefined-outer-name
-    build: dict,  # pylint: disable=redefined-outer-name
-    compose_networks: dict,  # pylint: disable=redefined-outer-name
+    build: Dict,  # pylint: disable=redefined-outer-name
+    compose_networks: Dict,  # pylint: disable=redefined-outer-name
     supervisord_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
-) -> Generator[Output[dict] | AssetMaterialization, None, None]:
+) -> Generator[Output[Dict] | AssetMaterialization, None, None]:
     """ """
 
-    env: dict = CONFIG.env
+    env: Dict = CONFIG.env
 
     config_engine: ConfigEngine = CONFIG.config_engine
 
@@ -888,12 +892,12 @@ def compose_kitsu(
 )
 def compose_init_db(
     context: AssetExecutionContext,
-    build: dict,  # pylint: disable=redefined-outer-name
+    build: Dict,  # pylint: disable=redefined-outer-name
     CONFIG: Config,  # pylint: disable=redefined-outer-name
-) -> Generator[Output[MutableMapping] | AssetMaterialization, None, None]:
+) -> Generator[Output[Dict] | AssetMaterialization, None, None]:
     """ """
 
-    env: dict = CONFIG.env
+    env: Dict = CONFIG.env
 
     config_engine: ConfigEngine = CONFIG.config_engine
 
@@ -1030,7 +1034,7 @@ def compose_init_db(
 def compose_maps(
     context: AssetExecutionContext,
     **kwargs,  # pylint: disable=redefined-outer-name
-) -> Generator[Output[List[MutableMapping]] | AssetMaterialization, None, None]:
+) -> Generator[Output[List[Dict]] | AssetMaterialization, None, None]:
 
     ret = list(kwargs.values())
 
