@@ -37,7 +37,8 @@ class Config(FeatureBaseModel):
         frozen=True,
     )
     kitsu_postgres_conf: pathlib.Path = Field(
-        description="The Kitsu Postgres configuration file."
+        description="The Kitsu Postgres configuration file.",
+        default=pathlib.Path("{DOT_FEATURES}/{FEATURE}/.payload/config/etc/postgresql/14/main/postgresql.conf"),
     )
     kitsu_enable_job_queue: bool = Field(
         description="Enable Kitsu Job Queue?",
@@ -54,7 +55,8 @@ class Config(FeatureBaseModel):
         frozen=False,
     )
     kitsu_database_install_destination: pathlib.Path = Field(
-        description="The host side Kitsu database installation destination."
+        description="The host side Kitsu database installation destination.",
+        default=pathlib.Path("{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/kitsu"),
     )
     kitsu_db_inside_container: bool = Field(
         default=False,
@@ -69,7 +71,10 @@ class Config(FeatureBaseModel):
         description="Kitsu TMP directory.",
         default=pathlib.Path("/opt/zou/tmp"),
     )
-    kitsu_secret_key: str = Field(description="Kitsu Secret Key.")
+    kitsu_secret_key: str = Field(
+        description="Kitsu Secret Key.",
+        default="yourrandomsecretkey",
+    )
 
     @field_validator("kitsu_admin_user")
     @classmethod
