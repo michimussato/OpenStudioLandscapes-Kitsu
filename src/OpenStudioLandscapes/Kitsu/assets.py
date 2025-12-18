@@ -1,6 +1,5 @@
 import copy
 import enum
-import json
 import pathlib
 import shutil
 import textwrap
@@ -106,7 +105,7 @@ feature_in_parent: Union[AssetsDefinition, None] = get_feature_in_parent(
 )
 def compose_networks(
     context: AssetExecutionContext,
-    CONFIG: Config,
+    CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[
     Output[Dict[str, Dict[str, Dict[str, str]]]]
     | AssetMaterialization,
@@ -132,7 +131,7 @@ def compose_networks(
         asset_key=context.asset_key,
         metadata={
             "compose_network_mode": MetadataValue.text(compose_network_mode.value),
-            "docker_yaml": MetadataValue.md(f"```shell\n{docker_yaml}\n```"),
+            "docker_yaml": MetadataValue.md(f"```yaml\n{docker_yaml}\n```"),
         },
     )
 
@@ -210,7 +209,9 @@ def pip_packages(
 @asset(
     **ASSET_HEADER,
     ins={
-        "feature_in": AssetIn(AssetKey([*ASSET_HEADER["key_prefix"], "feature_in"])),
+        "feature_in": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "feature_in"]),
+        ),
         "CONFIG": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         ),
@@ -387,8 +388,7 @@ def build_docker_image(
         asset_key=context.asset_key,
         metadata={
             "__".join(context.asset_key.path): MetadataValue.json(image_data),
-            "docker_file": MetadataValue.md(f"```shell\n{docker_file_content}\n```"),
-            "env": MetadataValue.json(env),
+            "docker_file": MetadataValue.md(f"```yaml\n{docker_file_content}\n```"),
             "logs": MetadataValue.json(logs),
         },
     )
@@ -441,7 +441,7 @@ def inject_postgres_conf(
 )
 def script_init_db(
     context: AssetExecutionContext,
-    CONFIG: Config,
+    CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
 
@@ -865,11 +865,7 @@ def compose_kitsu(
         asset_key=context.asset_key,
         metadata={
             "__".join(context.asset_key.path): MetadataValue.json(docker_dict),
-            "docker_dict": MetadataValue.md(
-                f"```json\n{json.dumps(docker_dict, indent=2)}\n```"
-            ),
             "docker_yaml": MetadataValue.md(f"```yaml\n{docker_yaml}\n```"),
-            "env": MetadataValue.json(env),
         },
     )
 
@@ -1011,11 +1007,7 @@ def compose_init_db(
         asset_key=context.asset_key,
         metadata={
             "__".join(context.asset_key.path): MetadataValue.json(docker_dict),
-            "docker_dict": MetadataValue.md(
-                f"```json\n{json.dumps(docker_dict, indent=2)}\n```"
-            ),
             "docker_yaml": MetadataValue.md(f"```yaml\n{docker_yaml}\n```"),
-            "env": MetadataValue.json(env),
         },
     )
 
