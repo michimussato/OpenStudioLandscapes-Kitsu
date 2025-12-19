@@ -5,7 +5,7 @@
 1. [Feature: OpenStudioLandscapes-Kitsu](#feature-openstudiolandscapes-kitsu)
    1. [Brief](#brief)
    2. [Configuration](#configuration)
-2. [Official Resources](#official-resources)
+2. [External Resources](#external-resources)
 3. [Community](#community)
 4. [Technical Reference](#technical-reference)
    1. [Requirements](#requirements)
@@ -107,7 +107,7 @@ key_prefixes:
 
 ***
 
-# Official Resources
+# External Resources
 
 - [https://kitsu.cg-wire.com](https://kitsu.cg-wire.com)
 
@@ -253,4 +253,4 @@ Currently, the following Python interpreters are enabled for testing:
 
 ***
 
-Last changed: **2025-12-19 16:47:53 UTC**
+Last changed: **2025-12-19 21:11:33 UTC**
