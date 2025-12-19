@@ -5,8 +5,7 @@
 1. [Feature: OpenStudioLandscapes-Kitsu](#feature-openstudiolandscapes-kitsu)
    1. [Brief](#brief)
    2. [Configuration](#configuration)
-   3. [Official Resources](#official-resources)
-2. [Kitsu Documentation](#kitsu-documentation)
+2. [Official Resources](#official-resources)
 3. [Community](#community)
 4. [Technical Reference](#technical-reference)
    1. [Requirements](#requirements)
@@ -108,9 +107,7 @@ key_prefixes:
 
 ***
 
-## Official Resources
-
-# Kitsu Documentation
+# Official Resources
 
 - [https://kitsu.cg-wire.com](https://kitsu.cg-wire.com)
 
@@ -134,11 +131,6 @@ The default credentials are:
 
 - User: `admin@example.com`
 - Password: `mysecretpassword`
-
-You can override the default credentials by setting:
-
-- `KITSU_ADMIN_USER`
-- `KITSU_DB_PASSWORD`
 
 ***
 
@@ -261,4 +253,4 @@ Currently, the following Python interpreters are enabled for testing:
 
 ***
 
-Last changed: **2025-12-19 15:51:33 UTC**.
+Last changed: **2025-12-19 16:41:29 UTC**
