@@ -8,7 +8,7 @@ def readme_feature(doc: snakemd.Document) -> snakemd.Document:
     ## Some Specific information
 
     doc.add_heading(
-        text="Kitsu Documentation",
+        text="Official Resources",
         level=1,
     )
 
@@ -105,20 +105,20 @@ def readme_feature(doc: snakemd.Document) -> snakemd.Document:
         ]
     )
 
-    doc.add_paragraph(
-        text=textwrap.dedent(
-            """\
-            You can override the default credentials by setting:\
-            """
-        )
-    )
-
-    doc.add_unordered_list(
-        [
-            "`KITSU_ADMIN_USER`",
-            "`KITSU_DB_PASSWORD`",
-        ]
-    )
+    # doc.add_paragraph(
+    #     text=textwrap.dedent(
+    #         """\
+    #         You can override the default credentials by setting:\
+    #         """
+    #     )
+    # )
+    #
+    # doc.add_unordered_list(
+    #     [
+    #         "`KITSU_ADMIN_USER`",
+    #         "`KITSU_DB_PASSWORD`",
+    #     ]
+    # )
 
     return doc
 
