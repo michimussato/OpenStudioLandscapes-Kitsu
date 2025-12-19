@@ -4,8 +4,8 @@ import snakemd
 
 
 def readme_feature(
-        doc: snakemd.Document,
-        main_header: str,
+    doc: snakemd.Document,
+    main_header: str,
 ) -> snakemd.Document:
 
     # Some Specific information

@@ -4,7 +4,7 @@ import pathlib
 import shutil
 import textwrap
 import urllib.parse
-from typing import Generator, List, Dict, Union
+from typing import Dict, Generator, List, Union
 
 import yaml
 from dagster import (
@@ -12,16 +12,24 @@ from dagster import (
     AssetIn,
     AssetKey,
     AssetMaterialization,
+    AssetsDefinition,
     MetadataValue,
     Output,
-    asset, AssetsDefinition,
+    asset,
 )
 from OpenStudioLandscapes.engine.common_assets.compose import get_compose
+from OpenStudioLandscapes.engine.common_assets.compose_scope import (
+    get_compose_scope_group__cmd,
+)
 from OpenStudioLandscapes.engine.common_assets.docker_compose_graph import (
     get_docker_compose_graph,
 )
+from OpenStudioLandscapes.engine.common_assets.feature import get_feature__CONFIG
 from OpenStudioLandscapes.engine.common_assets.feature_out import get_feature_out_v2
-from OpenStudioLandscapes.engine.common_assets.group_in import get_feature_in, get_feature_in_parent
+from OpenStudioLandscapes.engine.common_assets.group_in import (
+    get_feature_in,
+    get_feature_in_parent,
+)
 from OpenStudioLandscapes.engine.common_assets.group_out import get_group_out
 from OpenStudioLandscapes.engine.config.models import ConfigEngine, DockerConfigModel
 from OpenStudioLandscapes.engine.constants import *
@@ -33,14 +41,6 @@ from OpenStudioLandscapes.engine.utils.docker.compose_dicts import *
 from OpenStudioLandscapes.Kitsu import dist
 from OpenStudioLandscapes.Kitsu.config.models import CONFIG_STR, Config
 from OpenStudioLandscapes.Kitsu.constants import *
-
-from OpenStudioLandscapes.engine.common_assets.compose_scope import (
-get_compose_scope_group__cmd,
-)
-
-from OpenStudioLandscapes.engine.common_assets.feature import (
-get_feature__CONFIG
-)
 
 # https://github.com/yaml/pyyaml/issues/722#issuecomment-1969292770
 yaml.SafeDumper.add_multi_representer(
@@ -107,8 +107,7 @@ def compose_networks(
     context: AssetExecutionContext,
     CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[
-    Output[Dict[str, Dict[str, Dict[str, str]]]]
-    | AssetMaterialization,
+    Output[Dict[str, Dict[str, Dict[str, str]]]] | AssetMaterialization,
     None,
     None,
 ]:
@@ -141,9 +140,7 @@ def compose_networks(
 )
 def apt_packages(
     context: AssetExecutionContext,
-) -> Generator[
-    Output[Dict[str, List[str]]] | AssetMaterialization, None, None
-]:
+) -> Generator[Output[Dict[str, List[str]]] | AssetMaterialization, None, None]:
     """ """
 
     _apt_packages = {}
@@ -242,7 +239,9 @@ def build_docker_image(
 
     env: Dict = CONFIG.env
 
-    docker_config_json: pathlib.Path = feature_in.openstudiolandscapes_base.docker_config_json
+    docker_config_json: pathlib.Path = (
+        feature_in.openstudiolandscapes_base.docker_config_json
+    )
 
     config_engine: ConfigEngine = CONFIG.config_engine
 

@@ -38,7 +38,9 @@ class Config(FeatureBaseModel):
     )
     kitsu_postgres_conf: pathlib.Path = Field(
         description="The Kitsu Postgres configuration file.",
-        default=pathlib.Path("{DOT_FEATURES}/{FEATURE}/.payload/config/etc/postgresql/14/main/postgresql.conf"),
+        default=pathlib.Path(
+            "{DOT_FEATURES}/{FEATURE}/.payload/config/etc/postgresql/14/main/postgresql.conf"
+        ),
     )
     kitsu_enable_job_queue: bool = Field(
         description="Enable Kitsu Job Queue?",
@@ -61,7 +63,7 @@ class Config(FeatureBaseModel):
     kitsu_db_inside_container: bool = Field(
         default=False,
         description="The Kitsu database inside container; the database will "
-                    "not be persistent. Helpful for testing.",
+        "not be persistent. Helpful for testing.",
     )
     kitsu_preview_folder: pathlib.Path = Field(
         description="The Kitsu Preview folder.",
