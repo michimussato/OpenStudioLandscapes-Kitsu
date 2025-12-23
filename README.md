@@ -54,7 +54,7 @@ A local config store location will be created if it doesn't exist, together with
 > OPENSTUDIOLANDSCAPES__CONFIGSTORE_ROOT="~/.config/OpenStudioLandscapes/my-custom-config-store"
 > ```
 
-The following settings are available in `OpenStudioLandscapes-Kitsu` and are accessible throughout the [`OpenStudioLandscapes-Kitsu`](https://github.com/michimussato/OpenStudioLandscapes-Kitsu/tree/main/OpenStudioLandscapes/Kitsu/config/models.py) package.
+The following settings are available in `OpenStudioLandscapes-Kitsu` and are based on [`OpenStudioLandscapes-Kitsu/tree/main/OpenStudioLandscapes/Kitsu/config/models.py`](https://github.com/michimussato/OpenStudioLandscapes-Kitsu/tree/main/OpenStudioLandscapes/Kitsu/config/models.py).
 
 ```yaml
 # ===
@@ -563,4 +563,4 @@ Currently, the following Python interpreters are enabled for testing:
 
 ***
 
-Last changed: **2025-12-23 12:54:01 UTC**
+Last changed: **2025-12-23 13:04:19 UTC**
