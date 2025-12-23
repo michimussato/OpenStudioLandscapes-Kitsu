@@ -15,15 +15,14 @@ from OpenStudioLandscapes.engine.config.models import FeatureBaseModel
 
 from OpenStudioLandscapes.Kitsu import dist
 
-config_default = pathlib.Path(__file__).parent.joinpath("config_default.yml")
-
 
 class Config(FeatureBaseModel):
     feature_name: str = dist.name
 
     kitsu_admin_user: EmailStr = Field(
         default="admin@example.com",
-        description="The Kitsu Admin Email.",
+        description="Bug Report: https://github.com/cgwire/zou/issues/960); "
+                    "Changing these values does not seem to have an effect Hence, they are locked to the following values for now.",
         frozen=True,
     )
     # kitsu_db_password: SecretStr
