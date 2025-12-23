@@ -63,10 +63,17 @@ The following settings are available in `OpenStudioLandscapes-Kitsu` and are acc
 #
 # Type: typing.Dict
 # Base Class:
+#     Required: False
 #     Description:
 #         None
 #     Default value:
 #         None
+# Description:
+#     None
+# Required: False
+#     None
+# Examples:
+#     None
 
 
 # =============
@@ -75,10 +82,17 @@ The following settings are available in `OpenStudioLandscapes-Kitsu` and are acc
 #
 # Type: <class 'OpenStudioLandscapes.engine.config.models.ConfigEngine'>
 # Base Class:
+#     Required: False
 #     Description:
 #         None
 #     Default value:
 #         None
+# Description:
+#     None
+# Required: False
+#     None
+# Examples:
+#     None
 
 
 # =============
@@ -87,10 +101,17 @@ The following settings are available in `OpenStudioLandscapes-Kitsu` and are acc
 #
 # Type: <class 'OpenStudioLandscapes.engine.config.models.FeatureBaseModel'>
 # Base Class:
+#     Required: False
 #     Description:
 #         None
 #     Default value:
 #         None
+# Description:
+#     None
+# Required: False
+#     None
+# Examples:
+#     None
 
 
 # ============
@@ -99,10 +120,17 @@ The following settings are available in `OpenStudioLandscapes-Kitsu` and are acc
 #
 # Type: <class 'importlib.metadata.Distribution'>
 # Base Class:
+#     Required: False
 #     Description:
 #         None
 #     Default value:
 #         None
+# Description:
+#     None
+# Required: False
+#     None
+# Examples:
+#     None
 
 
 # ==========
@@ -111,10 +139,17 @@ The following settings are available in `OpenStudioLandscapes-Kitsu` and are acc
 #
 # Type: <class 'str'>
 # Base Class:
+#     Required: False
 #     Description:
 #         None
 #     Default value:
 #         None
+# Description:
+#     None
+# Required: False
+#     None
+# Examples:
+#     None
 
 
 # ============
@@ -123,10 +158,17 @@ The following settings are available in `OpenStudioLandscapes-Kitsu` and are acc
 #
 # Type: typing.List[str]
 # Base Class:
+#     Required: False
 #     Description:
 #         None
 #     Default value:
 #         None
+# Description:
+#     None
+# Required: False
+#     None
+# Examples:
+#     None
 
 
 # =======
@@ -135,10 +177,17 @@ The following settings are available in `OpenStudioLandscapes-Kitsu` and are acc
 #
 # Type: <class 'bool'>
 # Base Class:
+#     Required: False
 #     Description:
 #         Whether the Feature is enabled or not.
 #     Default value:
 #         True
+# Description:
+#     Whether the Feature is enabled or not.
+# Required: False
+#     Whether the Feature is enabled or not.
+# Examples:
+#     None
 
 
 # =============
@@ -147,10 +196,17 @@ The following settings are available in `OpenStudioLandscapes-Kitsu` and are acc
 #
 # Type: <class 'str'>
 # Base Class:
+#     Required: False
 #     Description:
 #         None
 #     Default value:
 #         default
+# Description:
+#     None
+# Required: False
+#     None
+# Examples:
+#     ['default', 'license_server', 'worker']
 
 
 # ============
@@ -159,10 +215,17 @@ The following settings are available in `OpenStudioLandscapes-Kitsu` and are acc
 #
 # Type: <class 'str'>
 # Base Class:
+#     Required: True
 #     Description:
 #         The name of the feature. It is derived from the `OpenStudioLandscapes.<Feature>.dist` attribute.
 #     Default value:
 #         PydanticUndefined
+# Description:
+#     None
+# Required: False
+#     None
+# Examples:
+#     None
 feature_name: OpenStudioLandscapes-Kitsu
 
 
@@ -172,10 +235,17 @@ feature_name: OpenStudioLandscapes-Kitsu
 #
 # Type: <class 'pathlib.Path'>
 # Base Class:
+#     Required: False
 #     Description:
 #         The path to the `docker-compose.yml` file.
 #     Default value:
 #         {DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/docker_compose/docker-compose.yml
+# Description:
+#     The path to the `docker-compose.yml` file.
+# Required: False
+#     The path to the `docker-compose.yml` file.
+# Examples:
+#     None
 
 
 # ================
@@ -183,7 +253,9 @@ feature_name: OpenStudioLandscapes-Kitsu
 # ----------------
 #
 # Type: <class 'pydantic.networks.EmailStr'>
-# Sub Class Description:
+# Description:
+#     The Kitsu Admin Email.
+# Required: False
 #     The Kitsu Admin Email.
 # Examples:
 #     None
@@ -195,7 +267,9 @@ kitsu_admin_user: admin@example.com
 # -----------------
 #
 # Type: <class 'str'>
-# Sub Class Description:
+# Description:
+#     The Postgres database password.
+# Required: False
 #     The Postgres database password.
 # Examples:
 #     None
@@ -207,7 +281,9 @@ kitsu_db_password: mysecretpassword
 # -------------------
 #
 # Type: <class 'pathlib.Path'>
-# Sub Class Description:
+# Description:
+#     The Kitsu Postgres configuration file.
+# Required: False
 #     The Kitsu Postgres configuration file.
 # Examples:
 #     None
@@ -219,7 +295,9 @@ kitsu_postgres_conf: '{DOT_FEATURES}/{FEATURE}/.payload/config/etc/postgresql/14
 # ----------------------
 #
 # Type: <class 'bool'>
-# Sub Class Description:
+# Description:
+#     Enable Kitsu Job Queue?
+# Required: False
 #     Enable Kitsu Job Queue?
 # Examples:
 #     None
@@ -231,7 +309,9 @@ kitsu_enable_job_queue: true
 # --------------------
 #
 # Type: <class 'int'>
-# Sub Class Description:
+# Description:
+#     The Kitsu container port.
+# Required: False
 #     The Kitsu container port.
 # Examples:
 #     None
@@ -243,7 +323,9 @@ kitsu_port_container: 80
 # ---------------
 #
 # Type: <class 'int'>
-# Sub Class Description:
+# Description:
+#     The Kitsu host port.
+# Required: False
 #     The Kitsu host port.
 # Examples:
 #     None
@@ -255,7 +337,9 @@ kitsu_port_host: 4545
 # ----------------------------------
 #
 # Type: <class 'pathlib.Path'>
-# Sub Class Description:
+# Description:
+#     The host side Kitsu database installation destination.
+# Required: False
 #     The host side Kitsu database installation destination.
 # Examples:
 #     None
@@ -267,7 +351,9 @@ kitsu_database_install_destination: '{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data
 # -------------------------
 #
 # Type: <class 'bool'>
-# Sub Class Description:
+# Description:
+#     The Kitsu database inside container; the database will not be persistent. Helpful for testing.
+# Required: False
 #     The Kitsu database inside container; the database will not be persistent. Helpful for testing.
 # Examples:
 #     None
@@ -279,7 +365,9 @@ kitsu_db_inside_container: false
 # --------------------
 #
 # Type: <class 'pathlib.Path'>
-# Sub Class Description:
+# Description:
+#     The Kitsu Preview folder.
+# Required: False
 #     The Kitsu Preview folder.
 # Examples:
 #     None
@@ -291,7 +379,9 @@ kitsu_preview_folder: /opt/zou/previews
 # -------------
 #
 # Type: <class 'pathlib.Path'>
-# Sub Class Description:
+# Description:
+#     Kitsu TMP directory.
+# Required: False
 #     Kitsu TMP directory.
 # Examples:
 #     None
@@ -303,7 +393,9 @@ kitsu_tmp_dir: /opt/zou/tmp
 # ----------------
 #
 # Type: <class 'str'>
-# Sub Class Description:
+# Description:
+#     Kitsu Secret Key.
+# Required: False
 #     Kitsu Secret Key.
 # Examples:
 #     None
@@ -461,4 +553,4 @@ Currently, the following Python interpreters are enabled for testing:
 
 ***
 
-Last changed: **2025-12-23 12:26:16 UTC**
+Last changed: **2025-12-23 12:48:37 UTC**
