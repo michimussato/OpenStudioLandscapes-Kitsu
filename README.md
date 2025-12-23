@@ -57,51 +57,259 @@ A local config store location will be created if it doesn't exist, together with
 The following settings are available in `OpenStudioLandscapes-Kitsu` and are accessible throughout the [`OpenStudioLandscapes-Kitsu`](https://github.com/michimussato/OpenStudioLandscapes-Kitsu/tree/main/OpenStudioLandscapes/Kitsu/config/models.py) package.
 
 ```yaml
-# Base Information
-group_name: "OpenStudioLandscapes_Kitsu"
-key_prefixes:
-  - "OpenStudioLandscapes_Kitsu"
+# ===
+# env
+# ---
+#
+# Type: typing.Dict
+# Base Class:
+#     Description:
+#         None
+#     Default value:
+#         None
 
-#compose_scope: "default"
 
-#enabled: true
+# =============
+# config_engine
+# -------------
+#
+# Type: <class 'OpenStudioLandscapes.engine.config.models.ConfigEngine'>
+# Base Class:
+#     Description:
+#         None
+#     Default value:
+#         None
 
-# The default Admin user name
-# Todo:
-#  - [x] Report Kitsu bug:
-#        https://github.com/cgwire/zou/issues/960
-#        Not OK:
-#        (env) root@kitsu:/opt/zou# zou create-admin --password openstudiolandscapes kitsu@openstudiolandscapes.com
-#        Email is not valid.
-#        OK:
-#        (env) root@kitsu:/opt/zou# zou create-admin --password openstudiolandscapes kitsu@openstudio.com
-#        Admin successfully created.
-# Changing these values does not seem to have an effect
-# Hence, they are locked to the following
-# values for now
-#kitsu_admin_user: admin@example.com
-#kitsu_db_password: mysecretpassword
 
-#kitsu_secret_key: "yourrandomsecretkey"
+# =============
+# config_parent
+# -------------
+#
+# Type: <class 'OpenStudioLandscapes.engine.config.models.FeatureBaseModel'>
+# Base Class:
+#     Description:
+#         None
+#     Default value:
+#         None
 
-#kitsu_postgres_conf: "{DOT_FEATURES}/{FEATURE}/.payload/config/etc/postgresql/14/main/postgresql.conf"
 
-# https://zou.cg-wire.com/jobs/#enabling-job-queue
-#kitsu_enable_job_queue: true
-#kitsu_port_container: 80
-#kitsu_port_host: 4545
+# ============
+# distribution
+# ------------
+#
+# Type: <class 'importlib.metadata.Distribution'>
+# Base Class:
+#     Description:
+#         None
+#     Default value:
+#         None
 
-# Inside Landscape (ephemeral):
-#kitsu_database_install_destination: "{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/kitsu"
-# In Landscapes root:
-# Todo:
-#  - [ ] does {DOT_SHARED_VOLUMES}/{GROUP}__{KEY} actually resolve? I don't think so...
-#kitsu_database_install_destination: "{DOT_LANDSCAPES}/{DOT_SHARED_VOLUMES}/{GROUP}__{KEY}/data/kitsu"
 
-#kitsu_db_inside_container: false
+# ==========
+# group_name
+# ----------
+#
+# Type: <class 'str'>
+# Base Class:
+#     Description:
+#         None
+#     Default value:
+#         None
 
-#kitsu_preview_folder: /opt/zou/previews
-#kitsu_tmp_dir: /opt/zou/tmp
+
+# ============
+# key_prefixes
+# ------------
+#
+# Type: typing.List[str]
+# Base Class:
+#     Description:
+#         None
+#     Default value:
+#         None
+
+
+# =======
+# enabled
+# -------
+#
+# Type: <class 'bool'>
+# Base Class:
+#     Description:
+#         Whether the Feature is enabled or not.
+#     Default value:
+#         True
+
+
+# =============
+# compose_scope
+# -------------
+#
+# Type: <class 'str'>
+# Base Class:
+#     Description:
+#         None
+#     Default value:
+#         default
+
+
+# ============
+# feature_name
+# ------------
+#
+# Type: <class 'str'>
+# Base Class:
+#     Description:
+#         The name of the feature. It is derived from the `OpenStudioLandscapes.<Feature>.dist` attribute.
+#     Default value:
+#         PydanticUndefined
+feature_name: OpenStudioLandscapes-Kitsu
+
+
+# ==============
+# docker_compose
+# --------------
+#
+# Type: <class 'pathlib.Path'>
+# Base Class:
+#     Description:
+#         The path to the `docker-compose.yml` file.
+#     Default value:
+#         {DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/docker_compose/docker-compose.yml
+
+
+# ================
+# kitsu_admin_user
+# ----------------
+#
+# Type: <class 'pydantic.networks.EmailStr'>
+# Sub Class Description:
+#     The Kitsu Admin Email.
+# Examples:
+#     None
+kitsu_admin_user: admin@example.com
+
+
+# =================
+# kitsu_db_password
+# -----------------
+#
+# Type: <class 'str'>
+# Sub Class Description:
+#     The Postgres database password.
+# Examples:
+#     None
+kitsu_db_password: mysecretpassword
+
+
+# ===================
+# kitsu_postgres_conf
+# -------------------
+#
+# Type: <class 'pathlib.Path'>
+# Sub Class Description:
+#     The Kitsu Postgres configuration file.
+# Examples:
+#     None
+kitsu_postgres_conf: '{DOT_FEATURES}/{FEATURE}/.payload/config/etc/postgresql/14/main/postgresql.conf'
+
+
+# ======================
+# kitsu_enable_job_queue
+# ----------------------
+#
+# Type: <class 'bool'>
+# Sub Class Description:
+#     Enable Kitsu Job Queue?
+# Examples:
+#     None
+kitsu_enable_job_queue: true
+
+
+# ====================
+# kitsu_port_container
+# --------------------
+#
+# Type: <class 'int'>
+# Sub Class Description:
+#     The Kitsu container port.
+# Examples:
+#     None
+kitsu_port_container: 80
+
+
+# ===============
+# kitsu_port_host
+# ---------------
+#
+# Type: <class 'int'>
+# Sub Class Description:
+#     The Kitsu host port.
+# Examples:
+#     None
+kitsu_port_host: 4545
+
+
+# ==================================
+# kitsu_database_install_destination
+# ----------------------------------
+#
+# Type: <class 'pathlib.Path'>
+# Sub Class Description:
+#     The host side Kitsu database installation destination.
+# Examples:
+#     None
+kitsu_database_install_destination: '{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/kitsu'
+
+
+# =========================
+# kitsu_db_inside_container
+# -------------------------
+#
+# Type: <class 'bool'>
+# Sub Class Description:
+#     The Kitsu database inside container; the database will not be persistent. Helpful for testing.
+# Examples:
+#     None
+kitsu_db_inside_container: false
+
+
+# ====================
+# kitsu_preview_folder
+# --------------------
+#
+# Type: <class 'pathlib.Path'>
+# Sub Class Description:
+#     The Kitsu Preview folder.
+# Examples:
+#     None
+kitsu_preview_folder: /opt/zou/previews
+
+
+# =============
+# kitsu_tmp_dir
+# -------------
+#
+# Type: <class 'pathlib.Path'>
+# Sub Class Description:
+#     Kitsu TMP directory.
+# Examples:
+#     None
+kitsu_tmp_dir: /opt/zou/tmp
+
+
+# ================
+# kitsu_secret_key
+# ----------------
+#
+# Type: <class 'str'>
+# Sub Class Description:
+#     Kitsu Secret Key.
+# Examples:
+#     None
+kitsu_secret_key: yourrandomsecretkey
+
+
 
 ```
 
@@ -253,4 +461,4 @@ Currently, the following Python interpreters are enabled for testing:
 
 ***
 
-Last changed: **2025-12-19 21:11:33 UTC**
+Last changed: **2025-12-23 12:26:16 UTC**
