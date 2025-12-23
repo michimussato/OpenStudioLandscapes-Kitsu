@@ -264,7 +264,7 @@ feature_name: OpenStudioLandscapes-Kitsu
 #
 # Type: <class 'pydantic.networks.EmailStr'>
 # Description:
-#     The Kitsu Admin Email.
+#     Bug Report: https://github.com/cgwire/zou/issues/960); Changing these values does not seem to have an effect Hence, they are locked to the following values for now.
 # Required:
 #     False
 # Examples:
@@ -563,4 +563,4 @@ Currently, the following Python interpreters are enabled for testing:
 
 ***
 
-Last changed: **2025-12-23 13:04:19 UTC**
+Last changed: **2025-12-23 13:35:00 UTC**
