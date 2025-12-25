@@ -9,7 +9,6 @@ import git
 import nox
 import re
 import pathlib
-import requests
 import logging
 import platform
 from typing import Tuple
@@ -41,34 +40,6 @@ def _get_terminal_size() -> Tuple[int, int]:
     # https://stackoverflow.com/a/18243550
     cols, rows = shutil.get_terminal_size((80, 20))
     return cols, rows
-
-
-def download(
-    url: str,
-    dest_folder: pathlib.Path,
-) -> pathlib.Path:
-    if not dest_folder.exists():
-        dest_folder.mkdir(
-            parents=True, exist_ok=True
-        )  # create folder if it does not exist
-
-    filename = url.split("/")[-1].replace(" ", "_")  # be careful with file names
-    file_path = dest_folder / filename
-
-    r = requests.get(url, stream=True)
-    if r.ok:
-        logging.info("Saving to %s" % file_path.absolute().as_posix())
-        with open(file_path, "wb") as f:
-            for chunk in r.iter_content(chunk_size=1024 * 8):
-                if chunk:
-                    f.write(chunk)
-                    f.flush()
-                    os.fsync(f.fileno())
-        return file_path
-    else:  # HTTP status code 4XX/5XX
-        raise Exception(
-            "Download failed: status code {}\n{}".format(r.status_code, r.text)
-        )
 
 
 # nox Configuration & API
@@ -936,9 +907,15 @@ def fix_hardlinks_in_features(session):
 ENVIRONMENT_DAGSTER = {
     # Todo:
     #  - [ ] maybe better to source .env instead of hardcoding these values
-    "OPENSTUDIOLANDSCAPES__DOMAIN_LAN": os.environ["OPENSTUDIOLANDSCAPES__DOMAIN_LAN"],
+    "OPENSTUDIOLANDSCAPES__DOMAIN_LAN": os.environ.get(
+        "OPENSTUDIOLANDSCAPES__DOMAIN_LAN",
+        "openstudiolandscapes.lan",
+    ),
     # Todo:
-    #  - [ ] move these two into `.landscapes`
+    #  - [ ] move these two to:
+    #        `.landscapes`
+    #        or
+    #        `~/.config/OpenStudioLandscapes`
     "DAGSTER_POSTGRES_ROOT_DIR": pathlib.Path.cwd() / ".dagster-postgres",
     "DAGSTER_MYSQL_ROOT_DIR": pathlib.Path.cwd() / ".dagster",
     "DAGSTER_POSTGRES_DB_DIR_DIR": ".postgres",
@@ -1014,9 +991,18 @@ def write_dagster_postgres_yml(
     service_name = "openstudiolandscapes-dagster-postgres"
     # network_name = service_name
     # container_name = service_name
-    host_name = ".".join(
-        [service_name, ENVIRONMENT_DAGSTER["OPENSTUDIOLANDSCAPES__DOMAIN_LAN"]]
-    )
+    host_name_postgres = {
+        "localhost": "localhost",
+        # Not using "localhost" requires DNS setup:
+        # - DNS server which resolves the Dagster Postgres host
+        # or
+        # - /etc/hosts file entries
+        # Todo:
+        #  - [ ] is fqdn even necessary?
+        "fqdn": ".".join(
+            [service_name, ENVIRONMENT_DAGSTER["OPENSTUDIOLANDSCAPES__DOMAIN_LAN"]]
+        ),
+    }["localhost"]
 
     # https://docs.dagster.io/guides/limiting-concurrency-in-data-pipelines
     dagster_postgres_dict = {
@@ -1038,7 +1024,7 @@ def write_dagster_postgres_yml(
                 "postgres_db": {
                     "username": ENVIRONMENT_DAGSTER["DAGSTER_POSTGRES_DB_USERNAME"],
                     "password": ENVIRONMENT_DAGSTER["DAGSTER_POSTGRES_DB_PASSWORD"],
-                    "hostname": host_name,
+                    "hostname": host_name_postgres,
                     "db_name": ENVIRONMENT_DAGSTER["DAGSTER_POSTGRES_DB_NAME"],
                     # Todo:
                     #  - [ ] Which one is it?
