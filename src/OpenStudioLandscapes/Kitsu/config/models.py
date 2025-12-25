@@ -1,4 +1,5 @@
 import pathlib
+from typing import List
 
 from dagster import get_dagster_logger
 from pydantic import (
@@ -13,11 +14,15 @@ LOGGER = get_dagster_logger(__name__)
 from OpenStudioLandscapes.engine.config.str_gen import get_config_str
 from OpenStudioLandscapes.engine.config.models import FeatureBaseModel
 
-from OpenStudioLandscapes.Kitsu import dist
+from OpenStudioLandscapes.Kitsu import dist, constants
 
 
 class Config(FeatureBaseModel):
     feature_name: str = dist.name
+
+    group_name: str = constants.ASSET_HEADER["group_name"]
+
+    key_prefixes: List[str] = constants.ASSET_HEADER["key_prefix"]
 
     kitsu_admin_user: EmailStr = Field(
         default="admin@example.com",
