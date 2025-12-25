@@ -480,6 +480,8 @@ Clone this repository into `OpenStudioLandscapes/.features` (assuming the curren
 
 ```shell
 git -C ./.features clone https://github.com/michimussato/OpenStudioLandscapes-Kitsu.git
+# git -C ./.features/OpenStudioLandscapes-Kitsu branch -a
+# git -C ./.features/OpenStudioLandscapes-Kitsu checkout <branch>
 ```
 
 Install into OpenStudioLandscapes `venv` (`./OpenStudioLandscapes/.venv`):
@@ -556,4 +558,4 @@ Currently, the following Python interpreters are enabled for testing:
 
 ***
 
-Last changed: **2025-12-25 16:28:21 UTC**
+Last changed: **2025-12-25 19:45:18 UTC**
