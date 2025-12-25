@@ -17,9 +17,7 @@ classifiers = [
 dependencies = [
     "PyYAML",
     "dagster==1.9.11",
-    "deprecation",
     "docker-compose-graph @ git+https://github.com/michimussato/docker-compose-graph.git@v1.0.0",
-    "email-validator",
     "gitpython",
     "importlib-metadata; python_version<\"3.8\"",
     "snakemd",
