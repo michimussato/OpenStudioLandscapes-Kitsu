@@ -11,10 +11,10 @@ from pydantic import (
 
 LOGGER = get_dagster_logger(__name__)
 
-from OpenStudioLandscapes.engine.config.str_gen import get_config_str
 from OpenStudioLandscapes.engine.config.models import FeatureBaseModel
+from OpenStudioLandscapes.engine.config.str_gen import get_config_str
 
-from OpenStudioLandscapes.Kitsu import dist, constants
+from OpenStudioLandscapes.Kitsu import constants, dist
 
 
 class Config(FeatureBaseModel):
@@ -27,7 +27,7 @@ class Config(FeatureBaseModel):
     kitsu_admin_user: EmailStr = Field(
         default="admin@example.com",
         description="Bug Report: https://github.com/cgwire/zou/issues/960); "
-                    "Changing these values does not seem to have an effect Hence, they are locked to the following values for now.",
+        "Changing these values does not seem to have an effect Hence, they are locked to the following values for now.",
         frozen=True,
     )
     # kitsu_db_password: SecretStr
@@ -158,4 +158,3 @@ class Config(FeatureBaseModel):
 CONFIG_STR = get_config_str(
     Config=Config,
 )
-
