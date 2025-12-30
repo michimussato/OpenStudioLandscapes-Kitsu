@@ -24,10 +24,9 @@ flowchart TD
     dagster["dagster\n1.9.11"]
     defusedxml["defusedxml\n0.7.1"]
     dependency-groups["dependency-groups\n1.3.1"]
-    deprecation["deprecation\n2.1.0"]
     distlib["distlib\n0.4.0"]
     dnspython["dnspython\n2.8.0"]
-    docker-compose-graph["docker-compose-graph\n1.0.0"]
+    docker-compose-graph["docker-compose-graph\n1.0.0.post1.dev4+g3b0ba2c26"]
     docstring-parser["docstring_parser\n0.17.0"]
     email-validator["email-validator\n2.3.0"]
     filelock["filelock\n3.20.1"]
@@ -46,7 +45,7 @@ flowchart TD
     h11["h11\n0.16.0"]
     httptools["httptools\n0.7.1"]
     humanfriendly["humanfriendly\n10.0"]
-    humanize["humanize\n4.14.0"]
+    humanize["humanize\n4.15.0"]
     idna["idna\n3.11"]
     isoduration["isoduration\n20.11.0"]
     jinja2["Jinja2\n3.1.6"]
@@ -79,7 +78,7 @@ flowchart TD
     pydantic["pydantic\n2.12.5"]
     pydot["pydot\n4.0.1"]
     pygments["Pygments\n2.19.2"]
-    pyparsing["pyparsing\n3.2.5"]
+    pyparsing["pyparsing\n3.3.1"]
     python-dateutil["python-dateutil\n2.9.0.post0"]
     python-dotenv["python-dotenv\n1.2.1"]
     pytz["pytz\n2025.2"]
@@ -110,7 +109,7 @@ flowchart TD
     universal-pathlib["universal_pathlib\n0.3.7"]
     uri-template["uri-template\n1.3.0"]
     urllib3["urllib3\n2.6.2"]
-    uvicorn["uvicorn\n0.38.0"]
+    uvicorn["uvicorn\n0.40.0"]
     uvloop["uvloop\n0.22.1"]
     virtualenv["virtualenv\n20.35.4"]
     watchdog["watchdog\n5.0.3"]
@@ -178,7 +177,6 @@ flowchart TD
     dagster-webserver -- ">=7.0,<9.0" --> click_0
     dagster-webserver -- "any" --> uvicorn
     dependency-groups -- "any" --> packaging
-    deprecation -- "any" --> packaging
     docker-compose-graph -- "any" --> graphviz
     docker-compose-graph -- "any" --> jinja2
     docker-compose-graph -- "any" --> pydot
@@ -221,16 +219,17 @@ flowchart TD
     openstudiolandscapes -- "==1.9.11" --> dagster
     openstudiolandscapes -- "==1.9.11" --> dagster-webserver
     openstudiolandscapes -- "any" --> docker-compose-graph
+    openstudiolandscapes -- "any" --> email-validator
     openstudiolandscapes -- "any" --> gitpython
     openstudiolandscapes -- "any" --> nox
     openstudiolandscapes -- "any" --> pydot
     openstudiolandscapes -- "any" --> pyyaml
     openstudiolandscapes -- "any" --> snakemd
     openstudiolandscapes-kitsu -- "==1.9.11" --> dagster
-    openstudiolandscapes-kitsu -- "any" --> deprecation
     openstudiolandscapes-kitsu -- "any" --> docker-compose-graph
     openstudiolandscapes-kitsu -- "any" --> email-validator
     openstudiolandscapes-kitsu -- "any" --> gitpython
+    openstudiolandscapes-kitsu -- "any" --> openstudiolandscapes
     openstudiolandscapes-kitsu -- "any" --> pyyaml
     openstudiolandscapes-kitsu -- "any" --> snakemd
     pip-requirements-parser -- "any" --> packaging
