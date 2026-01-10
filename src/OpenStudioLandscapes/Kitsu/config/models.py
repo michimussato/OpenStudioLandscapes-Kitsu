@@ -1,4 +1,5 @@
 import pathlib
+import textwrap
 from typing import List
 
 from dagster import get_dagster_logger
@@ -78,6 +79,24 @@ class Config(FeatureBaseModel):
     kitsu_secret_key: str = Field(
         description="Kitsu Secret Key.",
         default="yourrandomsecretkey",
+    )
+
+    apt_packages: List = Field(
+        default=[
+            "sudo",
+            "htop",
+            "curl",
+            "ffmpeg",
+        ],
+        frozen=True,
+    )
+
+    pip_packages: List = Field(
+        default=[
+            "boto3",
+        ],
+        description="`boto3` is required if `kitsu_enable_job_queue` is `true`. [Reference](https://zou.cg-wire.com/jobs/)",
+        frozen=True,
     )
 
     @field_validator("kitsu_admin_user")

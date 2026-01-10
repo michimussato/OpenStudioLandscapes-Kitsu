@@ -137,86 +137,12 @@ def compose_networks(
 
 @asset(
     **ASSET_HEADER,
-)
-def apt_packages(
-    context: AssetExecutionContext,
-) -> Generator[Output[Dict[str, List[str]]] | AssetMaterialization, None, None]:
-    """ """
-
-    _apt_packages = {}
-
-    _apt_packages["base"] = [
-        "sudo",
-        "htop",
-        "curl",
-        "ffmpeg",
-    ]
-
-    yield Output(_apt_packages)
-
-    yield AssetMaterialization(
-        asset_key=context.asset_key,
-        metadata={
-            "__".join(context.asset_key.path): MetadataValue.json(_apt_packages),
-        },
-    )
-
-
-@asset(
-    **ASSET_HEADER,
-    ins={
-        "CONFIG": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
-        ),
-    },
-    description=textwrap.dedent(
-        """
-        `boto3` is required if `kitsu_enable_job_queue` is `true`.
-        
-        Reference:
-        - [https://zou.cg-wire.com/jobs/]()
-        """
-    ),
-)
-def pip_packages(
-    context: AssetExecutionContext,
-    CONFIG: Config,  # pylint: disable=redefined-outer-name
-) -> Generator[Output[List] | AssetMaterialization, None, None]:
-
-    _pip_packages: List = []
-
-    if CONFIG.kitsu_enable_job_queue:
-
-        _pip_packages.extend(
-            [
-                "boto3",
-            ]
-        )
-
-    yield Output(_pip_packages)
-
-    yield AssetMaterialization(
-        asset_key=context.asset_key,
-        metadata={
-            "__".join(context.asset_key.path): MetadataValue.json(_pip_packages),
-        },
-    )
-
-
-@asset(
-    **ASSET_HEADER,
     ins={
         "feature_in": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "feature_in"]),
         ),
         "CONFIG": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
-        ),
-        "apt_packages": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "apt_packages"]),
-        ),
-        "pip_packages": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "pip_packages"]),
         ),
         "script_init_db": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "script_init_db"]),
@@ -230,8 +156,6 @@ def build_docker_image(
     context: AssetExecutionContext,
     feature_in: OpenStudioLandscapesFeatureIn,  # pylint: disable=redefined-outer-name
     CONFIG: Config,  # pylint: disable=redefined-outer-name
-    apt_packages: Dict[str, List[str]],  # pylint: disable=redefined-outer-name
-    pip_packages: List,  # pylint: disable=redefined-outer-name
     script_init_db: pathlib.Path,  # pylint: disable=redefined-outer-name
     inject_postgres_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[Dict] | AssetMaterialization, None, None]:
@@ -279,14 +203,15 @@ def build_docker_image(
     #################################################
 
     apt_install_str_base: str = get_apt_install_str(
-        apt_install_packages=apt_packages["base"],
+        apt_install_packages=CONFIG.apt_packages,
     )
 
     # We override the default `python_str` because
     # the Python interpreter for the Kitsu Docker image is nothing
     # we are in charge of
     pip_install_str: str = get_pip_install_str(
-        pip_install_packages=pip_packages, python_str="/opt/zou/env/bin/python"
+        pip_install_packages=CONFIG.pip_packages,
+        python_str="/opt/zou/env/bin/python"
     )
 
     script_init_db_dir = docker_file.parent / "scripts"
