@@ -675,27 +675,25 @@ def compose_kitsu(
 
     if not CONFIG.kitsu_db_inside_container:
 
-        kitsu_db_dir_host = (
-            CONFIG.kitsu_database_install_destination_expanded / "postgresql"
-        )
+        kitsu_db_dir_host = CONFIG.kitsu_database_install_destination_expanded
         kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
         context.log.info(f"Directory {kitsu_db_dir_host.as_posix()} created.")
 
-        volumes_dict["volumes"].insert(
-            0,
+        kitsu_preview_dir_host = CONFIG.kitsu_preview_folder_expanded
+        kitsu_preview_dir_host.mkdir(parents=True, exist_ok=True)
+        context.log.info(f"Directory {kitsu_preview_dir_host.as_posix()} created.")
+
+        kitsu_tmp_dir_host = CONFIG.kitsu_tmp_dir_expanded
+        kitsu_tmp_dir_host.mkdir(parents=True, exist_ok=True)
+        context.log.info(f"Directory {kitsu_tmp_dir_host.as_posix()} created.")
+
+        # maybe use collections.deque()?
+        volumes_dict["volumes"] = [
             f"{kitsu_db_dir_host.as_posix()}:/var/lib/postgresql:rw",
-        )
-
-        kitsu_previews_host = (
-            CONFIG.kitsu_database_install_destination_expanded / "previews"
-        )
-        kitsu_previews_host.mkdir(parents=True, exist_ok=True)
-        context.log.info(f"Directory {kitsu_previews_host.as_posix()} created.")
-
-        volumes_dict["volumes"].insert(
-            1,
-            f"{kitsu_previews_host}:/opt/zou/previews:rw",
-        )
+            f"{kitsu_preview_dir_host.as_posix()}:/opt/zou/previews:rw",
+            f"{kitsu_tmp_dir_host.as_posix()}:/opt/zou/tmp:rw",
+            *volumes_dict["volumes"],
+        ]
 
     # For portability, convert absolute volume paths to relative paths
 
@@ -744,8 +742,8 @@ def compose_kitsu(
                     "KITSU_ADMIN": CONFIG.kitsu_admin_user,
                     "DB_PASSWORD": CONFIG.kitsu_db_password,
                     "SECRET_KEY": CONFIG.kitsu_secret_key,
-                    "PREVIEW_FOLDER": CONFIG.kitsu_preview_folder.as_posix(),
-                    "TMP_DIR": CONFIG.kitsu_tmp_dir.as_posix(),
+                    "PREVIEW_FOLDER": "/opt/zou/previews",
+                    "TMP_DIR": "/opt/zou/tmp",
                     "ENABLE_JOB_QUEUE": CONFIG.kitsu_enable_job_queue,
                 },
                 # "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"
@@ -841,10 +839,9 @@ def compose_init_db(
     #     network_dict = {}
     #     ports_dict = {}
 
-    kitsu_db_dir_host = (
-        CONFIG.kitsu_database_install_destination_expanded / "postgresql"
-    )
+    kitsu_db_dir_host = CONFIG.kitsu_database_install_destination_expanded
     kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
+    context.log.info(f"Directory {kitsu_db_dir_host.as_posix()} created.")
 
     # Is:
     # - /home/michael/git/repos/OpenStudioLandscapes/.landscapes/2025-07-12-15-44-28-d7511d9a293d496daed627176a026b43/Kitsu__Kitsu/data/kitsu/postgresql:/var/lib/postgresql
@@ -902,8 +899,8 @@ def compose_init_db(
                     "KITSU_ADMIN": CONFIG.kitsu_admin_user,
                     "DB_PASSWORD": CONFIG.kitsu_db_password,
                     "SECRET_KEY": CONFIG.kitsu_secret_key,
-                    "PREVIEW_FOLDER": CONFIG.kitsu_preview_folder.as_posix(),
-                    "TMP_DIR": CONFIG.kitsu_tmp_dir.as_posix(),
+                    "PREVIEW_FOLDER": "/opt/zou/previews",
+                    "TMP_DIR": "/opt/zou/tmp",
                 },
                 "restart": DockerComposePolicies.RESTART_POLICY.NO.value,
                 # "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"

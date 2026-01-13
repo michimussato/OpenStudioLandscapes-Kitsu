@@ -59,22 +59,22 @@ class Config(FeatureBaseModel):
         description="The Kitsu host port.",
         frozen=False,
     )
-    kitsu_database_install_destination: pathlib.Path = Field(
-        description="The host side Kitsu database installation destination.",
-        default=pathlib.Path("{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/kitsu"),
-    )
     kitsu_db_inside_container: bool = Field(
         default=False,
         description="The Kitsu database inside container; the database will "
         "not be persistent. Helpful for testing.",
     )
+    kitsu_database_install_destination: pathlib.Path = Field(
+        description="The host side Kitsu database installation destination.",
+        default=pathlib.Path("{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/postgresql"),
+    )
     kitsu_preview_folder: pathlib.Path = Field(
-        description="The Kitsu Preview folder.",
-        default=pathlib.Path("/opt/zou/previews"),
+        description="The Kitsu Preview folder (/opt/zou/previews).",
+        default=pathlib.Path("{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/previews"),
     )
     kitsu_tmp_dir: pathlib.Path = Field(
-        description="Kitsu TMP directory.",
-        default=pathlib.Path("/opt/zou/tmp"),
+        description="Kitsu TMP directory (/opt/zou/tmp).",
+        default=pathlib.Path("{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/tmp"),
     )
     kitsu_secret_key: str = Field(
         description="Kitsu Secret Key.",
@@ -163,6 +163,44 @@ class Config(FeatureBaseModel):
         LOGGER.debug(f"Expanding {self.kitsu_database_install_destination}...")
         ret = pathlib.Path(
             self.kitsu_database_install_destination.expanduser()
+            .as_posix()
+            .format(
+                **{
+                    "FEATURE": self.feature_name,
+                    **self.env,
+                }
+            )
+        )
+        return ret
+
+    @property
+    def kitsu_preview_folder_expanded(self) -> pathlib.Path:
+        LOGGER.debug(f"{self.env = }")
+        if self.env is None:
+            raise KeyError("`env` is `None`.")
+
+        LOGGER.debug(f"Expanding {self.kitsu_preview_folder}...")
+        ret = pathlib.Path(
+            self.kitsu_preview_folder.expanduser()
+            .as_posix()
+            .format(
+                **{
+                    "FEATURE": self.feature_name,
+                    **self.env,
+                }
+            )
+        )
+        return ret
+
+    @property
+    def kitsu_tmp_dir_expanded(self) -> pathlib.Path:
+        LOGGER.debug(f"{self.env = }")
+        if self.env is None:
+            raise KeyError("`env` is `None`.")
+
+        LOGGER.debug(f"Expanding {self.kitsu_tmp_dir}...")
+        ret = pathlib.Path(
+            self.kitsu_tmp_dir.expanduser()
             .as_posix()
             .format(
                 **{
