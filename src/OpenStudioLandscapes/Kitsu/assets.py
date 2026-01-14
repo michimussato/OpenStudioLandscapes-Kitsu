@@ -236,23 +236,12 @@ def build_docker_image(
         FROM {parent_image} AS {image_name}
         LABEL authors="{AUTHOR}"
 
-        SHELL ["/bin/bash", "-c"]
-
-        ARG DEBIAN_FRONTEND=noninteractive
-
-        ENV CONTAINER_TIMEZONE={TIMEZONE}
-        ENV SET_CONTAINER_TIMEZONE=true
-
         ENV LC_ALL=C.UTF-8
         ENV LANG=C.UTF-8
-
-        RUN apt-get update && apt-get upgrade -y
 
         {apt_install_str_base}
 
         {pip_install_str}
-
-        RUN apt-get clean
 
         WORKDIR /etc/postgresql/14/main
 
