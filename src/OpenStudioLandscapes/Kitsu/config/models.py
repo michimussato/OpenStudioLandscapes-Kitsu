@@ -1,5 +1,4 @@
 import pathlib
-import textwrap
 from typing import List
 
 from dagster import get_dagster_logger
@@ -82,12 +81,7 @@ class Config(FeatureBaseModel):
     )
 
     apt_packages: List = Field(
-        default=[
-            "sudo",
-            "htop",
-            "curl",
-            "ffmpeg",
-        ],
+        default=[],
         frozen=True,
     )
 
