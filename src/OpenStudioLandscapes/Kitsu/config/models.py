@@ -80,12 +80,15 @@ class Config(FeatureBaseModel):
         default="yourrandomsecretkey",
     )
 
-    apt_packages: List = Field(
-        default=[],
-        frozen=True,
-    )
+    # Todo
+    #  - [ ] default equals empty list results in a Pydantic error
+    # apt_packages: List = Field(
+    #     default=[
+    #     ],
+    #     frozen=True,
+    # )
 
-    pip_packages: List = Field(
+    pip_packages: List[str] = Field(
         default=[
             "boto3",
         ],
