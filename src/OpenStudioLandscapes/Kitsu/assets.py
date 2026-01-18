@@ -202,9 +202,9 @@ def build_docker_image(
 
     #################################################
 
-    apt_install_str_base: str = get_apt_install_str(
-        apt_install_packages=CONFIG.apt_packages,
-    )
+    # apt_install_str_base: str = get_apt_install_str(
+    #     apt_install_packages=CONFIG.apt_packages,
+    # )
 
     # We override the default `python_str` because
     # the Python interpreter for the Kitsu Docker image is nothing
@@ -236,8 +236,6 @@ def build_docker_image(
         FROM {parent_image} AS {image_name}
         LABEL authors="{AUTHOR}"
 
-        {apt_install_str_base}
-
         {pip_install_str}
 
         WORKDIR /etc/postgresql/14/main
@@ -253,7 +251,7 @@ def build_docker_image(
         ENTRYPOINT []
         """
     ).format(
-        apt_install_str_base=apt_install_str_base,
+        # apt_install_str_base=apt_install_str_base,
         pip_install_str=pip_install_str.format(
             **env,
         ),
