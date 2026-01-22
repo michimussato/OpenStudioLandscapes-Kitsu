@@ -17,7 +17,9 @@ from dagster import (
     Output,
     asset,
 )
+from OpenStudioLandscapes.engine.common_assets.cmd import get_feature__cmd
 from OpenStudioLandscapes.engine.common_assets.compose import get_compose
+
 # from OpenStudioLandscapes.engine.common_assets.compose_scope import (
 #     get_compose_scope_group__cmd,
 # )
@@ -25,7 +27,6 @@ from OpenStudioLandscapes.engine.common_assets.docker_compose_graph import (
     get_docker_compose_graph,
 )
 from OpenStudioLandscapes.engine.common_assets.feature import get_feature__CONFIG
-from OpenStudioLandscapes.engine.common_assets.cmd import get_feature__cmd
 from OpenStudioLandscapes.engine.common_assets.feature_out import get_feature_out_v2
 from OpenStudioLandscapes.engine.common_assets.group_in import (
     get_feature_in,
@@ -211,8 +212,7 @@ def build_docker_image(
     # the Python interpreter for the Kitsu Docker image is nothing
     # we are in charge of
     pip_install_str: str = get_pip_install_str(
-        pip_install_packages=CONFIG.pip_packages,
-        python_str="/opt/zou/env/bin/python"
+        pip_install_packages=CONFIG.pip_packages, python_str="/opt/zou/env/bin/python"
     )
 
     script_init_db_dir = docker_file.parent / "scripts"
@@ -229,8 +229,7 @@ def build_docker_image(
         )
 
     # @formatter:off
-    docker_file_str = textwrap.dedent(
-        """\
+    docker_file_str = textwrap.dedent("""\
         # {auto_generated}
         # {dagster_url}
         # https://hub.docker.com/r/cgwire/cgwire
@@ -250,8 +249,7 @@ def build_docker_image(
         RUN chmod 0755 init_db.sh
 
         ENTRYPOINT []
-        """
-    ).format(
+        """).format(
         # apt_install_str_base=apt_install_str_base,
         pip_install_str=pip_install_str.format(
             **env,
@@ -474,8 +472,7 @@ def supervisord_conf(
     ```
     """
 
-    supervisord_conf_str = textwrap.dedent(
-        """\
+    supervisord_conf_str = textwrap.dedent("""\
         [supervisord]
         nodaemon = True
         umask = 022
@@ -534,12 +531,10 @@ def supervisord_conf(
         autorestart=true
         stdout_logfile=NONE
         stderr_logfile=NONE
-        """
-    )
+        """)
 
     if CONFIG.kitsu_enable_job_queue:
-        supervisord_conf_str += textwrap.dedent(
-            """
+        supervisord_conf_str += textwrap.dedent("""
             [program:kitsu-job-queue]
             command=/opt/zou/env/bin/rq worker -c zou.job_settings
             directory=/opt/zou
@@ -553,20 +548,16 @@ def supervisord_conf(
             [group:zou-processes]
             programs=gunicorn,gunicorn-events,kitsu-job-queue
             priority=5
-            """
-        )
+            """)
 
     else:
-        supervisord_conf_str += textwrap.dedent(
-            """
+        supervisord_conf_str += textwrap.dedent("""
             [group:zou-processes]
             programs=gunicorn,gunicorn-events
             priority=5
-            """
-        )
+            """)
 
-    supervisord_conf_str += textwrap.dedent(
-        """
+    supervisord_conf_str += textwrap.dedent("""
         [unix_http_server]
         file=/tmp/supervisor.sock
 
@@ -575,8 +566,7 @@ def supervisord_conf(
 
         [rpcinterface:supervisor]
         supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
-        """
-    )
+        """)
 
     supervisord_conf_script = pathlib.Path(
         CONFIG.env["DOT_LANDSCAPES"],

@@ -68,7 +68,7 @@ A local config store location will be created if it doesn't exist, together with
 > [!TIP]
 > 
 > To specify a config store location different than
-> the default, you can do so be setting the environment variable
+> the default, you can do so by setting the environment variable
 > `OPENSTUDIOLANDSCAPES__CONFIGSTORE_ROOT`:
 > 
 > ```shell
@@ -373,20 +373,6 @@ kitsu_port_container: 80
 kitsu_port_host: 4545
 
 
-# ==================================
-# kitsu_database_install_destination
-# ----------------------------------
-#
-# Type: <class 'pathlib.Path'>
-# Description:
-#     The host side Kitsu database installation destination.
-# Required:
-#     False
-# Examples:
-#     None
-kitsu_database_install_destination: '{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/kitsu'
-
-
 # =========================
 # kitsu_db_inside_container
 # -------------------------
@@ -401,18 +387,32 @@ kitsu_database_install_destination: '{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data
 kitsu_db_inside_container: false
 
 
+# ==================================
+# kitsu_database_install_destination
+# ----------------------------------
+#
+# Type: <class 'pathlib.Path'>
+# Description:
+#     The host side Kitsu database installation destination.
+# Required:
+#     False
+# Examples:
+#     None
+kitsu_database_install_destination: '{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/postgresql'
+
+
 # ====================
 # kitsu_preview_folder
 # --------------------
 #
 # Type: <class 'pathlib.Path'>
 # Description:
-#     The Kitsu Preview folder.
+#     The Kitsu Preview folder (/opt/zou/previews).
 # Required:
 #     False
 # Examples:
 #     None
-kitsu_preview_folder: /opt/zou/previews
+kitsu_preview_folder: '{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/previews'
 
 
 # =============
@@ -421,12 +421,12 @@ kitsu_preview_folder: /opt/zou/previews
 #
 # Type: <class 'pathlib.Path'>
 # Description:
-#     Kitsu TMP directory.
+#     Kitsu TMP directory (/opt/zou/tmp).
 # Required:
 #     False
 # Examples:
 #     None
-kitsu_tmp_dir: /opt/zou/tmp
+kitsu_tmp_dir: '{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/tmp'
 
 
 # ================
@@ -441,6 +441,21 @@ kitsu_tmp_dir: /opt/zou/tmp
 # Examples:
 #     None
 kitsu_secret_key: yourrandomsecretkey
+
+
+# ============
+# pip_packages
+# ------------
+#
+# Type: typing.List[str]
+# Description:
+#     `boto3` is required if `kitsu_enable_job_queue` is `true`. [Reference](https://zou.cg-wire.com/jobs/)
+# Required:
+#     False
+# Examples:
+#     None
+pip_packages:
+- boto3
 ```
 
 
@@ -506,4 +521,4 @@ To follow up on the previous LinkedIn publications, visit:
 
 ***
 
-Last changed: **2025-12-31 12:40:42 UTC**
+Last changed: **2026-01-22 09:29:50 UTC**

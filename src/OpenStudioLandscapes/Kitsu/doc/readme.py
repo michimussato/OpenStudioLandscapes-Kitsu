@@ -25,11 +25,9 @@ def readme_feature(
 
     doc.add_paragraph(
         snakemd.Inline(
-            text=textwrap.dedent(
-                """\
+            text=textwrap.dedent("""\
                 Logo Kitsu\
-                """
-            ),
+                """),
             image={
                 "Kitsu": "https://camo.githubusercontent.com/023fe0d7cf9dc4bd4258a299a718a8c98d94be4357d72dfda0fcb0217ba1582c/68747470733a2f2f7a6f752e63672d776972652e636f6d2f6b697473752e706e67",
             }["Kitsu"],
@@ -37,24 +35,18 @@ def readme_feature(
         ).__str__()
     )
 
-    doc.add_paragraph(
-        text=textwrap.dedent(
-            """\
+    doc.add_paragraph(text=textwrap.dedent("""\
             Kitsu is written and maintained by CGWire, a company based
             in France:\
-            """
-        )
-    )
+            """))
 
     # Logo
 
     doc.add_paragraph(
         snakemd.Inline(
-            text=textwrap.dedent(
-                """\
+            text=textwrap.dedent("""\
                 Logo CGWire\
-                """
-            ),
+                """),
             image={
                 "CGWire": "https://www.cg-wire.com/_nuxt/logo.4d5a2d7e.png",
             }["CGWire"],
@@ -62,13 +54,9 @@ def readme_feature(
         ).__str__()
     )
 
-    doc.add_paragraph(
-        text=textwrap.dedent(
-            """\
+    doc.add_paragraph(text=textwrap.dedent("""\
             Kitsu itself consists of two modules:\
-            """
-        )
-    )
+            """))
 
     doc.add_ordered_list(
         [
@@ -77,14 +65,10 @@ def readme_feature(
         ]
     )
 
-    doc.add_paragraph(
-        text=textwrap.dedent(
-            """\
+    doc.add_paragraph(text=textwrap.dedent("""\
             `OpenStudioLandscapes-Kitsu` is based on the Kitsu provided
             Docker image:\
-            """
-        )
-    )
+            """))
 
     doc.add_unordered_list(
         [
@@ -93,13 +77,9 @@ def readme_feature(
         ]
     )
 
-    doc.add_paragraph(
-        text=textwrap.dedent(
-            """\
+    doc.add_paragraph(text=textwrap.dedent("""\
             The default credentials are:\
-            """
-        )
-    )
+            """))
 
     doc.add_unordered_list(
         [

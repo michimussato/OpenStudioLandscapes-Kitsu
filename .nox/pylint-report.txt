@@ -1,73 +1,63 @@
 ************* Module OpenStudioLandscapes.Kitsu.assets
-src/OpenStudioLandscapes/Kitsu/assets.py:356:0: C0301: Line too long (123/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:476:0: C0301: Line too long (131/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:487:0: C0301: Line too long (117/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:574:0: C0301: Line too long (152/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:593:0: C0301: Line too long (139/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:613:0: C0301: Line too long (116/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:621:0: C0301: Line too long (111/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:826:0: C0301: Line too long (102/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:844:0: C0301: Line too long (107/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:845:0: C0301: Line too long (107/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:925:0: C0301: Line too long (172/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:928:0: C0301: Line too long (127/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:931:0: C0301: Line too long (127/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:984:0: C0301: Line too long (102/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:1:0: C0302: Too many lines in module (1041/1000) (too-many-lines)
-src/OpenStudioLandscapes/Kitsu/assets.py:362:5: W0511: Todo (fixme)
+src/OpenStudioLandscapes/Kitsu/assets.py:264:0: C0301: Line too long (123/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/assets.py:384:0: C0301: Line too long (131/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/assets.py:395:0: C0301: Line too long (117/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/assets.py:724:0: C0301: Line too long (102/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/assets.py:742:0: C0301: Line too long (107/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/assets.py:743:0: C0301: Line too long (107/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/assets.py:822:0: C0301: Line too long (172/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/assets.py:825:0: C0301: Line too long (127/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/assets.py:828:0: C0301: Line too long (127/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/assets.py:881:0: C0301: Line too long (102/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/assets.py:270:5: W0511: Todo (fixme)
 src/OpenStudioLandscapes/Kitsu/assets.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-src/OpenStudioLandscapes/Kitsu/assets.py:35:0: W0401: Wildcard import OpenStudioLandscapes.engine.constants (wildcard-import)
-src/OpenStudioLandscapes/Kitsu/assets.py:36:0: W0401: Wildcard import OpenStudioLandscapes.engine.enums (wildcard-import)
-src/OpenStudioLandscapes/Kitsu/assets.py:38:0: W0401: Wildcard import OpenStudioLandscapes.engine.utils (wildcard-import)
-src/OpenStudioLandscapes/Kitsu/assets.py:39:0: W0401: Wildcard import OpenStudioLandscapes.engine.utils.docker.compose_dicts (wildcard-import)
-src/OpenStudioLandscapes/Kitsu/assets.py:43:0: W0401: Wildcard import OpenStudioLandscapes.Kitsu.constants (wildcard-import)
-src/OpenStudioLandscapes/Kitsu/assets.py:106:0: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/assets.py:108:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
-src/OpenStudioLandscapes/Kitsu/assets.py:141:0: C0112: Empty function docstring (empty-docstring)
-src/OpenStudioLandscapes/Kitsu/assets.py:181:0: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/assets.py:183:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
-src/OpenStudioLandscapes/Kitsu/assets.py:229:0: C0112: Empty function docstring (empty-docstring)
-src/OpenStudioLandscapes/Kitsu/assets.py:232:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
-src/OpenStudioLandscapes/Kitsu/assets.py:229:0: R0913: Too many arguments (7/5) (too-many-arguments)
-src/OpenStudioLandscapes/Kitsu/assets.py:229:0: R0917: Too many positional arguments (7/5) (too-many-positional-arguments)
-src/OpenStudioLandscapes/Kitsu/assets.py:229:0: R0914: Too many local variables (29/15) (too-many-locals)
-src/OpenStudioLandscapes/Kitsu/assets.py:365:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
-src/OpenStudioLandscapes/Kitsu/assets.py:368:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
-src/OpenStudioLandscapes/Kitsu/assets.py:269:8: W0612: Unused variable 'build_base_parent_image_prefix' (unused-variable)
-src/OpenStudioLandscapes/Kitsu/assets.py:270:8: W0612: Unused variable 'build_base_parent_image_name' (unused-variable)
-src/OpenStudioLandscapes/Kitsu/assets.py:271:8: W0612: Unused variable 'build_base_parent_image_tags' (unused-variable)
-src/OpenStudioLandscapes/Kitsu/assets.py:405:0: C0112: Empty function docstring (empty-docstring)
-src/OpenStudioLandscapes/Kitsu/assets.py:407:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
-src/OpenStudioLandscapes/Kitsu/assets.py:413:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
-src/OpenStudioLandscapes/Kitsu/assets.py:441:0: C0112: Empty function docstring (empty-docstring)
-src/OpenStudioLandscapes/Kitsu/assets.py:443:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
-src/OpenStudioLandscapes/Kitsu/assets.py:518:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
-src/OpenStudioLandscapes/Kitsu/assets.py:441:0: R0915: Too many statements (57/50) (too-many-statements)
-src/OpenStudioLandscapes/Kitsu/assets.py:547:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
-src/OpenStudioLandscapes/Kitsu/assets.py:681:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
-src/OpenStudioLandscapes/Kitsu/assets.py:719:0: C0112: Empty function docstring (empty-docstring)
-src/OpenStudioLandscapes/Kitsu/assets.py:721:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
-src/OpenStudioLandscapes/Kitsu/assets.py:719:0: R0914: Too many local variables (22/15) (too-many-locals)
-src/OpenStudioLandscapes/Kitsu/assets.py:828:25: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
-src/OpenStudioLandscapes/Kitsu/assets.py:888:0: C0112: Empty function docstring (empty-docstring)
-src/OpenStudioLandscapes/Kitsu/assets.py:891:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
-src/OpenStudioLandscapes/Kitsu/assets.py:888:0: R0914: Too many local variables (18/15) (too-many-locals)
-src/OpenStudioLandscapes/Kitsu/assets.py:986:25: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
-src/OpenStudioLandscapes/Kitsu/assets.py:1025:0: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/assets.py:35:0: W0614: Unused import(s) LOGGER, DOCKER_PROGRESS, GROUP_BASE_ENV, KEY_BASE_ENV, ASSET_HEADER_BASE_ENV, GROUP_BASE, KEY_BASE, GROUP_LANDSCAPE_MAP, KEY_LANDSCAPE_MAP, ASSET_HEADER_LANDSCAPE_MAP, GROUP_DISTRIBUTABLE, KEY_DISTRIBUTABLE, ASSET_HEADER_DISTRIBUTABLE, get_dagster_logger, DAGSTER_DEFAULT_OUTPUT and FeatureBaseModel from wildcard import of OpenStudioLandscapes.engine.constants (unused-wildcard-import)
-src/OpenStudioLandscapes/Kitsu/assets.py:36:0: W0614: Unused import(s) GroupIn, OpenStudioLandscapesConfig, FeatureVolumeType, ComposeCmdExclusion, DockerComposeNetworkMode, DockerComposeRestartPolicy and DockerComposeDependsOnPolicy from wildcard import of OpenStudioLandscapes.engine.enums (unused-wildcard-import)
-src/OpenStudioLandscapes/Kitsu/assets.py:38:0: W0614: Unused import(s) json, os, shlex, time, git, requests, discovery, cmd_list_to_str, get_copy_str, get_wget_str, get_git_root, get_configs_root, get_data_root, get_bin_root, get_image_name, parse_docker_image_path, get_compose_scope, get_feature_config, expand_dict_vars, metadatavalues_from_dict, get_bool_env, get_str_env, get_all_compose_scopes, get_dynamic_ins, get_networks_dict, download_file, Any, MutableMapping, Tuple, OpExecutionContext, ComposeScopeException, OpenStudioLandscapesException, queue, subprocess, threading, OpenStudioLandscapesDockerException, docker_build_cmd, docker_push_cmd, OutputReader, execute_in_threads, docker_process_cmds and docker_do from wildcard import of OpenStudioLandscapes.engine.utils (unused-wildcard-import)
-src/OpenStudioLandscapes/Kitsu/assets.py:39:0: W0614: Unused import(s) DockerComposeServiceDefinition, DockerComposeNetworkDefinition, get_pangolin_newt_service_skeleton, LiteralString, Required and TypedDict from wildcard import of OpenStudioLandscapes.engine.utils.docker.compose_dicts (unused-wildcard-import)
-src/OpenStudioLandscapes/Kitsu/assets.py:43:0: W0614: Unused import(s) GROUP and KEY from wildcard import of OpenStudioLandscapes.Kitsu.constants (unused-wildcard-import)
+src/OpenStudioLandscapes/Kitsu/assets.py:37:0: W0401: Wildcard import OpenStudioLandscapes.engine.constants (wildcard-import)
+src/OpenStudioLandscapes/Kitsu/assets.py:38:0: W0401: Wildcard import OpenStudioLandscapes.engine.enums (wildcard-import)
+src/OpenStudioLandscapes/Kitsu/assets.py:40:0: W0401: Wildcard import OpenStudioLandscapes.engine.utils (wildcard-import)
+src/OpenStudioLandscapes/Kitsu/assets.py:41:0: W0401: Wildcard import OpenStudioLandscapes.engine.utils.docker.compose_dicts (wildcard-import)
+src/OpenStudioLandscapes/Kitsu/assets.py:45:0: W0401: Wildcard import OpenStudioLandscapes.Kitsu.constants (wildcard-import)
+src/OpenStudioLandscapes/Kitsu/assets.py:108:0: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/assets.py:110:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
+src/OpenStudioLandscapes/Kitsu/assets.py:157:0: C0112: Empty function docstring (empty-docstring)
+src/OpenStudioLandscapes/Kitsu/assets.py:160:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
+src/OpenStudioLandscapes/Kitsu/assets.py:157:0: R0914: Too many local variables (26/15) (too-many-locals)
+src/OpenStudioLandscapes/Kitsu/assets.py:273:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+src/OpenStudioLandscapes/Kitsu/assets.py:276:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+src/OpenStudioLandscapes/Kitsu/assets.py:195:8: W0612: Unused variable 'build_base_parent_image_prefix' (unused-variable)
+src/OpenStudioLandscapes/Kitsu/assets.py:196:8: W0612: Unused variable 'build_base_parent_image_name' (unused-variable)
+src/OpenStudioLandscapes/Kitsu/assets.py:197:8: W0612: Unused variable 'build_base_parent_image_tags' (unused-variable)
+src/OpenStudioLandscapes/Kitsu/assets.py:313:0: C0112: Empty function docstring (empty-docstring)
+src/OpenStudioLandscapes/Kitsu/assets.py:315:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
+src/OpenStudioLandscapes/Kitsu/assets.py:321:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+src/OpenStudioLandscapes/Kitsu/assets.py:349:0: C0112: Empty function docstring (empty-docstring)
+src/OpenStudioLandscapes/Kitsu/assets.py:351:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
+src/OpenStudioLandscapes/Kitsu/assets.py:426:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+src/OpenStudioLandscapes/Kitsu/assets.py:349:0: R0915: Too many statements (57/50) (too-many-statements)
+src/OpenStudioLandscapes/Kitsu/assets.py:455:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
+src/OpenStudioLandscapes/Kitsu/assets.py:581:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+src/OpenStudioLandscapes/Kitsu/assets.py:619:0: C0112: Empty function docstring (empty-docstring)
+src/OpenStudioLandscapes/Kitsu/assets.py:621:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
+src/OpenStudioLandscapes/Kitsu/assets.py:619:0: R0914: Too many local variables (23/15) (too-many-locals)
+src/OpenStudioLandscapes/Kitsu/assets.py:726:25: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+src/OpenStudioLandscapes/Kitsu/assets.py:786:0: C0112: Empty function docstring (empty-docstring)
+src/OpenStudioLandscapes/Kitsu/assets.py:789:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
+src/OpenStudioLandscapes/Kitsu/assets.py:786:0: R0914: Too many local variables (18/15) (too-many-locals)
+src/OpenStudioLandscapes/Kitsu/assets.py:883:25: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+src/OpenStudioLandscapes/Kitsu/assets.py:922:0: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/assets.py:37:0: W0614: Unused import(s) LOGGER, DOCKER_PROGRESS, GROUP_BASE_ENV, KEY_BASE_ENV, ASSET_HEADER_BASE_ENV, GROUP_BASE, KEY_BASE, GROUP_LANDSCAPE_MAP, KEY_LANDSCAPE_MAP, ASSET_HEADER_LANDSCAPE_MAP, GROUP_DISTRIBUTABLE, KEY_DISTRIBUTABLE, ASSET_HEADER_DISTRIBUTABLE, get_dagster_logger, DAGSTER_DEFAULT_OUTPUT and FeatureBaseModel from wildcard import of OpenStudioLandscapes.engine.constants (unused-wildcard-import)
+src/OpenStudioLandscapes/Kitsu/assets.py:38:0: W0614: Unused import(s) GroupIn, OpenStudioLandscapesConfig, FeatureVolumeType, ComposeCmdExclusion, DockerComposeNetworkMode, DockerComposeRestartPolicy and DockerComposeDependsOnPolicy from wildcard import of OpenStudioLandscapes.engine.enums (unused-wildcard-import)
+src/OpenStudioLandscapes/Kitsu/assets.py:40:0: W0614: Unused import(s) json, os, shlex, time, git, requests, discovery, cmd_list_to_str, get_apt_install_str, get_copy_str, get_wget_str, get_git_root, get_configs_root, get_data_root, get_bin_root, get_image_name, parse_docker_image_path, get_compose_scope, get_feature_config, expand_dict_vars, metadatavalues_from_dict, get_bool_env, get_str_env, get_all_compose_scopes, get_dynamic_ins, get_networks_dict, download_file, Any, MutableMapping, Tuple, OpExecutionContext, ComposeScopeException, OpenStudioLandscapesException, queue, subprocess, threading, OpenStudioLandscapesDockerException, docker_build_cmd, docker_push_cmd, OutputReader, execute_in_threads, docker_process_cmds and docker_do from wildcard import of OpenStudioLandscapes.engine.utils (unused-wildcard-import)
+src/OpenStudioLandscapes/Kitsu/assets.py:41:0: W0614: Unused import(s) DockerComposeServiceDefinition, DockerComposeNetworkDefinition, Required, TypedDict and Optional from wildcard import of OpenStudioLandscapes.engine.utils.docker.compose_dicts (unused-wildcard-import)
+src/OpenStudioLandscapes/Kitsu/assets.py:45:0: W0614: Unused import(s) GROUP and KEY from wildcard import of OpenStudioLandscapes.Kitsu.constants (unused-wildcard-import)
 ************* Module OpenStudioLandscapes.Kitsu.definitions
 src/OpenStudioLandscapes/Kitsu/definitions.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 ************* Module OpenStudioLandscapes.Kitsu.readme_feature
-src/OpenStudioLandscapes/Kitsu/readme_feature.py:31:0: C0301: Line too long (194/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/readme_feature.py:88:0: C0301: Line too long (135/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/readme_feature.py:29:0: C0301: Line too long (194/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/readme_feature.py:72:0: C0301: Line too long (135/100) (line-too-long)
 src/OpenStudioLandscapes/Kitsu/readme_feature.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 src/OpenStudioLandscapes/Kitsu/readme_feature.py:6:0: C0116: Missing function or method docstring (missing-function-docstring)
 src/OpenStudioLandscapes/Kitsu/readme_feature.py:24:8: C2801: Unnecessarily calls dunder method __str__. Use str built-in function. (unnecessary-dunder-call)
-src/OpenStudioLandscapes/Kitsu/readme_feature.py:49:8: C2801: Unnecessarily calls dunder method __str__. Use str built-in function. (unnecessary-dunder-call)
+src/OpenStudioLandscapes/Kitsu/readme_feature.py:43:8: C2801: Unnecessarily calls dunder method __str__. Use str built-in function. (unnecessary-dunder-call)
 ************* Module OpenStudioLandscapes.Kitsu.constants
 src/OpenStudioLandscapes/Kitsu/constants.py:9:1: W0511: Todo (fixme)
 src/OpenStudioLandscapes/Kitsu/constants.py:1:0: C0114: Missing module docstring (missing-module-docstring)
@@ -78,31 +68,37 @@ src/OpenStudioLandscapes/Kitsu/__init__.py:1:0: C0114: Missing module docstring 
 src/OpenStudioLandscapes/Kitsu/__init__.py:1:0: C0103: Module name "Kitsu" doesn't conform to snake_case naming style (invalid-name)
 ************* Module OpenStudioLandscapes.Kitsu.config.models
 src/OpenStudioLandscapes/Kitsu/config/models.py:30:0: C0301: Line too long (120/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/config/models.py:95:0: C0301: Line too long (124/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/config/models.py:83:5: W0511: Todo (fixme)
 src/OpenStudioLandscapes/Kitsu/config/models.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 src/OpenStudioLandscapes/Kitsu/config/models.py:14:0: C0413: Import "from OpenStudioLandscapes.engine.config.models import FeatureBaseModel" should be placed at the top of the module (wrong-import-position)
 src/OpenStudioLandscapes/Kitsu/config/models.py:15:0: C0413: Import "from OpenStudioLandscapes.engine.config.str_gen import get_config_str" should be placed at the top of the module (wrong-import-position)
 src/OpenStudioLandscapes/Kitsu/config/models.py:17:0: C0413: Import "from OpenStudioLandscapes.Kitsu import constants, dist" should be placed at the top of the module (wrong-import-position)
 src/OpenStudioLandscapes/Kitsu/config/models.py:20:0: C0115: Missing class docstring (missing-class-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:85:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:86:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
-src/OpenStudioLandscapes/Kitsu/config/models.py:97:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:98:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
-src/OpenStudioLandscapes/Kitsu/config/models.py:109:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:110:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
-src/OpenStudioLandscapes/Kitsu/config/models.py:120:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:127:12: E1101: Instance of 'FieldInfo' has no 'expanduser' member (no-member)
-src/OpenStudioLandscapes/Kitsu/config/models.py:139:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:146:12: E1101: Instance of 'FieldInfo' has no 'expanduser' member (no-member)
+src/OpenStudioLandscapes/Kitsu/config/models.py:101:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:102:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+src/OpenStudioLandscapes/Kitsu/config/models.py:113:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:114:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+src/OpenStudioLandscapes/Kitsu/config/models.py:125:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:126:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+src/OpenStudioLandscapes/Kitsu/config/models.py:136:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:143:12: E1101: Instance of 'FieldInfo' has no 'expanduser' member (no-member)
+src/OpenStudioLandscapes/Kitsu/config/models.py:155:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:162:12: E1101: Instance of 'FieldInfo' has no 'expanduser' member (no-member)
+src/OpenStudioLandscapes/Kitsu/config/models.py:174:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:181:12: E1101: Instance of 'FieldInfo' has no 'expanduser' member (no-member)
+src/OpenStudioLandscapes/Kitsu/config/models.py:193:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:200:12: E1101: Instance of 'FieldInfo' has no 'expanduser' member (no-member)
 ************* Module OpenStudioLandscapes.Kitsu.doc.readme
-src/OpenStudioLandscapes/Kitsu/doc/readme.py:34:0: C0301: Line too long (194/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/doc/readme.py:91:0: C0301: Line too long (135/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/doc/readme.py:32:0: C0301: Line too long (194/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/doc/readme.py:75:0: C0301: Line too long (135/100) (line-too-long)
 src/OpenStudioLandscapes/Kitsu/doc/readme.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 src/OpenStudioLandscapes/Kitsu/doc/readme.py:6:0: C0116: Missing function or method docstring (missing-function-docstring)
 src/OpenStudioLandscapes/Kitsu/doc/readme.py:27:8: C2801: Unnecessarily calls dunder method __str__. Use str built-in function. (unnecessary-dunder-call)
-src/OpenStudioLandscapes/Kitsu/doc/readme.py:52:8: C2801: Unnecessarily calls dunder method __str__. Use str built-in function. (unnecessary-dunder-call)
+src/OpenStudioLandscapes/Kitsu/doc/readme.py:46:8: C2801: Unnecessarily calls dunder method __str__. Use str built-in function. (unnecessary-dunder-call)
 src/OpenStudioLandscapes/Kitsu/doc/readme.py:1:0: R0801: Similar lines in 2 files
-==OpenStudioLandscapes.Kitsu.doc.readme:[14:125]
-==OpenStudioLandscapes.Kitsu.readme_feature:[11:122]
+==OpenStudioLandscapes.Kitsu.doc.readme:[14:105]
+==OpenStudioLandscapes.Kitsu.readme_feature:[11:102]
         level=1,
     )
 
@@ -116,11 +112,9 @@ src/OpenStudioLandscapes/Kitsu/doc/readme.py:1:0: R0801: Similar lines in 2 file
 
     doc.add_paragraph(
         snakemd.Inline(
-            text=textwrap.dedent(
-                """\
+            text=textwrap.dedent("""\
                 Logo Kitsu\
-                """
-            ),
+                """),
             image={
                 "Kitsu": "https://camo.githubusercontent.com/023fe0d7cf9dc4bd4258a299a718a8c98d94be4357d72dfda0fcb0217ba1582c/68747470733a2f2f7a6f752e63672d776972652e636f6d2f6b697473752e706e67",
             }["Kitsu"],
@@ -128,24 +122,18 @@ src/OpenStudioLandscapes/Kitsu/doc/readme.py:1:0: R0801: Similar lines in 2 file
         ).__str__()
     )
 
-    doc.add_paragraph(
-        text=textwrap.dedent(
-            """\
+    doc.add_paragraph(text=textwrap.dedent("""\
             Kitsu is written and maintained by CGWire, a company based
             in France:\
-            """
-        )
-    )
+            """))
 
     # Logo
 
     doc.add_paragraph(
         snakemd.Inline(
-            text=textwrap.dedent(
-                """\
+            text=textwrap.dedent("""\
                 Logo CGWire\
-                """
-            ),
+                """),
             image={
                 "CGWire": "https://www.cg-wire.com/_nuxt/logo.4d5a2d7e.png",
             }["CGWire"],
@@ -153,13 +141,9 @@ src/OpenStudioLandscapes/Kitsu/doc/readme.py:1:0: R0801: Similar lines in 2 file
         ).__str__()
     )
 
-    doc.add_paragraph(
-        text=textwrap.dedent(
-            """\
+    doc.add_paragraph(text=textwrap.dedent("""\
             Kitsu itself consists of two modules:\
-            """
-        )
-    )
+            """))
 
     doc.add_ordered_list(
         [
@@ -168,14 +152,10 @@ src/OpenStudioLandscapes/Kitsu/doc/readme.py:1:0: R0801: Similar lines in 2 file
         ]
     )
 
-    doc.add_paragraph(
-        text=textwrap.dedent(
-            """\
+    doc.add_paragraph(text=textwrap.dedent("""\
             `OpenStudioLandscapes-Kitsu` is based on the Kitsu provided
             Docker image:\
-            """
-        )
-    )
+            """))
 
     doc.add_unordered_list(
         [
@@ -184,13 +164,9 @@ src/OpenStudioLandscapes/Kitsu/doc/readme.py:1:0: R0801: Similar lines in 2 file
         ]
     )
 
-    doc.add_paragraph(
-        text=textwrap.dedent(
-            """\
+    doc.add_paragraph(text=textwrap.dedent("""\
             The default credentials are:\
-            """
-        )
-    )
+            """))
 
     doc.add_unordered_list(
         [
@@ -216,5 +192,5 @@ src/OpenStudioLandscapes/Kitsu/doc/readme.py:1:0: R0801: Similar lines in 2 file
  (duplicate-code)
 
 ------------------------------------------------------------------
-Your code has been rated at 6.72/10 (previous run: 6.72/10, -0.00)
+Your code has been rated at 6.66/10 (previous run: 6.94/10, -0.29)
 
