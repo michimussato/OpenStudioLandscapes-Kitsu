@@ -149,7 +149,7 @@
         {
           "comment": "PackageSource: VCS 'git'",
           "type": "vcs",
-          "url": "https://github.com/michimussato/OpenStudioLandscapes#c10721168129ec9c30282afa3c258192b644ffdb"
+          "url": "https://github.com/michimussato/OpenStudioLandscapes.git#7bb8d4c3782466216310a10653be4d168499247f"
         },
         {
           "comment": "from packaging metadata Project-URL: Homepage",
@@ -161,10 +161,10 @@
       "properties": [
         {
           "name": "cdx:python:package:source:vcs:commit_id",
-          "value": "c10721168129ec9c30282afa3c258192b644ffdb"
+          "value": "7bb8d4c3782466216310a10653be4d168499247f"
         }
       ],
-      "purl": "pkg:pypi/openstudiolandscapes@0.0.0?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes%40c10721168129ec9c30282afa3c258192b644ffdb",
+      "purl": "pkg:pypi/openstudiolandscapes@0.0.0?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes.git%407bb8d4c3782466216310a10653be4d168499247f",
       "type": "library",
       "version": "0.0.0"
     },
@@ -3304,7 +3304,7 @@
       "version": "0.30.0"
     },
     {
-      "bom-ref": "setuptools==80.9.0",
+      "bom-ref": "setuptools==80.10.1",
       "description": "Easily download, build, install, upgrade, and uninstall Python packages",
       "externalReferences": [
         {
@@ -3332,9 +3332,9 @@
         }
       ],
       "name": "setuptools",
-      "purl": "pkg:pypi/setuptools@80.9.0",
+      "purl": "pkg:pypi/setuptools@80.10.1",
       "type": "library",
-      "version": "80.9.0"
+      "version": "80.10.1"
     },
     {
       "bom-ref": "six==1.17.0",
@@ -4141,6 +4141,44 @@
       "version": "16.0"
     },
     {
+      "bom-ref": "wheel==0.46.3",
+      "description": "Command line tool for manipulating wheel files",
+      "externalReferences": [
+        {
+          "comment": "from packaging metadata Project-URL: Documentation",
+          "type": "documentation",
+          "url": "https://wheel.readthedocs.io/"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Issue Tracker",
+          "type": "issue-tracker",
+          "url": "https://github.com/pypa/wheel/issues"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Source",
+          "type": "other",
+          "url": "https://github.com/pypa/wheel"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Changelog",
+          "type": "release-notes",
+          "url": "https://wheel.readthedocs.io/en/stable/news.html"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "acknowledgement": "declared",
+            "id": "MIT"
+          }
+        }
+      ],
+      "name": "wheel",
+      "purl": "pkg:pypi/wheel@0.46.3",
+      "type": "library",
+      "version": "0.46.3"
+    },
+    {
       "bom-ref": "yarl==1.22.0",
       "description": "Yet another URL library",
       "externalReferences": [
@@ -4239,9 +4277,7 @@
         "docker-compose-graph==1.0.0.post1.dev4+g3b0ba2c26",
         "email-validator==2.3.0",
         "graphviz==0.21",
-        "nox==2025.11.12",
-        "pipdeptree==2.30.0",
-        "setuptools==80.9.0"
+        "pipdeptree==2.30.0"
       ],
       "ref": "OpenStudioLandscapes-Kitsu==0.0.0"
     },
@@ -4260,8 +4296,7 @@
         "human-readable-id==0.0.3",
         "nox==2025.11.12",
         "pipdeptree==2.30.0",
-        "pydot==4.0.1",
-        "setuptools==80.9.0"
+        "pydot==4.0.1"
       ],
       "ref": "OpenStudioLandscapes==0.0.0"
     },
@@ -4309,6 +4344,9 @@
       "ref": "anyio==4.12.1"
     },
     {
+      "dependsOn": [
+        "wheel==0.46.3"
+      ],
       "ref": "argcomplete==3.6.3"
     },
     {
@@ -4425,7 +4463,7 @@
         "pytz==2025.2",
         "requests==2.32.5",
         "rich==14.2.0",
-        "setuptools==80.9.0",
+        "setuptools==80.10.1",
         "six==1.17.0",
         "structlog==25.5.0",
         "tabulate==0.9.0",
@@ -4454,7 +4492,8 @@
     },
     {
       "dependsOn": [
-        "idna==3.11"
+        "idna==3.11",
+        "wheel==0.46.3"
       ],
       "ref": "dnspython==2.8.0"
     },
@@ -4465,7 +4504,7 @@
         "graphviz==0.21",
         "pydot==4.0.1",
         "python-dotenv==1.2.1",
-        "setuptools==80.9.0"
+        "setuptools==80.10.1"
       ],
       "ref": "docker-compose-graph==1.0.0.post1.dev4+g3b0ba2c26"
     },
@@ -4536,11 +4575,14 @@
       "ref": "graphql-relay==3.2.0"
     },
     {
+      "dependsOn": [
+        "wheel==0.46.3"
+      ],
       "ref": "graphviz==0.21"
     },
     {
       "dependsOn": [
-        "setuptools==80.9.0"
+        "setuptools==80.10.1"
       ],
       "ref": "greenlet==3.3.0"
     },
@@ -4654,7 +4696,8 @@
     {
       "dependsOn": [
         "SQLAlchemy==2.0.46",
-        "setuptools==80.9.0"
+        "setuptools==80.10.1",
+        "wheel==0.46.3"
       ],
       "ref": "packageurl-python==0.17.6"
     },
@@ -4802,9 +4845,10 @@
         "pip==25.3",
         "platformdirs==4.5.1",
         "tomli==2.4.0",
-        "virtualenv==20.36.1"
+        "virtualenv==20.36.1",
+        "wheel==0.46.3"
       ],
-      "ref": "setuptools==80.9.0"
+      "ref": "setuptools==80.10.1"
     },
     {
       "ref": "six==1.17.0"
@@ -4889,7 +4933,7 @@
     },
     {
       "dependsOn": [
-        "setuptools==80.9.0"
+        "setuptools==80.10.1"
       ],
       "ref": "uvloop==0.22.1"
     },
@@ -4899,7 +4943,7 @@
         "filelock==3.20.3",
         "packaging==25.0",
         "platformdirs==4.5.1",
-        "setuptools==80.9.0",
+        "setuptools==80.10.1",
         "typing_extensions==4.15.0"
       ],
       "ref": "virtualenv==20.36.1"
@@ -4924,6 +4968,13 @@
     },
     {
       "dependsOn": [
+        "packaging==25.0",
+        "setuptools==80.10.1"
+      ],
+      "ref": "wheel==0.46.3"
+    },
+    {
+      "dependsOn": [
         "idna==3.11",
         "multidict==6.7.0",
         "propcache==0.4.1"
@@ -4932,7 +4983,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2026-01-22T09:00:34.584381+00:00",
+    "timestamp": "2026-01-23T10:09:30.084413+00:00",
     "tools": {
       "components": [
         {
@@ -5036,7 +5087,7 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:af4e33bd-c816-4e8a-81fa-28ac213baaaa",
+  "serialNumber": "urn:uuid:6faf7bfd-42ae-4dc9-b04d-0edf1dc036ec",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",

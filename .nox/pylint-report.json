@@ -633,7 +633,7 @@
         "endColumn": 68,
         "path": "src/OpenStudioLandscapes/Kitsu/assets.py",
         "symbol": "unused-wildcard-import",
-        "message": "Unused import(s) DockerComposeServiceDefinition, DockerComposeNetworkDefinition, Required, TypedDict and Optional from wildcard import of OpenStudioLandscapes.engine.utils.docker.compose_dicts",
+        "message": "Unused import(s) DockerComposeServiceDefinition, DockerComposeNetworkDefinition, Optional, Required and TypedDict from wildcard import of OpenStudioLandscapes.engine.utils.docker.compose_dicts",
         "message-id": "W0614"
     },
     {
