@@ -15,7 +15,6 @@ classifiers = [
     "Programming Language :: Python",
 ]
 dependencies = [
-    "OpenStudioLandscapes @ git+https://github.com/michimussato/OpenStudioLandscapes",
     "PyYAML",
     "dagster==1.9.11",
     "docker-compose-graph @ git+https://github.com/michimussato/docker-compose-graph.git",
@@ -39,46 +38,36 @@ requires-python = ">=3.11"
 [project.entry-points]
 
 [project.optional-dependencies]
-coverage = [
-    "coverage",
-    "pytest",
-]
 dev = [
-    "OpenStudioLandscapes-Kitsu[coverage]",
     "OpenStudioLandscapes-Kitsu[lint]",
-    "OpenStudioLandscapes-Kitsu[nox]",
     "OpenStudioLandscapes-Kitsu[readme]",
     "OpenStudioLandscapes-Kitsu[sbom]",
-    "OpenStudioLandscapes-Kitsu[testing]",
 ]
 graphviz = [
     "graphviz",
     "pipdeptree",
 ]
 lint = [
+    "OpenStudioLandscapes-Kitsu[optional-base]",
     "black",
     "isort",
     "pre-commit",
     "pylint",
 ]
-nox = [
-    "OpenStudioLandscapes-Kitsu[testing]",
-    "nox",
+optional-base = [
+    "OpenStudioLandscapes @ git+https://github.com/michimussato/OpenStudioLandscapes.git",
 ]
 pyproject = [
     "OpenStudioLandscapesUtil-VersionBumper @ git+https://github.com/michimussato/OpenStudioLandscapesUtil-VersionBumper.git",
 ]
 readme = [
+    "OpenStudioLandscapes-Kitsu[optional-base]",
     "OpenStudioLandscapesUtil-ReadmeGenerator @ git+https://github.com/michimussato/OpenStudioLandscapesUtil-ReadmeGenerator.git",
 ]
 sbom = [
     "OpenStudioLandscapes-Kitsu[graphviz]",
+    "OpenStudioLandscapes-Kitsu[optional-base]",
     "cyclonedx-bom",
-]
-testing = [
-    "pytest",
-    "pytest-cov",
-    "setuptools",
 ]
 
 [project.readme]
