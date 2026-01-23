@@ -2,17 +2,19 @@ project:
   description: Kitsu Feature for OpenStudioLandscapes
   name: OpenStudioLandscapes-Kitsu
   optional-dependencies:
+    optional-base:
+    - OpenStudioLandscapes @ git+https://github.com/michimussato/OpenStudioLandscapes.git
     dev:
-    - OpenStudioLandscapes-Kitsu[testing]
     - OpenStudioLandscapes-Kitsu[lint]
-    - OpenStudioLandscapes-Kitsu[nox]
     - OpenStudioLandscapes-Kitsu[sbom]
-    - OpenStudioLandscapes-Kitsu[coverage]
     - OpenStudioLandscapes-Kitsu[readme]
-    nox:
-    - OpenStudioLandscapes-Kitsu[testing]
+    lint:
+    - OpenStudioLandscapes-Kitsu[optional-base]
+    readme:
+    - OpenStudioLandscapes-Kitsu[optional-base]
     sbom:
     - OpenStudioLandscapes-Kitsu[graphviz]
+    - OpenStudioLandscapes-Kitsu[optional-base]
   urls:
     Homepage: https://github.com/michimussato/OpenStudioLandscapes-Kitsu
 tool:
