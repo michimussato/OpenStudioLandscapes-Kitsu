@@ -149,7 +149,7 @@
         {
           "comment": "PackageSource: VCS 'git'",
           "type": "vcs",
-          "url": "https://github.com/michimussato/OpenStudioLandscapes.git#4cb663cb7760b4d48c545ed706e284d04da1217f"
+          "url": "https://github.com/michimussato/OpenStudioLandscapes.git#ab517e6524bbddea4573767a9e9d0b545d10bc64"
         },
         {
           "comment": "from packaging metadata Project-URL: Homepage",
@@ -161,10 +161,10 @@
       "properties": [
         {
           "name": "cdx:python:package:source:vcs:commit_id",
-          "value": "4cb663cb7760b4d48c545ed706e284d04da1217f"
+          "value": "ab517e6524bbddea4573767a9e9d0b545d10bc64"
         }
       ],
-      "purl": "pkg:pypi/openstudiolandscapes@0.0.0?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes.git%404cb663cb7760b4d48c545ed706e284d04da1217f",
+      "purl": "pkg:pypi/openstudiolandscapes@0.0.0?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes.git%40ab517e6524bbddea4573767a9e9d0b545d10bc64",
       "type": "library",
       "version": "0.0.0"
     },
@@ -3304,7 +3304,7 @@
       "version": "0.30.0"
     },
     {
-      "bom-ref": "setuptools==80.10.1",
+      "bom-ref": "setuptools==80.10.2",
       "description": "Easily download, build, install, upgrade, and uninstall Python packages",
       "externalReferences": [
         {
@@ -3332,9 +3332,9 @@
         }
       ],
       "name": "setuptools",
-      "purl": "pkg:pypi/setuptools@80.10.1",
+      "purl": "pkg:pypi/setuptools@80.10.2",
       "type": "library",
-      "version": "80.10.1"
+      "version": "80.10.2"
     },
     {
       "bom-ref": "six==1.17.0",
@@ -4463,7 +4463,7 @@
         "pytz==2025.2",
         "requests==2.32.5",
         "rich==14.3.1",
-        "setuptools==80.10.1",
+        "setuptools==80.10.2",
         "six==1.17.0",
         "structlog==25.5.0",
         "tabulate==0.9.0",
@@ -4504,7 +4504,7 @@
         "graphviz==0.21",
         "pydot==4.0.1",
         "python-dotenv==1.2.1",
-        "setuptools==80.10.1"
+        "setuptools==80.10.2"
       ],
       "ref": "docker-compose-graph==1.0.0.post1.dev4+g3b0ba2c26"
     },
@@ -4582,7 +4582,7 @@
     },
     {
       "dependsOn": [
-        "setuptools==80.10.1"
+        "setuptools==80.10.2"
       ],
       "ref": "greenlet==3.3.1"
     },
@@ -4696,7 +4696,7 @@
     {
       "dependsOn": [
         "SQLAlchemy==2.0.46",
-        "setuptools==80.10.1",
+        "setuptools==80.10.2",
         "wheel==0.46.3"
       ],
       "ref": "packageurl-python==0.17.6"
@@ -4848,7 +4848,7 @@
         "virtualenv==20.36.1",
         "wheel==0.46.3"
       ],
-      "ref": "setuptools==80.10.1"
+      "ref": "setuptools==80.10.2"
     },
     {
       "ref": "six==1.17.0"
@@ -4933,7 +4933,7 @@
     },
     {
       "dependsOn": [
-        "setuptools==80.10.1"
+        "setuptools==80.10.2"
       ],
       "ref": "uvloop==0.22.1"
     },
@@ -4943,7 +4943,7 @@
         "filelock==3.20.3",
         "packaging==25.0",
         "platformdirs==4.5.1",
-        "setuptools==80.10.1",
+        "setuptools==80.10.2",
         "typing_extensions==4.15.0"
       ],
       "ref": "virtualenv==20.36.1"
@@ -4969,7 +4969,7 @@
     {
       "dependsOn": [
         "packaging==25.0",
-        "setuptools==80.10.1"
+        "setuptools==80.10.2"
       ],
       "ref": "wheel==0.46.3"
     },
@@ -4983,7 +4983,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2026-01-25T17:12:01.815344+00:00",
+    "timestamp": "2026-01-25T22:45:19.100530+00:00",
     "tools": {
       "components": [
         {
@@ -5087,7 +5087,7 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:55fdcd5a-62b9-4402-8934-859fafd91790",
+  "serialNumber": "urn:uuid:62c405ca-b7a7-4d54-acaf-9c10ab70807b",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",

@@ -237,7 +237,7 @@ digraph {
 	rich -> "markdown-it-py" [label=">=2.2.0"]
 	rich -> pygments [label=">=2.13.0,<3.0.0"]
 	rich [label="rich\n14.3.1"]
-	setuptools [label="setuptools\n80.10.1"]
+	setuptools [label="setuptools\n80.10.2"]
 	six [label="six\n1.17.0"]
 	smmap [label="smmap\n5.0.2"]
 	snakemd [label="SnakeMD\n2.4.0"]
