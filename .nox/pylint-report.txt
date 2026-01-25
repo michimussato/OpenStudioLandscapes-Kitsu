@@ -82,13 +82,9 @@ src/OpenStudioLandscapes/Kitsu/config/models.py:114:8: R1705: Unnecessary "else"
 src/OpenStudioLandscapes/Kitsu/config/models.py:125:4: C0116: Missing function or method docstring (missing-function-docstring)
 src/OpenStudioLandscapes/Kitsu/config/models.py:126:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
 src/OpenStudioLandscapes/Kitsu/config/models.py:136:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:143:12: E1101: Instance of 'FieldInfo' has no 'expanduser' member (no-member)
 src/OpenStudioLandscapes/Kitsu/config/models.py:155:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:162:12: E1101: Instance of 'FieldInfo' has no 'expanduser' member (no-member)
 src/OpenStudioLandscapes/Kitsu/config/models.py:174:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:181:12: E1101: Instance of 'FieldInfo' has no 'expanduser' member (no-member)
 src/OpenStudioLandscapes/Kitsu/config/models.py:193:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:200:12: E1101: Instance of 'FieldInfo' has no 'expanduser' member (no-member)
 ************* Module OpenStudioLandscapes.Kitsu.doc.readme
 src/OpenStudioLandscapes/Kitsu/doc/readme.py:32:0: C0301: Line too long (194/100) (line-too-long)
 src/OpenStudioLandscapes/Kitsu/doc/readme.py:75:0: C0301: Line too long (135/100) (line-too-long)
@@ -192,5 +188,5 @@ src/OpenStudioLandscapes/Kitsu/doc/readme.py:1:0: R0801: Similar lines in 2 file
  (duplicate-code)
 
 ------------------------------------------------------------------
-Your code has been rated at 6.66/10 (previous run: 6.87/10, -0.21)
+Your code has been rated at 7.28/10 (previous run: 7.08/10, +0.20)
 

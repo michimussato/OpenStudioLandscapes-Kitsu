@@ -1001,19 +1001,6 @@
         "message-id": "C0116"
     },
     {
-        "type": "error",
-        "module": "OpenStudioLandscapes.Kitsu.config.models",
-        "obj": "Config.kitsu_postgres_conf_expanded",
-        "line": 143,
-        "column": 12,
-        "endLine": 143,
-        "endColumn": 47,
-        "path": "src/OpenStudioLandscapes/Kitsu/config/models.py",
-        "symbol": "no-member",
-        "message": "Instance of 'FieldInfo' has no 'expanduser' member",
-        "message-id": "E1101"
-    },
-    {
         "type": "convention",
         "module": "OpenStudioLandscapes.Kitsu.config.models",
         "obj": "Config.kitsu_database_install_destination_expanded",
@@ -1025,19 +1012,6 @@
         "symbol": "missing-function-docstring",
         "message": "Missing function or method docstring",
         "message-id": "C0116"
-    },
-    {
-        "type": "error",
-        "module": "OpenStudioLandscapes.Kitsu.config.models",
-        "obj": "Config.kitsu_database_install_destination_expanded",
-        "line": 162,
-        "column": 12,
-        "endLine": 162,
-        "endColumn": 62,
-        "path": "src/OpenStudioLandscapes/Kitsu/config/models.py",
-        "symbol": "no-member",
-        "message": "Instance of 'FieldInfo' has no 'expanduser' member",
-        "message-id": "E1101"
     },
     {
         "type": "convention",
@@ -1053,19 +1027,6 @@
         "message-id": "C0116"
     },
     {
-        "type": "error",
-        "module": "OpenStudioLandscapes.Kitsu.config.models",
-        "obj": "Config.kitsu_preview_folder_expanded",
-        "line": 181,
-        "column": 12,
-        "endLine": 181,
-        "endColumn": 48,
-        "path": "src/OpenStudioLandscapes/Kitsu/config/models.py",
-        "symbol": "no-member",
-        "message": "Instance of 'FieldInfo' has no 'expanduser' member",
-        "message-id": "E1101"
-    },
-    {
         "type": "convention",
         "module": "OpenStudioLandscapes.Kitsu.config.models",
         "obj": "Config.kitsu_tmp_dir_expanded",
@@ -1077,19 +1038,6 @@
         "symbol": "missing-function-docstring",
         "message": "Missing function or method docstring",
         "message-id": "C0116"
-    },
-    {
-        "type": "error",
-        "module": "OpenStudioLandscapes.Kitsu.config.models",
-        "obj": "Config.kitsu_tmp_dir_expanded",
-        "line": 200,
-        "column": 12,
-        "endLine": 200,
-        "endColumn": 41,
-        "path": "src/OpenStudioLandscapes/Kitsu/config/models.py",
-        "symbol": "no-member",
-        "message": "Instance of 'FieldInfo' has no 'expanduser' member",
-        "message-id": "E1101"
     },
     {
         "type": "convention",
