@@ -140,7 +140,7 @@ class Config(FeatureBaseModel):
 
         LOGGER.debug(f"Expanding {self.kitsu_postgres_conf}...")
         ret = pathlib.Path(
-            self.kitsu_postgres_conf.expanduser()
+            self.kitsu_postgres_conf.expanduser()  # pylint: disable=E1101
             .as_posix()
             .format(
                 **{
@@ -159,7 +159,7 @@ class Config(FeatureBaseModel):
 
         LOGGER.debug(f"Expanding {self.kitsu_database_install_destination}...")
         ret = pathlib.Path(
-            self.kitsu_database_install_destination.expanduser()
+            self.kitsu_database_install_destination.expanduser()  # pylint: disable=E1101
             .as_posix()
             .format(
                 **{
@@ -178,7 +178,7 @@ class Config(FeatureBaseModel):
 
         LOGGER.debug(f"Expanding {self.kitsu_preview_folder}...")
         ret = pathlib.Path(
-            self.kitsu_preview_folder.expanduser()
+            self.kitsu_preview_folder.expanduser()  # pylint: disable=E1101
             .as_posix()
             .format(
                 **{
@@ -197,7 +197,7 @@ class Config(FeatureBaseModel):
 
         LOGGER.debug(f"Expanding {self.kitsu_tmp_dir}...")
         ret = pathlib.Path(
-            self.kitsu_tmp_dir.expanduser()
+            self.kitsu_tmp_dir.expanduser()  # pylint: disable=E1101
             .as_posix()
             .format(
                 **{
