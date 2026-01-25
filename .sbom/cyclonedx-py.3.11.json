@@ -149,7 +149,7 @@
         {
           "comment": "PackageSource: VCS 'git'",
           "type": "vcs",
-          "url": "https://github.com/michimussato/OpenStudioLandscapes.git#7bb8d4c3782466216310a10653be4d168499247f"
+          "url": "https://github.com/michimussato/OpenStudioLandscapes.git#4cb663cb7760b4d48c545ed706e284d04da1217f"
         },
         {
           "comment": "from packaging metadata Project-URL: Homepage",
@@ -161,10 +161,10 @@
       "properties": [
         {
           "name": "cdx:python:package:source:vcs:commit_id",
-          "value": "7bb8d4c3782466216310a10653be4d168499247f"
+          "value": "4cb663cb7760b4d48c545ed706e284d04da1217f"
         }
       ],
-      "purl": "pkg:pypi/openstudiolandscapes@0.0.0?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes.git%407bb8d4c3782466216310a10653be4d168499247f",
+      "purl": "pkg:pypi/openstudiolandscapes@0.0.0?vcs_url=git%2Bhttps://github.com/michimussato/OpenStudioLandscapes.git%404cb663cb7760b4d48c545ed706e284d04da1217f",
       "type": "library",
       "version": "0.0.0"
     },
@@ -1694,33 +1694,33 @@
       "version": "0.21"
     },
     {
-      "bom-ref": "greenlet==3.3.0",
+      "bom-ref": "greenlet==3.3.1",
       "description": "Lightweight in-process concurrent programming",
       "externalReferences": [
         {
           "comment": "from packaging metadata Project-URL: Documentation",
           "type": "documentation",
-          "url": "https://greenlet.readthedocs.io/"
+          "url": "https://greenlet.readthedocs.io"
         },
         {
-          "comment": "from packaging metadata Project-URL: Bug Tracker",
+          "comment": "from packaging metadata Project-URL: Issues",
           "type": "issue-tracker",
           "url": "https://github.com/python-greenlet/greenlet/issues"
         },
         {
-          "comment": "from packaging metadata Project-URL: Source Code",
-          "type": "other",
-          "url": "https://github.com/python-greenlet/greenlet/"
-        },
-        {
-          "comment": "from packaging metadata Project-URL: Changes",
+          "comment": "from packaging metadata Project-URL: Changelog",
           "type": "release-notes",
           "url": "https://greenlet.readthedocs.io/en/latest/changes.html"
         },
         {
-          "comment": "from packaging metadata: Home-page",
+          "comment": "from packaging metadata Project-URL: Repository",
+          "type": "vcs",
+          "url": "https://github.com/python-greenlet/greenlet"
+        },
+        {
+          "comment": "from packaging metadata Project-URL: Homepage",
           "type": "website",
-          "url": "https://greenlet.readthedocs.io/"
+          "url": "https://greenlet.readthedocs.io"
         }
       ],
       "licenses": [
@@ -1730,9 +1730,9 @@
         }
       ],
       "name": "greenlet",
-      "purl": "pkg:pypi/greenlet@3.3.0",
+      "purl": "pkg:pypi/greenlet@3.3.1",
       "type": "library",
-      "version": "3.3.0"
+      "version": "3.3.1"
     },
     {
       "bom-ref": "grpcio==1.76.0",
@@ -3223,7 +3223,7 @@
       "version": "1.1.0"
     },
     {
-      "bom-ref": "rich==14.2.0",
+      "bom-ref": "rich==14.3.1",
       "description": "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal",
       "externalReferences": [
         {
@@ -3246,9 +3246,9 @@
         }
       ],
       "name": "rich",
-      "purl": "pkg:pypi/rich@14.2.0",
+      "purl": "pkg:pypi/rich@14.3.1",
       "type": "library",
-      "version": "14.2.0"
+      "version": "14.3.1"
     },
     {
       "bom-ref": "rpds-py==0.30.0",
@@ -4308,7 +4308,7 @@
     },
     {
       "dependsOn": [
-        "greenlet==3.3.0",
+        "greenlet==3.3.1",
         "psycopg2-binary==2.9.11",
         "typing_extensions==4.15.0"
       ],
@@ -4462,7 +4462,7 @@
         "python-dotenv==1.2.1",
         "pytz==2025.2",
         "requests==2.32.5",
-        "rich==14.2.0",
+        "rich==14.3.1",
         "setuptools==80.10.1",
         "six==1.17.0",
         "structlog==25.5.0",
@@ -4584,7 +4584,7 @@
       "dependsOn": [
         "setuptools==80.10.1"
       ],
-      "ref": "greenlet==3.3.0"
+      "ref": "greenlet==3.3.1"
     },
     {
       "dependsOn": [
@@ -4833,7 +4833,7 @@
         "Pygments==2.19.2",
         "markdown-it-py==4.0.0"
       ],
-      "ref": "rich==14.2.0"
+      "ref": "rich==14.3.1"
     },
     {
       "ref": "rpds-py==0.30.0"
@@ -4983,7 +4983,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2026-01-23T10:09:30.084413+00:00",
+    "timestamp": "2026-01-25T17:12:01.815344+00:00",
     "tools": {
       "components": [
         {
@@ -5087,7 +5087,7 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:6faf7bfd-42ae-4dc9-b04d-0edf1dc036ec",
+  "serialNumber": "urn:uuid:55fdcd5a-62b9-4402-8934-859fafd91790",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
