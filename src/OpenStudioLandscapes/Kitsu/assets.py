@@ -694,6 +694,7 @@ def compose_kitsu(
             {
                 *_volume_relative,
                 *config_engine.global_bind_volumes,
+                *CONFIG.local_bind_volumes,
             }
         )
     }
@@ -724,6 +725,7 @@ def compose_kitsu(
                     "TMP_DIR": "/opt/zou/tmp",
                     "ENABLE_JOB_QUEUE": CONFIG.kitsu_enable_job_queue,
                     **config_engine.global_environment_variables,
+                    **CONFIG.local_environment_variables,
                 },
                 # "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"
                 # % (build["image_name"], build["image_tags"][0]),
@@ -856,6 +858,7 @@ def compose_init_db(
             {
                 *_volume_relative,
                 *config_engine.global_bind_volumes,
+                *CONFIG.local_bind_volumes,
             }
         )
     }
@@ -884,6 +887,7 @@ def compose_init_db(
                     "PREVIEW_FOLDER": "/opt/zou/previews",
                     "TMP_DIR": "/opt/zou/tmp",
                     **config_engine.global_environment_variables,
+                    **CONFIG.local_environment_variables,
                 },
                 "restart": DockerComposePolicies.RESTART_POLICY.NO.value,
                 # "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"
