@@ -690,9 +690,12 @@ def compose_kitsu(
         )
 
     volumes_dict = {
-        "volumes": [
-            *_volume_relative,
-        ]
+        "volumes": list(
+            {
+                *_volume_relative,
+                *config_engine.global_bind_volumes,
+            }
+        )
     }
 
     service_name = "kitsu"
@@ -720,6 +723,7 @@ def compose_kitsu(
                     "PREVIEW_FOLDER": "/opt/zou/previews",
                     "TMP_DIR": "/opt/zou/tmp",
                     "ENABLE_JOB_QUEUE": CONFIG.kitsu_enable_job_queue,
+                    **config_engine.global_environment_variables,
                 },
                 # "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"
                 # % (build["image_name"], build["image_tags"][0]),
@@ -848,9 +852,12 @@ def compose_init_db(
         )
 
     volumes_dict = {
-        "volumes": [
-            *_volume_relative,
-        ]
+        "volumes": list(
+            {
+                *_volume_relative,
+                *config_engine.global_bind_volumes,
+            }
+        )
     }
 
     service_name = "kitsu-init-db"
@@ -876,6 +883,7 @@ def compose_init_db(
                     "SECRET_KEY": CONFIG.kitsu_secret_key,
                     "PREVIEW_FOLDER": "/opt/zou/previews",
                     "TMP_DIR": "/opt/zou/tmp",
+                    **config_engine.global_environment_variables,
                 },
                 "restart": DockerComposePolicies.RESTART_POLICY.NO.value,
                 # "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"
