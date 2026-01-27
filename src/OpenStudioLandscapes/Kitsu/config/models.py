@@ -15,9 +15,6 @@ from OpenStudioLandscapes.engine.config.models import FeatureBaseModel
 
 from OpenStudioLandscapes.Kitsu import constants, dist
 
-# from OpenStudioLandscapes.engine.config.str_gen import get_config_str
-
-
 
 class Config(FeatureBaseModel):
     feature_name: str = dist.name
