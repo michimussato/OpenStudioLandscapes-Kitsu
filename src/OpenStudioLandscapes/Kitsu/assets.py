@@ -893,6 +893,7 @@ def compose_kitsu(
                 "domainname": config_engine.openstudiolandscapes__domain_lan,
                 "restart": DockerComposePolicies.RESTART_POLICY.ALWAYS.value,
                 "environment": {
+                    "TZ": CONFIG.tz,
                     # https://zou.cg-wire.com/
                     # "LC_ALL": "C.UTF-8",
                     # "LANG": "C.UTF-8",
@@ -1056,6 +1057,7 @@ def compose_init_db(
                 "hostname": host_name,
                 "domainname": config_engine.openstudiolandscapes__domain_lan,
                 "environment": {
+                    "TZ": CONFIG.tz,
                     # https://zou.cg-wire.com/
                     # "LC_ALL": "C.UTF-8",
                     # "LANG": "C.UTF-8",
