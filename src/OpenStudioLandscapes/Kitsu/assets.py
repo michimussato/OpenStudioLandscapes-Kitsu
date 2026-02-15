@@ -520,6 +520,7 @@ supervisord -c /etc/supervisord.conf
     init_db["script"] += "service postgresql start\n"
     init_db["script"] += "service redis-server start\n"
     init_db["script"] += "\n"
+    # as of v1.0.11, `sudo` seems no longer available
     # init_db["script"] += "sudo -u postgres psql -U postgres -c 'create user root;'\n"
     init_db["script"] += "su -c \"psql -U postgres -c 'create user root;'\" postgres\n"
     init_db[
