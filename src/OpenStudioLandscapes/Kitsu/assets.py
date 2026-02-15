@@ -356,6 +356,140 @@ def script_init_db(
 
     init_db = {}
 
+    """
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 673, in __init__
+        self.__connect()
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 899, in __connect
+        with util.safe_reraise():
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py", line 224, in __exit__
+        raise exc_value.with_traceback(exc_tb)
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 895, in __connect
+        self.dbapi_connection = connection = pool._invoke_creator(self)
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/engine/create.py", line 661, in connect
+        return dialect.connect(*cargs, **cparams)
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+        return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+      File "/opt/zou/env/lib/python3.10/site-packages/psycopg/connection.py", line 122, in connect
+        raise last_ex.with_traceback(None)
+    psycopg.OperationalError: connection failed: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  role "root" does not exist
+    The above exception was the direct cause of the following exception:
+    Traceback (most recent call last):
+      File "/opt/zou/env/bin/zou", line 6, in <module>
+        sys.exit(cli())
+      File "/opt/zou/env/lib/python3.10/site-packages/click/core.py", line 1485, in __call__
+        return self.main(*args, **kwargs)
+      File "/opt/zou/env/lib/python3.10/site-packages/click/core.py", line 1406, in main
+        rv = self.invoke(ctx)
+      File "/opt/zou/env/lib/python3.10/site-packages/click/core.py", line 1873, in invoke
+        return _process_result(sub_ctx.command.invoke(sub_ctx))
+      File "/opt/zou/env/lib/python3.10/site-packages/click/core.py", line 1269, in invoke
+        return ctx.invoke(self.callback, **ctx.params)
+      File "/opt/zou/env/lib/python3.10/site-packages/click/core.py", line 824, in invoke
+        return callback(*args, **kwargs)
+      File "/opt/zou/env/lib/python3.10/site-packages/zou/cli.py", line 224, in init_data
+        commands.init_data()
+      File "/opt/zou/env/lib/python3.10/site-packages/zou/app/utils/commands.py", line 68, in init_data
+        projects_service.get_open_status()
+      File "/opt/zou/env/lib/python3.10/site-packages/flask_caching/__init__.py", line 899, in decorated_function
+        rv = self._call_fn(f, *args, **kwargs)
+      File "/opt/zou/env/lib/python3.10/site-packages/flask_caching/__init__.py", line 185, in _call_fn
+        return ensure_sync(fn)(*args, **kwargs)
+      File "/opt/zou/env/lib/python3.10/site-packages/zou/app/services/projects_service.py", line 203, in get_open_status
+        return get_or_create_status("Open")
+      File "/opt/zou/env/lib/python3.10/site-packages/zou/app/services/projects_service.py", line 218, in get_or_create_status
+        project_status = ProjectStatus.get_by(name=name)
+      File "/opt/zou/env/lib/python3.10/site-packages/zou/app/models/base.py", line 50, in get_by
+        return cls.query.filter(*criterions).filter_by(**kw).first()
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/orm/query.py", line 2759, in first
+        return self.limit(1)._iter().first()  # type: ignore
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/orm/query.py", line 2857, in _iter
+        result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 2351, in execute
+        return self._execute_internal(
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 2239, in _execute_internal
+        conn = self._connection_for_bind(bind)
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 2108, in _connection_for_bind
+        return trans._connection_for_bind(engine, execution_options)
+      File "<string>", line 2, in _connection_for_bind
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
+        ret_value = fn(self, *arg, **kw)
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 1187, in _connection_for_bind
+        conn = bind.connect()
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 3285, in connect
+        return self._connection_cls(self)
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 145, in __init__
+        Connection._handle_dbapi_exception_noconnection(
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 2448, in _handle_dbapi_exception_noconnection
+        raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 143, in __init__
+        self._dbapi_connection = engine.raw_connection()
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 3309, in raw_connection
+        return self.pool.connect()
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 447, in connect
+        return _ConnectionFairy._checkout(self)
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 1264, in _checkout
+        fairy = _ConnectionRecord.checkout(pool)
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 711, in checkout
+        rec = pool._do_get()
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/pool/impl.py", line 177, in _do_get
+        with util.safe_reraise():
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py", line 224, in __exit__
+        raise exc_value.with_traceback(exc_tb)
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/pool/impl.py", line 175, in _do_get
+        return self._create_connection()
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 388, in _create_connection
+        return _ConnectionRecord(self)
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 673, in __init__
+        self.__connect()
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 899, in __connect
+        with util.safe_reraise():
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py", line 224, in __exit__
+        raise exc_value.with_traceback(exc_tb)
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 895, in __connect
+        self.dbapi_connection = connection = pool._invoke_creator(self)
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/engine/create.py", line 661, in connect
+        return dialect.connect(*cargs, **cparams)
+      File "/opt/zou/env/lib/python3.10/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+        return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+      File "/opt/zou/env/lib/python3.10/site-packages/psycopg/connection.py", line 122, in connect
+        raise last_ex.with_traceback(None)
+    sqlalchemy.exc.OperationalError: (psycopg.OperationalError) connection failed: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  role "root" does not exist
+    (Background on this error at: https://sqlalche.me/e/20/e3q8)
+    """
+
+    """
+# v1.0.11
+$ cat init_zou.sh
+#!/bin/bash
+export LC_ALL=C.UTF-8
+export LANG=C.UTF-8
+
+service postgresql start
+service redis-server start
+
+. /opt/zou/env/bin/activate
+
+zou upgrade-db
+zou init-data
+zou create-admin admin@example.com --password mysecretpassword
+
+service postgresql stop
+service redis-server stop
+    """
+
+    """
+# v1.0.11
+$ cat start_zou.sh 
+#!/bin/bash
+
+# create /var/run/postgresql
+. /usr/share/postgresql-common/init.d-functions
+create_socket_directory
+
+echo Running Zou...
+supervisord -c /etc/supervisord.conf
+    """
+
     init_db["exe"] = shutil.which("bash")
     init_db["script"] = str()
 
@@ -386,13 +520,16 @@ def script_init_db(
     init_db["script"] += "service postgresql start\n"
     init_db["script"] += "service redis-server start\n"
     init_db["script"] += "\n"
-    init_db["script"] += "sudo -u postgres psql -U postgres -c 'create user root;'\n"
+    # init_db["script"] += "sudo -u postgres psql -U postgres -c 'create user root;'\n"
+    init_db["script"] += "su -c \"psql -U postgres -c 'create user root;'\" postgres\n"
     init_db[
         "script"
-    ] += "sudo -u postgres psql -U postgres -c 'create database zoudb;'\n"
+    # ] += "sudo -u postgres psql -U postgres -c 'create database zoudb;'\n"
+    ] += "su -c \"psql -U postgres -c 'create database zoudb;'\" postgres\n"
     init_db[
         "script"
-    ] += "sudo -u postgres psql -U postgres -d postgres -c \"alter user postgres with password '${DB_PASSWORD}';\"\n"
+    # ] += "sudo -u postgres psql -U postgres -d postgres -c \"alter user postgres with password '${DB_PASSWORD}';\"\n"
+    ] += "su -c \"psql -U postgres -d postgres -c \\\"alter user postgres with password '${DB_PASSWORD}';\\\"\" postgres\n"
     init_db["script"] += "\n"
     init_db["script"] += "source /opt/zou/env/bin/activate\n"
     init_db["script"] += "\n"
@@ -472,6 +609,9 @@ def supervisord_conf(
     ```
     """
 
+    # Compatible with:
+    # - [x] 0.9.x
+    # - [ ] 1.0.11
     supervisord_conf_str = textwrap.dedent("""\
         [supervisord]
         nodaemon = True
