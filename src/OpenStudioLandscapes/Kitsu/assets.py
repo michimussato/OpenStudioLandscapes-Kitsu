@@ -523,7 +523,7 @@ def script_init_db(
             
             source /opt/zou/env/bin/activate
             # ./start_zou.sh
-            zou upgrade-db && echo "Update complete." || echo "Update failed." && exit 1;
+            zou upgrade-db && echo "Update complete." || exit 1;
             
             echo "Stopping postresql..."
             service postgresql stop
