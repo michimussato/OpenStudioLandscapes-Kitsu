@@ -262,7 +262,7 @@ def build_docker_image(
         image_name=image_name,
         # # Todo: this won't work as expected if len(tags) > 1
         # parent_image=f"{build_base_parent_image_prefix}{build_base_parent_image_name}:{build_base_parent_image_tags[0]}",
-        parent_image="cgwire/cgwire:latest",
+        parent_image=CONFIG.docker_image,
         **env,
     )
     # @formatter:on
@@ -458,98 +458,111 @@ def script_init_db(
     """
 
     """
-# v1.0.11
-$ cat init_zou.sh
-#!/bin/bash
-export LC_ALL=C.UTF-8
-export LANG=C.UTF-8
-
-service postgresql start
-service redis-server start
-
-. /opt/zou/env/bin/activate
-
-zou upgrade-db
-zou init-data
-zou create-admin admin@example.com --password mysecretpassword
-
-service postgresql stop
-service redis-server stop
+    # v1.0.11
+    $ cat init_zou.sh
+    #!/bin/bash
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    
+    service postgresql start
+    service redis-server start
+    
+    . /opt/zou/env/bin/activate
+    
+    zou upgrade-db
+    zou init-data
+    zou create-admin admin@example.com --password mysecretpassword
+    
+    service postgresql stop
+    service redis-server stop
     """
 
     """
-# v1.0.11
-$ cat start_zou.sh 
-#!/bin/bash
-
-# create /var/run/postgresql
-. /usr/share/postgresql-common/init.d-functions
-create_socket_directory
-
-echo Running Zou...
-supervisord -c /etc/supervisord.conf
+    # v1.0.11
+    $ cat start_zou.sh 
+    #!/bin/bash
+    
+    # create /var/run/postgresql
+    . /usr/share/postgresql-common/init.d-functions
+    create_socket_directory
+    
+    echo Running Zou...
+    supervisord -c /etc/supervisord.conf
     """
+
+    # Todo:
+    #  - [ ] Make sure the database gets updated if a newer image version is pulled
+    #        - https://hub.docker.com/r/cgwire/cgwire#usage
+    #          - $ docker exec -ti cgwire sh -c "zou upgrade_db"
+    #          - docker run --init -ti --rm -p 80:80 --name cgwire -v zou-storage:/var/lib/postgresql -v zou-storage:/opt/zou/previews cgwire/cgwire bash
 
     init_db["exe"] = shutil.which("bash")
-    init_db["script"] = str()
 
     # https://github.com/michimussato/kitsu-setup/blob/main/README_KITSU.md
-    init_db["script"] += "#!/bin/bash\n"
-    init_db["script"] += "# Documentation:\n"
-    init_db["script"] += "# https://zou.cg-wire.com/\n"
-    init_db["script"] += "\n"
-    init_db["script"] += "if [[ ! -z \"$( ls -A '/var/lib/postgresql')\" ]]; then\n"
-    init_db["script"] += "    echo /var/lib/postgresql is not empty.\n"
-    init_db["script"] += "    echo Using existing DB.\n"
-    init_db["script"] += "    echo Quit.\n"
-    init_db["script"] += "    exit 0;\n"
-    init_db["script"] += "fi\n"
-    init_db["script"] += "\n"
-    init_db["script"] += "echo /var/lib/postgresql empty.\n"
-    init_db["script"] += "echo Initializing DB...\n"
-    init_db["script"] += "\n"
-    init_db["script"] += "mkdir -p /var/lib/postgresql/14/main\n"
-    init_db["script"] += "chown -R postgres:postgres /var/lib/postgresql/14\n"
-    init_db["script"] += "\n"
-    init_db["script"] += "# Default encoding without specifying it is SQL_ASCII\n"
-    init_db["script"] += "# psql zoudb -c 'SHOW SERVER_ENCODING'\n"
-    init_db[
-        "script"
-    ] += "su - postgres -c '/usr/lib/postgresql/14/bin/initdb --pgdata=/var/lib/postgresql/14/main --auth=trust --encoding=UTF8'\n"
-    init_db["script"] += "\n"
-    init_db["script"] += "service postgresql start\n"
-    init_db["script"] += "service redis-server start\n"
-    init_db["script"] += "\n"
-    # as of v1.0.11, `sudo` seems no longer available
-    # init_db["script"] += "sudo -u postgres psql -U postgres -c 'create user root;'\n"
-    init_db["script"] += "su -c \"psql -U postgres -c 'create user root;'\" postgres\n"
-    init_db[
-        "script"
-    # ] += "sudo -u postgres psql -U postgres -c 'create database zoudb;'\n"
-    ] += "su -c \"psql -U postgres -c 'create database zoudb;'\" postgres\n"
-    init_db[
-        "script"
-    # ] += "sudo -u postgres psql -U postgres -d postgres -c \"alter user postgres with password '${DB_PASSWORD}';\"\n"
-    ] += "su -c \"psql -U postgres -d postgres -c \\\"alter user postgres with password '${DB_PASSWORD}';\\\"\" postgres\n"
-    init_db["script"] += "\n"
-    init_db["script"] += "source /opt/zou/env/bin/activate\n"
-    init_db["script"] += "\n"
-    init_db["script"] += "zou init-db\n"
-    init_db["script"] += "zou init-data\n"
-    init_db["script"] += "\n"
-    init_db["script"] += "mkdir -p ${TMP_DIR}\n"
-    init_db["script"] += "chown -R postgres:postgres ${TMP_DIR}\n"
-    init_db["script"] += "\n"
-    init_db["script"] += "zou create-admin --password ${DB_PASSWORD} ${KITSU_ADMIN}\n"
-    init_db["script"] += "\n"
-    init_db["script"] += "service postgresql stop\n"
-    init_db["script"] += "service redis-server stop\n"
-    init_db["script"] += "\n"
-    init_db["script"] += "# service redis-server is down but process seems to persist\n"
-    init_db["script"] += "# for some reason\n"
-    init_db["script"] += "pkill redis\n"
-    init_db["script"] += "\n"
-    init_db["script"] += "exit 0\n"
+    init_db["script"] = textwrap.dedent(
+        """\
+        #!/bin/bash
+        # Documentation:
+        # https://zou.cg-wire.com/
+        
+        if [[ ! -z "$( ls -A '/var/lib/postgresql')" ]]; then
+            echo "/var/lib/postgresql is not empty."
+            echo "Using existing DB."
+            echo "Updating DB..."
+            source /opt/zou/env/bin/activate
+            zou upgrade_db && echo "Update complete." || echo "Update failed." && exit 1;
+            echo "Exitting as planned."
+            exit 0;
+        fi
+        
+        echo "/var/lib/postgresql empty."
+        echo "Initializing DB..."
+        
+        mkdir -p /var/lib/postgresql/14/main
+        chown -R postgres:postgres /var/lib/postgresql/14
+        
+        # Default encoding without specifying it is SQL_ASCII
+        # psql zoudb -c 'SHOW SERVER_ENCODING'
+        su - postgres -c '/usr/lib/postgresql/14/bin/initdb --pgdata=/var/lib/postgresql/14/main --auth=trust --encoding=UTF8'
+        
+        echo "Starting postresql..."
+        service postgresql start
+        echo "Starting redis-server..."
+        service redis-server start
+        
+        # as of v1.0.11, `sudo` seems no longer available
+        su -c "psql -U postgres -c 'create database zoudb;'" postgres
+        su -c "psql -U postgres -d postgres -c \"alter user postgres with password '${DB_PASSWORD}';\"" postgres
+        
+        source /opt/zou/env/bin/activate
+        
+        echo "zou init-db..."
+        zou init-db
+        echo "zou init-data..."
+        zou init-data
+        
+        mkdir -p ${TMP_DIR}
+        chown -R postgres:postgres ${TMP_DIR}
+        
+        echo "zou create-admin..."
+        zou create-admin --password ${DB_PASSWORD} ${KITSU_ADMIN}
+        
+        echo "Stopping postresql..."
+        service postgresql stop
+        echo "Stopping redis-server..."
+        service redis-server stop
+        
+        # service redis-server is down but process seems to persist
+        # for some reason
+        echo "Killing redis..."
+        pkill redis
+        
+        echo "DB successfully initialized."
+        
+        echo "Exitting as planned."
+        exit 0
+        """
+    )
 
     init_db_script = pathlib.Path(
         env["DOT_LANDSCAPES"],

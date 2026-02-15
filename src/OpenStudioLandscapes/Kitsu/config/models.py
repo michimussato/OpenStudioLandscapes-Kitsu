@@ -23,6 +23,11 @@ class Config(FeatureBaseModel):
 
     key_prefixes: List[str] = constants.ASSET_HEADER["key_prefix"]
 
+    docker_image: str = Field(
+        default="docker.io/cgwire/cgwire:1.0.11",
+        description="The Docker image to use",
+    )
+
     kitsu_admin_user: EmailStr = Field(
         default="admin@example.com",
         description="Bug Report: https://github.com/cgwire/zou/issues/960); "
