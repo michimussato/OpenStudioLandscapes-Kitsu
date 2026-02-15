@@ -493,7 +493,8 @@ def script_init_db(
     # Todo:
     #  - [ ] Make sure the database gets updated if a newer image version is pulled
     #        - https://hub.docker.com/r/cgwire/cgwire#usage
-    #          - $ docker exec -ti cgwire sh -c "zou upgrade_db"
+    #          - $ docker exec -ti cgwire sh -c "zou upgrade-db"
+    #            - [ ] Bug report: https://github.com/cgwire/zou/issues/1019
     #          - docker run --init -ti --rm -p 80:80 --name cgwire -v zou-storage:/var/lib/postgresql -v zou-storage:/opt/zou/previews cgwire/cgwire bash
 
     init_db["exe"] = shutil.which("bash")
@@ -506,11 +507,34 @@ def script_init_db(
         # https://zou.cg-wire.com/
         
         if [[ ! -z "$( ls -A '/var/lib/postgresql')" ]]; then
+            # root@kitsu-init-db:/opt/zou# ls
+            # env  init_db.sh  init_zou.sh  kitsu  previews  start_zou.sh  zou
+            # root@kitsu-init-db:/opt/zou# source env/bin/activate
+            # (env) root@kitsu-init-db:/opt/zou# zou --help
+            # Cannot access to the required Redis instance
             echo "/var/lib/postgresql is not empty."
             echo "Using existing DB."
             echo "Updating DB..."
+            
+            echo "Starting postresql..."
+            service postgresql start
+            echo "Starting redis-server..."
+            service redis-server start
+            
             source /opt/zou/env/bin/activate
-            zou upgrade_db && echo "Update complete." || echo "Update failed." && exit 1;
+            # ./start_zou.sh
+            zou upgrade-db && echo "Update complete." || echo "Update failed." && exit 1;
+            
+            echo "Stopping postresql..."
+            service postgresql stop
+            echo "Stopping redis-server..."
+            service redis-server stop
+        
+            # service redis-server is down but process seems to persist
+            # for some reason
+            echo "Killing redis..."
+            pkill redis
+            
             echo "Exitting as planned."
             exit 0;
         fi
