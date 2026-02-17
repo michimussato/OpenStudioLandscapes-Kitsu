@@ -4,7 +4,8 @@
 
 1. [Feature: OpenStudioLandscapes-Kitsu](#feature-openstudiolandscapes-kitsu)
    1. [Brief](#brief)
-   2. [Install](#install)
+   2. [Clone](#clone)
+      1. [Clone and Install](#clone-and-install)
    3. [Configure](#configure)
       1. [Default Configuration](#default-configuration)
 2. [External Resources](#external-resources)
@@ -27,15 +28,27 @@ This is an extension to the OpenStudioLandscapes ecosystem. The full documentati
 > You feel like writing your own Feature? Go and check out the 
 > [OpenStudioLandscapes-Template](https://github.com/michimussato/OpenStudioLandscapes-Template).
 
-## Install
+## Clone
 
 Clone this repository into `OpenStudioLandscapes/.features` (assuming the current working directory to be the Git repository root `./OpenStudioLandscapes`):
 
 ```shell
 # cd OpenStudioLandscapes
 source .venv/bin/activate
-openstudiolandscapes install-feature --repo=https://github.com/michimussato/OpenStudioLandscapes-Kitsu.git
+openstudiolandscapes clone-feature --repo=https://github.com/michimussato/OpenStudioLandscapes-Kitsu.git
+deactivate
 # Check the resulting console output for installation instructions
+
+```
+
+### Clone and Install
+
+```shell
+# cd OpenStudioLandscapes
+source .venv/bin/activate
+openstudiolandscapes clone-feature --repo=https://github.com/michimussato/OpenStudioLandscapes-Kitsu.git \
+    && pip install --editable ./.features/OpenStudioLandscapes-Kitsu
+deactivate
 
 ```
 
@@ -294,6 +307,20 @@ feature_name: OpenStudioLandscapes-Kitsu
 #     None
 
 
+# ============
+# docker_image
+# ------------
+#
+# Type: <class 'str'>
+# Description:
+#     The Docker image to use
+# Required:
+#     False
+# Examples:
+#     None
+docker_image: docker.io/cgwire/cgwire:1.0.11
+
+
 # ================
 # kitsu_admin_user
 # ----------------
@@ -526,4 +553,4 @@ To follow up on the previous LinkedIn publications, visit:
 
 ***
 
-Last changed: **2026-01-27 20:32:57 UTC**
+Last changed: **2026-02-17 11:27:55 UTC**
