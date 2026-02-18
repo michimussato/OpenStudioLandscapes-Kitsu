@@ -500,8 +500,7 @@ def script_init_db(
     init_db["exe"] = shutil.which("bash")
 
     # https://github.com/michimussato/kitsu-setup/blob/main/README_KITSU.md
-    init_db["script"] = textwrap.dedent(
-        """\
+    init_db["script"] = textwrap.dedent("""\
         #!/bin/bash
         # Documentation:
         # https://zou.cg-wire.com/
@@ -585,8 +584,7 @@ def script_init_db(
         
         echo "Exitting as planned."
         exit 0
-        """
-    )
+        """)
 
     init_db_script = pathlib.Path(
         env["DOT_LANDSCAPES"],
