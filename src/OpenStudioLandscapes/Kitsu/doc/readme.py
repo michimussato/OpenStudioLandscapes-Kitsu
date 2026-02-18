@@ -88,20 +88,27 @@ def readme_feature(
         ]
     )
 
-    # doc.add_paragraph(
-    #     text=textwrap.dedent(
-    #         """\
-    #         You can override the default credentials by setting:\
-    #         """
-    #     )
-    # )
-    #
-    # doc.add_unordered_list(
-    #     [
-    #         "`KITSU_ADMIN_USER`",
-    #         "`KITSU_DB_PASSWORD`",
-    #     ]
-    # )
+    doc.add_heading(
+        text="Inofficial Resources",
+        level=2,
+    )
+
+    doc.add_paragraph(
+        text=textwrap.dedent(
+            """\
+            An interesting Docker Compose project for Kitsu
+            worth following can be found below. 
+            OpenStudioLandscapes-Kitsu, however, is not based on 
+            this project but may one day leverage it:\
+            """
+        )
+    )
+
+    doc.add_ordered_list(
+        [
+            "[Mathieu BOUZARD/docker-cgwire](https://gitlab.com/mathbou/docker-cgwire)",
+        ]
+    )
 
     doc.add_horizontal_rule()
 

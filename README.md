@@ -9,6 +9,7 @@
    3. [Configure](#configure)
       1. [Default Configuration](#default-configuration)
 2. [External Resources](#external-resources)
+   1. [Inofficial Resources](#inofficial-resources)
 3. [Community](#community)
 
 ***
@@ -521,6 +522,12 @@ The default credentials are:
 - User: `admin@example.com`
 - Password: `mysecretpassword`
 
+## Inofficial Resources
+
+An interesting Docker Compose project for Kitsu worth following can be found below. OpenStudioLandscapes-Kitsu, however, is not based on this project but may one day leverage it:
+
+1. [Mathieu BOUZARD/docker-cgwire](https://gitlab.com/mathbou/docker-cgwire)
+
 ***
 
 # Community
@@ -553,4 +560,4 @@ To follow up on the previous LinkedIn publications, visit:
 
 ***
 
-Last changed: **2026-02-18 00:22:26 UTC**
+Last changed: **2026-02-18 09:29:29 UTC**
