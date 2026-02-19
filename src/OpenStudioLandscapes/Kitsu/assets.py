@@ -843,6 +843,7 @@ def compose_kitsu(
             f"{kitsu_db_dir_host.as_posix()}:/var/lib/postgresql:rw",
             f"{kitsu_preview_dir_host.as_posix()}:/opt/zou/previews:rw",
             f"{kitsu_tmp_dir_host.as_posix()}:/opt/zou/tmp:rw",
+            f"{kitsu_db_dump_host.as_posix()}:/opt/zou/db_dump:rw",
             *volumes_dict["volumes"],
         ]
 
