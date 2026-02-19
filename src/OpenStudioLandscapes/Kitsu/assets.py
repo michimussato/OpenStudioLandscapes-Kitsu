@@ -838,6 +838,10 @@ def compose_kitsu(
         kitsu_tmp_dir_host.mkdir(parents=True, exist_ok=True)
         context.log.info(f"Directory {kitsu_tmp_dir_host.as_posix()} created.")
 
+        kitsu_db_dump_host = CONFIG.kitsu_db_dump_expanded
+        kitsu_db_dump_host.mkdir(parents=True, exist_ok=True)
+        context.log.info(f"Directory {kitsu_db_dump_host.as_posix()} created.")
+
         # maybe use collections.deque()?
         volumes_dict["volumes"] = [
             f"{kitsu_db_dir_host.as_posix()}:/var/lib/postgresql:rw",
