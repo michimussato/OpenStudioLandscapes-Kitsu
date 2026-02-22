@@ -79,13 +79,6 @@ class Config(FeatureBaseModel):
         description="Kitsu TMP directory (/opt/zou/tmp).",
         default=pathlib.Path("{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/tmp"),
     )
-    kitsu_db_dump: pathlib.Path = Field(
-        description="Kitsu TMP directory (/opt/zou/db_dump). "
-                    "This can be used to "
-                    "`bash -c 'cd /opt/zou/db_dump && /opt/zou/env/bin/zou dump-database'` "
-                    "to.",
-        default=pathlib.Path("{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/db_dump"),
-    )
     kitsu_secret_key: str = Field(
         description="Kitsu Secret Key.",
         default="yourrandomsecretkey",
@@ -209,25 +202,6 @@ class Config(FeatureBaseModel):
         LOGGER.debug(f"Expanding {self.kitsu_tmp_dir}...")
         ret = pathlib.Path(
             self.kitsu_tmp_dir.expanduser()  # pylint: disable=E1101
-            .as_posix()
-            .format(
-                **{
-                    "FEATURE": self.feature_name,
-                    **self.env,
-                }
-            )
-        )
-        return ret
-
-    @property
-    def kitsu_db_dump_expanded(self) -> pathlib.Path:
-        LOGGER.debug(f"{self.env = }")
-        if self.env is None:
-            raise KeyError("`env` is `None`.")
-
-        LOGGER.debug(f"Expanding {self.kitsu_db_dump}...")
-        ret = pathlib.Path(
-            self.kitsu_db_dump.expanduser()  # pylint: disable=E1101
             .as_posix()
             .format(
                 **{
