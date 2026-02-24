@@ -123,14 +123,13 @@ src/OpenStudioLandscapes/Kitsu/config/models.py:159:4: C0116: Missing function o
 src/OpenStudioLandscapes/Kitsu/config/models.py:178:4: C0116: Missing function or method docstring (missing-function-docstring)
 src/OpenStudioLandscapes/Kitsu/config/models.py:197:4: C0116: Missing function or method docstring (missing-function-docstring)
 ************* Module OpenStudioLandscapes.Kitsu.doc.readme
-src/OpenStudioLandscapes/Kitsu/doc/readme.py:32:0: C0301: Line too long (194/100) (line-too-long)
 src/OpenStudioLandscapes/Kitsu/doc/readme.py:75:0: C0301: Line too long (135/100) (line-too-long)
 src/OpenStudioLandscapes/Kitsu/doc/readme.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 src/OpenStudioLandscapes/Kitsu/doc/readme.py:6:0: C0116: Missing function or method docstring (missing-function-docstring)
 src/OpenStudioLandscapes/Kitsu/doc/readme.py:27:8: C2801: Unnecessarily calls dunder method __str__. Use str built-in function. (unnecessary-dunder-call)
 src/OpenStudioLandscapes/Kitsu/doc/readme.py:46:8: C2801: Unnecessarily calls dunder method __str__. Use str built-in function. (unnecessary-dunder-call)
 src/OpenStudioLandscapes/Kitsu/doc/readme.py:1:0: R0801: Similar lines in 2 files
-==OpenStudioLandscapes.Kitsu.doc.readme:[14:105]
+==OpenStudioLandscapes.Kitsu.doc.readme:[14:29]
 ==OpenStudioLandscapes.Kitsu.readme_feature:[11:102]
         level=1,
     )
@@ -146,84 +145,8 @@ src/OpenStudioLandscapes/Kitsu/doc/readme.py:1:0: R0801: Similar lines in 2 file
     doc.add_paragraph(
         snakemd.Inline(
             text=textwrap.dedent("""\
-                Logo Kitsu\
-                """),
-            image={
-                "Kitsu": "https://camo.githubusercontent.com/023fe0d7cf9dc4bd4258a299a718a8c98d94be4357d72dfda0fcb0217ba1582c/68747470733a2f2f7a6f752e63672d776972652e636f6d2f6b697473752e706e67",
-            }["Kitsu"],
-            link="https://github.com/cgwire/zou",
-        ).__str__()
-    )
-
-    doc.add_paragraph(text=textwrap.dedent("""\
-            Kitsu is written and maintained by CGWire, a company based
-            in France:\
-            """))
-
-    # Logo
-
-    doc.add_paragraph(
-        snakemd.Inline(
-            text=textwrap.dedent("""\
-                Logo CGWire\
-                """),
-            image={
-                "CGWire": "https://www.cg-wire.com/_nuxt/logo.4d5a2d7e.png",
-            }["CGWire"],
-            link="https://www.cg-wire.com",
-        ).__str__()
-    )
-
-    doc.add_paragraph(text=textwrap.dedent("""\
-            Kitsu itself consists of two modules:\
-            """))
-
-    doc.add_ordered_list(
-        [
-            "[Gazu - Kitsu Python Client](https://gazu.cg-wire.com)",
-            "[Zou - Kitsu Python API](https://zou.cg-wire.com)",
-        ]
-    )
-
-    doc.add_paragraph(text=textwrap.dedent("""\
-            `OpenStudioLandscapes-Kitsu` is based on the Kitsu provided
-            Docker image:\
-            """))
-
-    doc.add_unordered_list(
-        [
-            "[https://kitsu.cg-wire.com/installation/#using-docker-image](https://kitsu.cg-wire.com/installation/#using-docker-image)",
-            "[https://hub.docker.com/r/cgwire/cgwire](https://hub.docker.com/r/cgwire/cgwire)",
-        ]
-    )
-
-    doc.add_paragraph(text=textwrap.dedent("""\
-            The default credentials are:\
-            """))
-
-    doc.add_unordered_list(
-        [
-            "User: `admin@example.com`",
-            "Password: `mysecretpassword`",
-        ]
-    )
-
-    # doc.add_paragraph(
-    #     text=textwrap.dedent(
-    #         """\
-    #         You can override the default credentials by setting:\
-    #         """
-    #     )
-    # )
-    #
-    # doc.add_unordered_list(
-    #     [
-    #         "`KITSU_ADMIN_USER`",
-    #         "`KITSU_DB_PASSWORD`",
-    #     ]
-    # )
- (duplicate-code)
+                Logo Kitsu\ (duplicate-code)
 
 ------------------------------------------------------------------
-Your code has been rated at 5.52/10 (previous run: 7.11/10, -1.59)
+Your code has been rated at 5.61/10 (previous run: 7.24/10, -1.64)
 

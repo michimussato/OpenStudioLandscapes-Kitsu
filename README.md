@@ -501,7 +501,7 @@ pip_packages:
 
 - [https://kitsu.cg-wire.com](https://kitsu.cg-wire.com)
 
-[![Logo Kitsu ](https://camo.githubusercontent.com/023fe0d7cf9dc4bd4258a299a718a8c98d94be4357d72dfda0fcb0217ba1582c/68747470733a2f2f7a6f752e63672d776972652e636f6d2f6b697473752e706e67)](https://github.com/cgwire/zou)
+[![Logo Kitsu ](https://zou.cg-wire.com/kitsu.png)](https://github.com/cgwire/zou)
 
 Kitsu is written and maintained by CGWire, a company based in France:
 
@@ -560,4 +560,4 @@ To follow up on the previous LinkedIn publications, visit:
 
 ***
 
-Last changed: **2026-02-18 09:29:29 UTC**
+Last changed: **2026-02-24 11:26:53 UTC**

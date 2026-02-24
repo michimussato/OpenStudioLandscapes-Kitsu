@@ -93,16 +93,12 @@ def readme_feature(
         level=2,
     )
 
-    doc.add_paragraph(
-        text=textwrap.dedent(
-            """\
+    doc.add_paragraph(text=textwrap.dedent("""\
             An interesting Docker Compose project for Kitsu
             worth following can be found below. 
             OpenStudioLandscapes-Kitsu, however, is not based on 
             this project but may one day leverage it:\
-            """
-        )
-    )
+            """))
 
     doc.add_ordered_list(
         [
