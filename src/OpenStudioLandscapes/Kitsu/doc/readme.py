@@ -29,7 +29,7 @@ def readme_feature(
                 Logo Kitsu\
                 """),
             image={
-                "Kitsu": "https://camo.githubusercontent.com/023fe0d7cf9dc4bd4258a299a718a8c98d94be4357d72dfda0fcb0217ba1582c/68747470733a2f2f7a6f752e63672d776972652e636f6d2f6b697473752e706e67",
+                "Kitsu": "https://zou.cg-wire.com/kitsu.png",
             }["Kitsu"],
             link="https://github.com/cgwire/zou",
         ).__str__()
