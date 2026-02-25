@@ -146,20 +146,12 @@ def compose_networks(
         "CONFIG": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         ),
-        "script_init_db": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "script_init_db"]),
-        ),
-        "inject_postgres_conf": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "inject_postgres_conf"]),
-        ),
     },
 )
 def build_docker_image(
     context: AssetExecutionContext,
     feature_in: OpenStudioLandscapesFeatureIn,  # pylint: disable=redefined-outer-name
     CONFIG: Config,  # pylint: disable=redefined-outer-name
-    script_init_db: pathlib.Path,  # pylint: disable=redefined-outer-name
-    inject_postgres_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[Dict] | AssetMaterialization, None, None]:
     """ """
 
@@ -215,19 +207,6 @@ def build_docker_image(
         pip_install_packages=CONFIG.pip_packages, python_str="/opt/zou/env/bin/python"
     )
 
-    script_init_db_dir = docker_file.parent / "scripts"
-    script_init_db_dir.mkdir(parents=True, exist_ok=True)
-
-    for script in [
-        script_init_db,
-        inject_postgres_conf,
-    ]:
-
-        shutil.copy(
-            src=script,
-            dst=script_init_db_dir,
-        )
-
     # @formatter:off
     docker_file_str = textwrap.dedent("""\
         # {auto_generated}
@@ -238,15 +217,7 @@ def build_docker_image(
 
         {pip_install_str}
 
-        WORKDIR /etc/postgresql/14/main
-
-        COPY ./scripts/postgresql.conf .
-        RUN chmod 0755 postgresql.conf
-
         WORKDIR /opt/zou
-
-        COPY ./scripts/init_db.sh .
-        RUN chmod 0755 init_db.sh
 
         ENTRYPOINT []
         """).format(
@@ -310,28 +281,44 @@ def build_docker_image(
     },
     description="",
 )
-def inject_postgres_conf(
+def postgres_conf(
     context: AssetExecutionContext,
     CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
 
-    postgres_conf = CONFIG.kitsu_postgres_conf_expanded
+    env: Dict = CONFIG.env
 
-    with open(
-        file=postgres_conf,
-        mode="r",
-    ) as fr:
-        postgres_conf_content = fr.read()
+    postgres_conf_script = pathlib.Path(
+        env["DOT_LANDSCAPES"],
+        env.get("LANDSCAPE", "default"),
+        f"{dist.name}",
+        "__".join(context.asset_key.path),
+        "postgresql.conf",
+    )
 
-    yield Output(postgres_conf)
+    postgres_conf_script.parent.mkdir(parents=True, exist_ok=True)
+
+    try:
+        with open(
+            file=postgres_conf_script,
+            mode="w",
+        ) as fw:
+            fw.write(CONFIG.kitsu_postgres_conf_str)
+    except PermissionError as e:
+        context.log.warning(f"File permissions have already been assigned to `postgres:postgres`, "
+                            f"can't write content to file: {e}")
+        # Todo
+        #  - [ ] Maybe have some logic to compare the two strings
+
+    yield Output(postgres_conf_script)
 
     yield AssetMaterialization(
         asset_key=context.asset_key,
         metadata={
-            "__".join(context.asset_key.path): MetadataValue.path(postgres_conf),
+            "__".join(context.asset_key.path): MetadataValue.path(postgres_conf_script),
             "postgres_conf": MetadataValue.md(
-                f"```shell\n{postgres_conf_content}\n```"
+                f"```markdown\n{CONFIG.kitsu_postgres_conf_str}\n```"
             ),
         },
     )
@@ -494,7 +481,7 @@ def script_init_db(
     #  - [ ] Make sure the database gets updated if a newer image version is pulled
     #        - https://hub.docker.com/r/cgwire/cgwire#usage
     #          - $ docker exec -ti cgwire sh -c "zou upgrade-db"
-    #            - [ ] Bug report: https://github.com/cgwire/zou/issues/1019
+    #            - [x] Bug report: https://github.com/cgwire/zou/issues/1019
     #          - docker run --init -ti --rm -p 80:80 --name cgwire -v zou-storage:/var/lib/postgresql -v zou-storage:/opt/zou/previews cgwire/cgwire bash
 
     init_db["exe"] = shutil.which("bash")
@@ -504,26 +491,100 @@ def script_init_db(
         #!/bin/bash
         # Documentation:
         # https://zou.cg-wire.com/
+    
+        whoami
+
+        function init_postgres_db() {
+            # This initializes PostgreSQL in case we are bind mounting
+            # an empty directory: /var/lib/postgresql
+            if [[ -z "$( ls -A '/var/lib/postgresql')" ]]; then
         
-        if [[ ! -z "$( ls -A '/var/lib/postgresql')" ]]; then
-            # root@kitsu-init-db:/opt/zou# ls
-            # env  init_db.sh  init_zou.sh  kitsu  previews  start_zou.sh  zou
-            # root@kitsu-init-db:/opt/zou# source env/bin/activate
-            # (env) root@kitsu-init-db:/opt/zou# zou --help
-            # Cannot access to the required Redis instance
-            echo "/var/lib/postgresql is not empty."
-            echo "Using existing DB."
-            echo "Updating DB..."
-            
+                echo "/var/lib/postgresql empty."
+                echo "Initializing DB..."
+        
+                mkdir -p /var/lib/postgresql/14/main
+                chown -R postgres:postgres /var/lib/postgresql/14
+                # data ownership and conf ownership have to match
+                # user id of `postgres` is 105
+                chown postgres:postgres /etc/postgresql/14/main/postgresql.conf
+        
+                # Default encoding without specifying it is SQL_ASCII
+                # psql zoudb -c 'SHOW SERVER_ENCODING'
+                su - postgres -c '/usr/lib/postgresql/14/bin/initdb --pgdata=/var/lib/postgresql/14/main --auth=trust --encoding=UTF8'
+        
+                # USER postgres
+                echo "Starting postresql..."
+                service postgresql start
+                echo "Starting redis-server..."
+                service redis-server start
+        
+                # set user password as specified in the config.yml
+                su - postgres -c "psql -U postgres -d postgres -c \\\"alter user postgres with password '${DB_PASSWORD}';\\\""
+        
+                # as of v1.0.11, `sudo` seems no longer available
+                #
+                # https://hub.docker.com/layers/cgwire/cgwire/1.0.11/images/sha256-9917b49236c23c8f5e700ad2d33ec2edb294b373533759c9bba3d9780a0a9648
+                # RUN |2 ZOU_VERSION=1.0.8 KITSU_VERSION=1.0.11 /bin/sh -c service postgresql start &&
+                # createuser root
+                # && createdb -T template0 -E UTF8 --owner root root
+                # &&     createdb -T template0 -E UTF8 --owner root zoudb
+                # &&     service postgresql stop
+                su - postgres -c "createuser root"
+                su - postgres -c "createdb -T template0 -E UTF8 --owner root root"
+                su - postgres -c "createdb -T template0 -E UTF8 --owner root zoudb"
+                # su - postgres -c "psql -U postgres -c 'create database zoudb;'"
+        
+                echo "Stopping postresql..."
+                service postgresql stop
+                echo "Stopping redis-server..."
+                service redis-server stop
+        
+                # service redis-server is down but process seems to persist
+                # for some reason
+                echo "Killing redis..."
+                pkill redis
+        
+                echo "Postgres DB successfully initialized."
+        
+            else
+        
+                echo "/var/lib/postgresql is not empty."
+                echo "Nothing to initialize."
+        
+            fi
+        }
+        
+        function init_kitsu_db() {
+        
+            # USER postgres
             echo "Starting postresql..."
             service postgresql start
             echo "Starting redis-server..."
             service redis-server start
-            
-            source /opt/zou/env/bin/activate
-            # ./start_zou.sh
-            zou upgrade-db && echo "Update complete." || exit 1;
-            
+        
+            . /opt/zou/env/bin/activate
+        
+            echo "zou is-db-ready..."
+            IS_DB_READY=$(zou is-db-ready)
+            echo ${IS_DB_READY}
+        
+            if [ "${IS_DB_READY}" == "Database is not initialized. Run 'zou init-db' and 'zou init-data'." ]; then
+        
+                echo "zou init-db..."
+                zou init-db
+                # echo "zou upgrade-db..."
+                # zou upgrade-db
+                echo "zou init-data..."
+                zou init-data
+        
+                mkdir -p ${TMP_DIR}
+                chown -R postgres:postgres ${TMP_DIR}
+        
+                echo "zou create-admin..."
+                zou create-admin --password ${DB_PASSWORD} ${KITSU_ADMIN}
+        
+            fi;
+        
             echo "Stopping postresql..."
             service postgresql stop
             echo "Stopping redis-server..."
@@ -533,57 +594,15 @@ def script_init_db(
             # for some reason
             echo "Killing redis..."
             pkill redis
-            
+        
+            echo "DB successfully initialized."
+        
             echo "Exitting as planned."
-            exit 0;
-        fi
+            exit 0
+        }
         
-        echo "/var/lib/postgresql empty."
-        echo "Initializing DB..."
-        
-        mkdir -p /var/lib/postgresql/14/main
-        chown -R postgres:postgres /var/lib/postgresql/14
-        
-        # Default encoding without specifying it is SQL_ASCII
-        # psql zoudb -c 'SHOW SERVER_ENCODING'
-        su - postgres -c '/usr/lib/postgresql/14/bin/initdb --pgdata=/var/lib/postgresql/14/main --auth=trust --encoding=UTF8'
-        
-        echo "Starting postresql..."
-        service postgresql start
-        echo "Starting redis-server..."
-        service redis-server start
-        
-        # as of v1.0.11, `sudo` seems no longer available
-        su -c "psql -U postgres -c 'create database zoudb;'" postgres
-        su -c "psql -U postgres -d postgres -c \"alter user postgres with password '${DB_PASSWORD}';\"" postgres
-        
-        source /opt/zou/env/bin/activate
-        
-        echo "zou init-db..."
-        zou init-db
-        echo "zou init-data..."
-        zou init-data
-        
-        mkdir -p ${TMP_DIR}
-        chown -R postgres:postgres ${TMP_DIR}
-        
-        echo "zou create-admin..."
-        zou create-admin --password ${DB_PASSWORD} ${KITSU_ADMIN}
-        
-        echo "Stopping postresql..."
-        service postgresql stop
-        echo "Stopping redis-server..."
-        service redis-server stop
-        
-        # service redis-server is down but process seems to persist
-        # for some reason
-        echo "Killing redis..."
-        pkill redis
-        
-        echo "DB successfully initialized."
-        
-        echo "Exitting as planned."
-        exit 0
+        init_postgres_db
+        init_kitsu_db
         """)
 
     init_db_script = pathlib.Path(
@@ -790,6 +809,9 @@ def supervisord_conf(
         "supervisord_conf": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "supervisord_conf"]),
         ),
+        "postgres_conf": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "postgres_conf"]),
+        ),
     },
 )
 def compose_kitsu(
@@ -798,6 +820,7 @@ def compose_kitsu(
     build: Dict,  # pylint: disable=redefined-outer-name
     compose_networks: Dict,  # pylint: disable=redefined-outer-name
     supervisord_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
+    postgres_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[Dict] | AssetMaterialization, None, None]:
     """ """
 
@@ -843,6 +866,8 @@ def compose_kitsu(
             f"{kitsu_db_dir_host.as_posix()}:/var/lib/postgresql:rw",
             f"{kitsu_preview_dir_host.as_posix()}:/opt/zou/previews:rw",
             f"{kitsu_tmp_dir_host.as_posix()}:/opt/zou/tmp:rw",
+            # f"{script_init_db.as_posix()}:/opt/zou/init_db.sh",
+            f"{postgres_conf.as_posix()}:/etc/postgresql/14/main/postgresql.conf:ro",
             *volumes_dict["volumes"],
         ]
 
@@ -956,6 +981,12 @@ def compose_kitsu(
         "build": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "build_docker_image"]),
         ),
+        "script_init_db": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "script_init_db"]),
+        ),
+        "postgres_conf": AssetIn(
+            AssetKey([*ASSET_HEADER["key_prefix"], "postgres_conf"]),
+        ),
         "CONFIG": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
         ),
@@ -969,6 +1000,8 @@ def compose_kitsu(
 def compose_init_db(
     context: AssetExecutionContext,
     build: Dict,  # pylint: disable=redefined-outer-name
+    script_init_db: pathlib.Path,  # pylint: disable=redefined-outer-name
+    postgres_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
     CONFIG: Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[Dict] | AssetMaterialization, None, None]:
     """ """
@@ -1011,7 +1044,11 @@ def compose_init_db(
     # - ../../../../2025-07-12-15-44-28-d7511d9a293d496daed627176a026b43/Kitsu__Kitsu/data/kitsu/postgresql:/var/lib/postgresql
 
     # For portability, convert absolute volume paths to relative paths
-    volumes_paths_to_convert = [f"{kitsu_db_dir_host.as_posix()}:/var/lib/postgresql"]
+    volumes_paths_to_convert = [
+        f"{kitsu_db_dir_host.as_posix()}:/var/lib/postgresql",
+        f"{script_init_db.as_posix()}:/opt/zou/init_db.sh:ro",
+        f"{postgres_conf.as_posix()}:/etc/postgresql/14/main/postgresql.conf:rw",
+    ]
 
     _volume_relative = []
 
