@@ -493,6 +493,31 @@ def script_init_db(
         # https://zou.cg-wire.com/
     
         whoami
+        
+        function start_services() {
+        
+            # USER postgres
+            echo "Starting postresql..."
+            service postgresql start
+            echo "Starting redis-server..."
+            service redis-server start
+            
+        }
+        
+        function stop_services() {
+        
+            # USER postgres
+            echo "Stopping postresql..."
+            service postgresql stop
+            echo "Stopping redis-server..."
+            service redis-server stop
+    
+            # service redis-server is down but process seems to persist
+            # for some reason
+            echo "Killing redis..."
+            pkill redis
+            
+        }
 
         function init_postgres_db() {
             # This initializes PostgreSQL in case we are bind mounting
@@ -520,11 +545,7 @@ def script_init_db(
                 # psql zoudb -c 'SHOW SERVER_ENCODING'
                 su - postgres -c '/usr/lib/postgresql/14/bin/initdb --pgdata=/var/lib/postgresql/14/main --auth=trust --encoding=UTF8'
         
-                # USER postgres
-                echo "Starting postresql..."
-                service postgresql start
-                echo "Starting redis-server..."
-                service redis-server start
+                start_services
         
                 # set user password as specified in the config.yml
                 su - postgres -c "psql -U postgres -d postgres -c \\\"alter user postgres with password '${DB_PASSWORD}';\\\""
@@ -542,15 +563,7 @@ def script_init_db(
                 su - postgres -c "createdb -T template0 -E UTF8 --owner root zoudb"
                 # su - postgres -c "psql -U postgres -c 'create database zoudb;'"
         
-                echo "Stopping postresql..."
-                service postgresql stop
-                echo "Stopping redis-server..."
-                service redis-server stop
-        
-                # service redis-server is down but process seems to persist
-                # for some reason
-                echo "Killing redis..."
-                pkill redis
+                stop_services
         
                 echo "Postgres DB successfully initialized."
         
@@ -564,11 +577,7 @@ def script_init_db(
         
         function init_kitsu_db() {
         
-            # USER postgres
-            echo "Starting postresql..."
-            service postgresql start
-            echo "Starting redis-server..."
-            service redis-server start
+            start_services
         
             . /opt/zou/env/bin/activate
         
@@ -593,15 +602,7 @@ def script_init_db(
         
             fi;
         
-            echo "Stopping postresql..."
-            service postgresql stop
-            echo "Stopping redis-server..."
-            service redis-server stop
-        
-            # service redis-server is down but process seems to persist
-            # for some reason
-            echo "Killing redis..."
-            pkill redis
+            stop_services
         
             echo "DB successfully initialized."
         
