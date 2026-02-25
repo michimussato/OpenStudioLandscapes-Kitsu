@@ -497,6 +497,14 @@ def script_init_db(
         function init_postgres_db() {
             # This initializes PostgreSQL in case we are bind mounting
             # an empty directory: /var/lib/postgresql
+            
+            # We ALWAYS need to make sure that the ownership
+            # of the postgresql.conf is correct:
+            #
+            # data ownership and conf ownership have to match
+            # user id of `postgres` is 105
+            chown postgres:postgres /etc/postgresql/14/main/postgresql.conf
+            
             if [[ -z "$( ls -A '/var/lib/postgresql')" ]]; then
         
                 echo "/var/lib/postgresql empty."
