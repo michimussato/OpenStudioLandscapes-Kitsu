@@ -16,9 +16,7 @@ from OpenStudioLandscapes.engine.config.models import FeatureBaseModel
 
 from OpenStudioLandscapes.Kitsu import constants, dist
 
-
-POSTGRES_CONF_STR = textwrap.dedent(
-    """
+POSTGRES_CONF_STR = textwrap.dedent("""
     # /etc/postgresql/14/main/postgresql.conf
     # -----------------------------
     # PostgreSQL configuration file
@@ -819,8 +817,7 @@ POSTGRES_CONF_STR = textwrap.dedent(
     #------------------------------------------------------------------------------
     
     # Add settings for extensions here
-    """
-)
+    """)
 
 
 class Config(FeatureBaseModel):
