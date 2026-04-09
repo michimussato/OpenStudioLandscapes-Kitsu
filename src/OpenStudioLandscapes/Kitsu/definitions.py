@@ -4,6 +4,7 @@ from dagster import (
 )
 
 import OpenStudioLandscapes.Kitsu.assets
+from OpenStudioLandscapes.engine.features.upstream_asset_specs import assets_external
 
 assets = load_assets_from_modules(
     modules=[OpenStudioLandscapes.Kitsu.assets],
@@ -13,5 +14,6 @@ assets = load_assets_from_modules(
 defs = Definitions(
     assets=[
         *assets,
+        *assets_external,
     ],
 )
