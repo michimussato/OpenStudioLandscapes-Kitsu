@@ -1417,6 +1417,32 @@
         "message-id": "C0114"
     },
     {
+        "type": "convention",
+        "module": "OpenStudioLandscapes.Kitsu._definitions_with_upstream_specs",
+        "obj": "",
+        "line": 1,
+        "column": 0,
+        "endLine": null,
+        "endColumn": null,
+        "path": "src/OpenStudioLandscapes/Kitsu/_definitions_with_upstream_specs.py",
+        "symbol": "missing-module-docstring",
+        "message": "Missing module docstring",
+        "message-id": "C0114"
+    },
+    {
+        "type": "error",
+        "module": "OpenStudioLandscapes.Kitsu._definitions_with_upstream_specs",
+        "obj": "",
+        "line": 2,
+        "column": 0,
+        "endLine": 2,
+        "endColumn": 71,
+        "path": "src/OpenStudioLandscapes/Kitsu/_definitions_with_upstream_specs.py",
+        "symbol": "no-name-in-module",
+        "message": "No name 'group_out_base_spec' in module 'OpenStudioLandscapes.engine.base.assets'",
+        "message-id": "E0611"
+    },
+    {
         "type": "warning",
         "module": "OpenStudioLandscapes.Kitsu.__init__",
         "obj": "",
