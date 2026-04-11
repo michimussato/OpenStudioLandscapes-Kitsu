@@ -8,6 +8,7 @@
       1. [Clone and Install](#clone-and-install)
    3. [Configure](#configure)
       1. [Default Configuration](#default-configuration)
+   4. [Local Development](#local-development)
 2. [External Resources](#external-resources)
    1. [Inofficial Resources](#inofficial-resources)
 3. [Community](#community)
@@ -39,7 +40,6 @@ source .venv/bin/activate
 openstudiolandscapes clone-feature --repo=https://github.com/michimussato/OpenStudioLandscapes-Kitsu.git
 deactivate
 # Check the resulting console output for installation instructions
-
 ```
 
 ### Clone and Install
@@ -50,7 +50,6 @@ source .venv/bin/activate
 openstudiolandscapes clone-feature --repo=https://github.com/michimussato/OpenStudioLandscapes-Kitsu.git \
     && pip install --editable ./.features/OpenStudioLandscapes-Kitsu
 deactivate
-
 ```
 
 For more info on `pip` see [VCS Support of `pip`](https://pip.pypa.io/en/stable/topics/vcs-support/).
@@ -77,7 +76,6 @@ A local config store location will be created if it doesn't exist, together with
 The following settings are available in `OpenStudioLandscapes-Kitsu` and are based on [`OpenStudioLandscapes-Kitsu/tree/main/OpenStudioLandscapes/Kitsu/config/models.py`](https://github.com/michimussato/OpenStudioLandscapes-Kitsu/tree/main/OpenStudioLandscapes/Kitsu/config/models.py).
 
 ### Default Configuration
-
 
 <details open>
 <summary><code>config.yml</code></summary>
@@ -966,9 +964,19 @@ pip_packages:
 - boto3
 ```
 
-
 </details>
 
+
+## Local Development
+
+```shell
+cd ./.features/OpenStudioLandscapes-Kitsu
+python3.11 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip setuptools setuptools_scm wheel
+pip install --editable .[dev]
+dagster dev --workspace workspace.yaml
+```
 
 ***
 
@@ -1035,4 +1043,4 @@ To follow up on the previous LinkedIn publications, visit:
 
 ***
 
-Last changed: **2026-04-03 02:45:13 UTC**
+Last changed: **2026-04-11 01:54:32 UTC**
