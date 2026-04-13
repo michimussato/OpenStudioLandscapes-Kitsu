@@ -2218,7 +2218,7 @@
       "version": "30.4.4"
     },
     {
-      "bom-ref": "lxml==6.0.3",
+      "bom-ref": "lxml==6.0.4",
       "description": "Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API.",
       "externalReferences": [
         {
@@ -2246,9 +2246,9 @@
         }
       ],
       "name": "lxml",
-      "purl": "pkg:pypi/lxml@6.0.3",
+      "purl": "pkg:pypi/lxml@6.0.4",
       "type": "library",
-      "version": "6.0.3"
+      "version": "6.0.4"
     },
     {
       "bom-ref": "markdown-it-py==4.0.0",
@@ -3273,7 +3273,7 @@
       "version": "1.1.0"
     },
     {
-      "bom-ref": "rich==14.3.4",
+      "bom-ref": "rich==15.0.0",
       "description": "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal",
       "externalReferences": [
         {
@@ -3296,9 +3296,9 @@
         }
       ],
       "name": "rich",
-      "purl": "pkg:pypi/rich@14.3.4",
+      "purl": "pkg:pypi/rich@15.0.0",
       "type": "library",
-      "version": "14.3.4"
+      "version": "15.0.0"
     },
     {
       "bom-ref": "rpds-py==0.30.0",
@@ -4312,7 +4312,8 @@
         "docker-compose-graph==1.0.0.post1.dev5+ga91125bef",
         "email-validator==2.3.0",
         "graphviz==0.21",
-        "pipdeptree==2.35.1"
+        "pipdeptree==2.35.1",
+        "setuptools==82.0.1"
       ],
       "ref": "OpenStudioLandscapes-Kitsu==0.0.0"
     },
@@ -4438,7 +4439,7 @@
       "dependsOn": [
         "jsonschema==4.26.0",
         "license-expression==30.4.4",
-        "lxml==6.0.3",
+        "lxml==6.0.4",
         "packageurl-python==0.17.6",
         "py-serializable==2.1.0",
         "referencing==0.37.0",
@@ -4498,7 +4499,7 @@
         "python-dotenv==1.2.2",
         "pytz==2026.1.post1",
         "requests==2.33.1",
-        "rich==14.3.4",
+        "rich==15.0.0",
         "setuptools==82.0.1",
         "six==1.17.0",
         "structlog==25.5.0",
@@ -4696,7 +4697,7 @@
       "ref": "license-expression==30.4.4"
     },
     {
-      "ref": "lxml==6.0.3"
+      "ref": "lxml==6.0.4"
     },
     {
       "dependsOn": [
@@ -4757,7 +4758,7 @@
       "dependsOn": [
         "graphviz==0.21",
         "packaging==26.0",
-        "rich==14.3.4",
+        "rich==15.0.0",
         "virtualenv==21.2.1"
       ],
       "ref": "pipdeptree==2.35.1"
@@ -4877,7 +4878,7 @@
         "Pygments==2.20.0",
         "markdown-it-py==4.0.0"
       ],
-      "ref": "rich==14.3.4"
+      "ref": "rich==15.0.0"
     },
     {
       "ref": "rpds-py==0.30.0"
@@ -5025,7 +5026,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2026-04-11T12:00:13.103013+00:00",
+    "timestamp": "2026-04-13T08:12:56.131437+00:00",
     "tools": {
       "components": [
         {
@@ -5129,7 +5130,7 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:cbbbc3bf-92ae-4c56-94d0-094893206409",
+  "serialNumber": "urn:uuid:df7f83a5-4023-4669-b80c-bd14518464b6",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
