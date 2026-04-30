@@ -21,6 +21,7 @@ dependencies = [
     "docker-compose-graph @ git+https://github.com/michimussato/docker-compose-graph.git",
     "email-validator",
     "gitpython",
+    "ruamel.yaml",
     "snakemd",
 ]
 description = "Kitsu Feature for OpenStudioLandscapes"
