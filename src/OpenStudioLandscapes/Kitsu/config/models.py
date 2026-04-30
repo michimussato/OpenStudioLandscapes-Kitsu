@@ -10,7 +10,10 @@ from pydantic import (
     field_validator,
 )
 
+from OpenStudioLandscapes.cli import LOGGING_LEVEL_DEFAULT
+
 LOGGER = get_dagster_logger(__name__)
+LOGGER.setLevel(LOGGING_LEVEL_DEFAULT)
 
 from OpenStudioLandscapes.engine.config.models import FeatureBaseModel
 
@@ -997,4 +1000,10 @@ class Config(FeatureBaseModel):
         return ret
 
 
-CONFIG_STR = Config.get_docs()
+if __name__ == "__main__":
+    CONFIG_STR = Config.get_docs()
+else:
+    import yaml
+    CONFIG_STR = yaml.dump(
+        Config.model_json_schema(mode="serialization"),
+    )
