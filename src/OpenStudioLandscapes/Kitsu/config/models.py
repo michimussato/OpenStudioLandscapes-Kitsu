@@ -2,7 +2,6 @@ import pathlib
 import textwrap
 from typing import List
 
-from dagster import get_dagster_logger
 from pydantic import (
     EmailStr,
     Field,
@@ -10,10 +9,7 @@ from pydantic import (
     field_validator,
 )
 
-from OpenStudioLandscapes.cli import LOGGING_LEVEL_DEFAULT
-
-LOGGER = get_dagster_logger(__name__)
-LOGGER.setLevel(LOGGING_LEVEL_DEFAULT)
+from OpenStudioLandscapes.engine.logging.loggers import FEATURE_LOGGER as LOGGER
 
 from OpenStudioLandscapes.engine.config.models import FeatureBaseModel
 
