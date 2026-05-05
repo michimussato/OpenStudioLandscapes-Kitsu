@@ -3,7 +3,6 @@ import textwrap
 from typing import List
 
 from OpenStudioLandscapes.engine.config.models import FeatureBaseModel
-from OpenStudioLandscapes.engine.logging.loggers import FEATURE_LOGGER as LOGGER
 from pydantic import (
     EmailStr,
     Field,
@@ -11,7 +10,7 @@ from pydantic import (
     field_validator,
 )
 
-from OpenStudioLandscapes.Kitsu import constants, dist
+from OpenStudioLandscapes.Kitsu import constants, dist, LOGGER
 
 POSTGRES_CONF_STR = textwrap.dedent("""
     # /etc/postgresql/14/main/postgresql.conf

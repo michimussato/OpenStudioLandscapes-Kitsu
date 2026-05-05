@@ -21,6 +21,10 @@ try:
     dist: Distribution = metadata.distribution(".".join((namespace, package)))
 
     __version__: str = version(dist.name)
+
+    from OpenStudioLandscapes.engine.logging.loggers import get_feature_logger
+
+    LOGGER = get_feature_logger(dist=dist)
 except PackageNotFoundError:  # pragma: no cover
     __version__: str = "unknown"
 finally:
