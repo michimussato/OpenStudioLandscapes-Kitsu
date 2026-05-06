@@ -101,6 +101,7 @@ src/OpenStudioLandscapes/Kitsu/assets.py:42:0: W0614: Unused import(s) DockerCom
 src/OpenStudioLandscapes/Kitsu/assets.py:46:0: W0614: Unused import(s) GROUP and KEY from wildcard import of OpenStudioLandscapes.Kitsu.constants (unused-wildcard-import)
 ************* Module OpenStudioLandscapes.Kitsu.definitions
 src/OpenStudioLandscapes/Kitsu/definitions.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+src/OpenStudioLandscapes/Kitsu/definitions.py:1:0: W0611: Unused import os (unused-import)
 ************* Module OpenStudioLandscapes.Kitsu.readme_feature
 src/OpenStudioLandscapes/Kitsu/readme_feature.py:29:0: C0301: Line too long (194/100) (line-too-long)
 src/OpenStudioLandscapes/Kitsu/readme_feature.py:72:0: C0301: Line too long (135/100) (line-too-long)
@@ -118,26 +119,26 @@ src/OpenStudioLandscapes/Kitsu/__init__.py:6:5: W0511: TODO: Import directly (no
 ************* Module OpenStudioLandscapes.Kitsu
 src/OpenStudioLandscapes/Kitsu/__init__.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 src/OpenStudioLandscapes/Kitsu/__init__.py:1:0: C0103: Module name "Kitsu" doesn't conform to snake_case naming style (invalid-name)
+src/OpenStudioLandscapes/Kitsu/__init__.py:25:4: E0401: Unable to import 'OpenStudioLandscapes.engine.logging.loggers' (import-error)
+src/OpenStudioLandscapes/Kitsu/__init__.py:25:4: E0611: No name 'logging' in module 'OpenStudioLandscapes.engine' (no-name-in-module)
 ************* Module OpenStudioLandscapes.Kitsu.config.models
-src/OpenStudioLandscapes/Kitsu/config/models.py:835:0: C0301: Line too long (120/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/config/models.py:899:0: C0301: Line too long (124/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/config/models.py:1:0: C0302: Too many lines in module (1004/1000) (too-many-lines)
-src/OpenStudioLandscapes/Kitsu/config/models.py:887:5: W0511: Todo (fixme)
+src/OpenStudioLandscapes/Kitsu/config/models.py:834:0: C0301: Line too long (120/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/config/models.py:898:0: C0301: Line too long (124/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/config/models.py:1:0: C0302: Too many lines in module (1003/1000) (too-many-lines)
+src/OpenStudioLandscapes/Kitsu/config/models.py:886:5: W0511: Todo (fixme)
 src/OpenStudioLandscapes/Kitsu/config/models.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:6:0: E0401: Unable to import 'OpenStudioLandscapes.engine.logging.loggers' (import-error)
-src/OpenStudioLandscapes/Kitsu/config/models.py:6:0: E0611: No name 'logging' in module 'OpenStudioLandscapes.engine' (no-name-in-module)
-src/OpenStudioLandscapes/Kitsu/config/models.py:820:0: C0115: Missing class docstring (missing-class-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:905:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:906:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
-src/OpenStudioLandscapes/Kitsu/config/models.py:917:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:918:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
-src/OpenStudioLandscapes/Kitsu/config/models.py:929:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:930:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
-src/OpenStudioLandscapes/Kitsu/config/models.py:940:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:959:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:978:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:7:0: C0411: third party import "pydantic.EmailStr" should be placed before first party imports "OpenStudioLandscapes.engine.config.models.FeatureBaseModel", "OpenStudioLandscapes.engine.logging.loggers.FEATURE_LOGGER"  (wrong-import-order)
-src/OpenStudioLandscapes/Kitsu/config/models.py:14:0: C0412: Imports from package OpenStudioLandscapes are not grouped (ungrouped-imports)
+src/OpenStudioLandscapes/Kitsu/config/models.py:819:0: C0115: Missing class docstring (missing-class-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:904:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:905:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+src/OpenStudioLandscapes/Kitsu/config/models.py:916:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:917:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+src/OpenStudioLandscapes/Kitsu/config/models.py:928:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:929:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+src/OpenStudioLandscapes/Kitsu/config/models.py:939:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:958:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:977:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:6:0: C0411: third party import "pydantic.EmailStr" should be placed before first party import "OpenStudioLandscapes.engine.config.models.FeatureBaseModel"  (wrong-import-order)
+src/OpenStudioLandscapes/Kitsu/config/models.py:13:0: C0412: Imports from package OpenStudioLandscapes are not grouped (ungrouped-imports)
 ************* Module OpenStudioLandscapes.Kitsu.doc.readme
 src/OpenStudioLandscapes/Kitsu/doc/readme.py:75:0: C0301: Line too long (135/100) (line-too-long)
 src/OpenStudioLandscapes/Kitsu/doc/readme.py:1:0: C0114: Missing module docstring (missing-module-docstring)
@@ -161,84 +162,8 @@ src/OpenStudioLandscapes/Kitsu/doc/readme.py:1:0: R0801: Similar lines in 2 file
     doc.add_paragraph(
         snakemd.Inline(
             text=textwrap.dedent("""\
-                Logo Kitsu\
-                """),
-            image={
-                "Kitsu": "https://camo.githubusercontent.com/023fe0d7cf9dc4bd4258a299a718a8c98d94be4357d72dfda0fcb0217ba1582c/68747470733a2f2f7a6f752e63672d776972652e636f6d2f6b697473752e706e67",
-            }["Kitsu"],
-            link="https://github.com/cgwire/zou",
-        ).__str__()
-    )
-
-    doc.add_paragraph(text=textwrap.dedent("""\
-            Kitsu is written and maintained by CGWire, a company based
-            in France:\
-            """))
-
-    # Logo
-
-    doc.add_paragraph(
-        snakemd.Inline(
-            text=textwrap.dedent("""\
-                Logo CGWire\
-                """),
-            image={
-                "CGWire": "https://www.cg-wire.com/_nuxt/logo.4d5a2d7e.png",
-            }["CGWire"],
-            link="https://www.cg-wire.com",
-        ).__str__()
-    )
-
-    doc.add_paragraph(text=textwrap.dedent("""\
-            Kitsu itself consists of two modules:\
-            """))
-
-    doc.add_ordered_list(
-        [
-            "[Gazu - Kitsu Python Client](https://gazu.cg-wire.com)",
-            "[Zou - Kitsu Python API](https://zou.cg-wire.com)",
-        ]
-    )
-
-    doc.add_paragraph(text=textwrap.dedent("""\
-            `OpenStudioLandscapes-Kitsu` is based on the Kitsu provided
-            Docker image:\
-            """))
-
-    doc.add_unordered_list(
-        [
-            "[https://kitsu.cg-wire.com/installation/#using-docker-image](https://kitsu.cg-wire.com/installation/#using-docker-image)",
-            "[https://hub.docker.com/r/cgwire/cgwire](https://hub.docker.com/r/cgwire/cgwire)",
-        ]
-    )
-
-    doc.add_paragraph(text=textwrap.dedent("""\
-            The default credentials are:\
-            """))
-
-    doc.add_unordered_list(
-        [
-            "User: `admin@example.com`",
-            "Password: `mysecretpassword`",
-        ]
-    )
-
-    # doc.add_paragraph(
-    #     text=textwrap.dedent(
-    #         """\
-    #         You can override the default credentials by setting:\
-    #         """
-    #     )
-    # )
-    #
-    # doc.add_unordered_list(
-    #     [
-    #         "`KITSU_ADMIN_USER`",
-    #         "`KITSU_DB_PASSWORD`",
-    #     ]
-    # )
- (duplicate-code)
+                Logo Kitsu\ (duplicate-code)
 
 ------------------------------------------------------------------
-Your code has been rated at 5.02/10 (previous run: 6.90/10, -1.89)
+Your code has been rated at 5.08/10 (previous run: 6.47/10, -1.38)
 

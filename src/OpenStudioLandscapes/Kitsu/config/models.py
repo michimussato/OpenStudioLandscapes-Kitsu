@@ -10,7 +10,7 @@ from pydantic import (
     field_validator,
 )
 
-from OpenStudioLandscapes.Kitsu import constants, dist, LOGGER
+from OpenStudioLandscapes.Kitsu import LOGGER, constants, dist
 
 POSTGRES_CONF_STR = textwrap.dedent("""
     # /etc/postgresql/14/main/postgresql.conf

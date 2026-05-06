@@ -6,7 +6,7 @@ from dagster import (
 )
 
 import OpenStudioLandscapes.Kitsu.assets
-from OpenStudioLandscapes.Kitsu import dist, LOGGER
+from OpenStudioLandscapes.Kitsu import LOGGER, dist
 
 LOGGER.info(f"Loading {dist.name} assets...")
 
