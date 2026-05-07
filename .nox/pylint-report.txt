@@ -1,106 +1,46 @@
 ************* Module OpenStudioLandscapes.Kitsu.assets
-src/OpenStudioLandscapes/Kitsu/assets.py:232:0: C0301: Line too long (123/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:331:0: C0301: Line too long (105/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:418:0: C0301: Line too long (101/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:420:0: C0301: Line too long (102/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:422:0: C0301: Line too long (108/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:424:0: C0301: Line too long (102/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:426:0: C0301: Line too long (104/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:428:0: C0301: Line too long (105/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:429:0: C0301: Line too long (104/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:432:0: C0301: Line too long (158/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:449:0: C0301: Line too long (103/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:451:0: C0301: Line too long (113/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:453:0: C0301: Line too long (103/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:455:0: C0301: Line too long (121/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:457:0: C0301: Line too long (126/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:465:0: C0301: Line too long (103/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:467:0: C0301: Line too long (113/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:469:0: C0301: Line too long (116/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:472:0: C0301: Line too long (104/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:474:0: C0301: Line too long (116/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:476:0: C0301: Line too long (103/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:478:0: C0301: Line too long (103/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:480:0: C0301: Line too long (132/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:482:0: C0301: Line too long (103/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:484:0: C0301: Line too long (110/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:488:0: C0301: Line too long (103/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:490:0: C0301: Line too long (101/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:494:0: C0301: Line too long (108/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:498:0: C0301: Line too long (111/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:500:0: C0301: Line too long (101/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:502:0: C0301: Line too long (102/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:504:0: C0301: Line too long (108/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:506:0: C0301: Line too long (102/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:508:0: C0301: Line too long (104/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:510:0: C0301: Line too long (105/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:511:0: C0301: Line too long (104/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:514:0: C0301: Line too long (192/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:556:0: C0301: Line too long (153/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:1012:0: C0301: Line too long (102/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:1030:0: C0301: Line too long (107/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:1031:0: C0301: Line too long (107/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:1118:0: C0301: Line too long (172/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:1121:0: C0301: Line too long (127/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:1124:0: C0301: Line too long (127/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:1188:0: C0301: Line too long (102/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/assets.py:1:0: C0302: Too many lines in module (1245/1000) (too-many-lines)
-src/OpenStudioLandscapes/Kitsu/assets.py:238:5: W0511: Todo (fixme)
-src/OpenStudioLandscapes/Kitsu/assets.py:382:9: W0511: Todo (fixme)
-src/OpenStudioLandscapes/Kitsu/assets.py:551:5: W0511: Todo: (fixme)
+src/OpenStudioLandscapes/Kitsu/assets.py:1:0: C0302: Too many lines in module (1255/1000) (too-many-lines)
+src/OpenStudioLandscapes/Kitsu/assets.py:248:5: W0511: Todo (fixme)
+src/OpenStudioLandscapes/Kitsu/assets.py:392:9: W0511: Todo (fixme)
+src/OpenStudioLandscapes/Kitsu/assets.py:561:5: W0511: Todo: (fixme)
 src/OpenStudioLandscapes/Kitsu/assets.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-src/OpenStudioLandscapes/Kitsu/assets.py:37:0: W0401: Wildcard import OpenStudioLandscapes.engine.constants (wildcard-import)
-src/OpenStudioLandscapes/Kitsu/assets.py:38:0: W0401: Wildcard import OpenStudioLandscapes.engine.enums (wildcard-import)
-src/OpenStudioLandscapes/Kitsu/assets.py:41:0: W0401: Wildcard import OpenStudioLandscapes.engine.utils (wildcard-import)
-src/OpenStudioLandscapes/Kitsu/assets.py:42:0: W0401: Wildcard import OpenStudioLandscapes.engine.utils.docker.compose_dicts (wildcard-import)
-src/OpenStudioLandscapes/Kitsu/assets.py:46:0: W0401: Wildcard import OpenStudioLandscapes.Kitsu.constants (wildcard-import)
-src/OpenStudioLandscapes/Kitsu/assets.py:109:0: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/assets.py:111:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
-src/OpenStudioLandscapes/Kitsu/assets.py:152:0: C0112: Empty function docstring (empty-docstring)
-src/OpenStudioLandscapes/Kitsu/assets.py:155:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
-src/OpenStudioLandscapes/Kitsu/assets.py:152:0: R0914: Too many local variables (19/15) (too-many-locals)
-src/OpenStudioLandscapes/Kitsu/assets.py:241:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
-src/OpenStudioLandscapes/Kitsu/assets.py:244:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
-src/OpenStudioLandscapes/Kitsu/assets.py:182:8: W0612: Unused variable 'image_prefixes' (unused-variable)
-src/OpenStudioLandscapes/Kitsu/assets.py:183:8: W0612: Unused variable 'tags' (unused-variable)
-src/OpenStudioLandscapes/Kitsu/assets.py:184:8: W0612: Unused variable 'build_base_parent_image_prefix' (unused-variable)
-src/OpenStudioLandscapes/Kitsu/assets.py:185:8: W0612: Unused variable 'build_base_parent_image_name' (unused-variable)
-src/OpenStudioLandscapes/Kitsu/assets.py:186:8: W0612: Unused variable 'build_base_parent_image_tags' (unused-variable)
-src/OpenStudioLandscapes/Kitsu/assets.py:274:0: C0112: Empty function docstring (empty-docstring)
-src/OpenStudioLandscapes/Kitsu/assets.py:277:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
-src/OpenStudioLandscapes/Kitsu/assets.py:274:0: R0914: Too many local variables (17/15) (too-many-locals)
-src/OpenStudioLandscapes/Kitsu/assets.py:300:8: W0612: Unused variable 'build_base_parent_image_prefix' (unused-variable)
-src/OpenStudioLandscapes/Kitsu/assets.py:301:8: W0612: Unused variable 'build_base_parent_image_name' (unused-variable)
-src/OpenStudioLandscapes/Kitsu/assets.py:302:8: W0612: Unused variable 'build_base_parent_image_tags' (unused-variable)
-src/OpenStudioLandscapes/Kitsu/assets.py:353:0: C0112: Empty function docstring (empty-docstring)
-src/OpenStudioLandscapes/Kitsu/assets.py:355:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
-src/OpenStudioLandscapes/Kitsu/assets.py:372:13: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
-src/OpenStudioLandscapes/Kitsu/assets.py:407:0: C0112: Empty function docstring (empty-docstring)
-src/OpenStudioLandscapes/Kitsu/assets.py:409:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
-src/OpenStudioLandscapes/Kitsu/assets.py:417:4: W0105: String statement has no effect (pointless-string-statement)
-src/OpenStudioLandscapes/Kitsu/assets.py:518:4: W0105: String statement has no effect (pointless-string-statement)
-src/OpenStudioLandscapes/Kitsu/assets.py:538:4: W0105: String statement has no effect (pointless-string-statement)
-src/OpenStudioLandscapes/Kitsu/assets.py:698:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
-src/OpenStudioLandscapes/Kitsu/assets.py:727:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
-src/OpenStudioLandscapes/Kitsu/assets.py:856:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
-src/OpenStudioLandscapes/Kitsu/assets.py:897:0: C0112: Empty function docstring (empty-docstring)
-src/OpenStudioLandscapes/Kitsu/assets.py:899:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
-src/OpenStudioLandscapes/Kitsu/assets.py:897:0: R0913: Too many arguments (6/5) (too-many-arguments)
-src/OpenStudioLandscapes/Kitsu/assets.py:897:0: R0917: Too many positional arguments (6/5) (too-many-positional-arguments)
-src/OpenStudioLandscapes/Kitsu/assets.py:897:0: R0914: Too many local variables (24/15) (too-many-locals)
-src/OpenStudioLandscapes/Kitsu/assets.py:1014:25: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
-src/OpenStudioLandscapes/Kitsu/assets.py:1080:0: C0112: Empty function docstring (empty-docstring)
-src/OpenStudioLandscapes/Kitsu/assets.py:1085:4: C0103: Argument name "CONFIG" doesn't conform to snake_case naming style (invalid-name)
-src/OpenStudioLandscapes/Kitsu/assets.py:1080:0: R0914: Too many local variables (20/15) (too-many-locals)
-src/OpenStudioLandscapes/Kitsu/assets.py:1190:25: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
-src/OpenStudioLandscapes/Kitsu/assets.py:1229:0: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/assets.py:37:0: W0614: Unused import(s) LOGGER, DOCKER_PROGRESS, GROUP_BASE_ENV, KEY_BASE_ENV, ASSET_HEADER_BASE_ENV, GROUP_BASE, KEY_BASE, GROUP_VFX_PLATFORM, KEY_VFX_PLATFORM, ASSET_HEADER_VFX_PLATFORM, GROUP_LANDSCAPE_MAP, KEY_LANDSCAPE_MAP, ASSET_HEADER_LANDSCAPE_MAP, GROUP_DISTRIBUTABLE, KEY_DISTRIBUTABLE, ASSET_HEADER_DISTRIBUTABLE, get_dagster_logger, DAGSTER_DEFAULT_OUTPUT and FeatureBaseModel from wildcard import of OpenStudioLandscapes.engine.constants (unused-wildcard-import)
-src/OpenStudioLandscapes/Kitsu/assets.py:38:0: W0614: Unused import(s) GroupIn, OpenStudioLandscapesConfig, FeatureVolumeType, ComposeCmdExclusion, DockerComposeNetworkMode, DockerComposeRestartPolicy and DockerComposeDependsOnPolicy from wildcard import of OpenStudioLandscapes.engine.enums (unused-wildcard-import)
-src/OpenStudioLandscapes/Kitsu/assets.py:41:0: W0614: Unused import(s) datetime, json, os, shlex, time, git, requests, discovery, cmd_list_to_str, get_apt_install_str, get_copy_str, get_wget_str, get_git_root, get_configs_root, get_data_root, get_bin_root, get_image_name, parse_docker_image_path, get_compose_scope, get_feature_config, expand_dict_vars, metadatavalues_from_dict, get_bool_env, get_str_env, get_all_compose_scopes, get_dynamic_ins, get_networks_dict, download_file, Any, MutableMapping, Tuple, OpExecutionContext, ComposeScopeException, OpenStudioLandscapesException, OpenStudioLandscapesDockerException, docker_build_cmd, docker_push_cmd, docker_do and submit_cmds from wildcard import of OpenStudioLandscapes.engine.utils (unused-wildcard-import)
-src/OpenStudioLandscapes/Kitsu/assets.py:42:0: W0614: Unused import(s) DockerComposeServiceDefinition, DockerComposeNetworkDefinition, Optional, Required and TypedDict from wildcard import of OpenStudioLandscapes.engine.utils.docker.compose_dicts (unused-wildcard-import)
-src/OpenStudioLandscapes/Kitsu/assets.py:46:0: W0614: Unused import(s) GROUP and KEY from wildcard import of OpenStudioLandscapes.Kitsu.constants (unused-wildcard-import)
+src/OpenStudioLandscapes/Kitsu/assets.py:119:0: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/assets.py:162:0: C0112: Empty function docstring (empty-docstring)
+src/OpenStudioLandscapes/Kitsu/assets.py:162:0: R0914: Too many local variables (19/15) (too-many-locals)
+src/OpenStudioLandscapes/Kitsu/assets.py:251:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+src/OpenStudioLandscapes/Kitsu/assets.py:254:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+src/OpenStudioLandscapes/Kitsu/assets.py:192:8: W0612: Unused variable 'image_prefixes' (unused-variable)
+src/OpenStudioLandscapes/Kitsu/assets.py:193:8: W0612: Unused variable 'tags' (unused-variable)
+src/OpenStudioLandscapes/Kitsu/assets.py:194:8: W0612: Unused variable 'build_base_parent_image_prefix' (unused-variable)
+src/OpenStudioLandscapes/Kitsu/assets.py:195:8: W0612: Unused variable 'build_base_parent_image_name' (unused-variable)
+src/OpenStudioLandscapes/Kitsu/assets.py:196:8: W0612: Unused variable 'build_base_parent_image_tags' (unused-variable)
+src/OpenStudioLandscapes/Kitsu/assets.py:284:0: C0112: Empty function docstring (empty-docstring)
+src/OpenStudioLandscapes/Kitsu/assets.py:284:0: R0914: Too many local variables (17/15) (too-many-locals)
+src/OpenStudioLandscapes/Kitsu/assets.py:310:8: W0612: Unused variable 'build_base_parent_image_prefix' (unused-variable)
+src/OpenStudioLandscapes/Kitsu/assets.py:311:8: W0612: Unused variable 'build_base_parent_image_name' (unused-variable)
+src/OpenStudioLandscapes/Kitsu/assets.py:312:8: W0612: Unused variable 'build_base_parent_image_tags' (unused-variable)
+src/OpenStudioLandscapes/Kitsu/assets.py:363:0: C0112: Empty function docstring (empty-docstring)
+src/OpenStudioLandscapes/Kitsu/assets.py:382:13: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+src/OpenStudioLandscapes/Kitsu/assets.py:417:0: C0112: Empty function docstring (empty-docstring)
+src/OpenStudioLandscapes/Kitsu/assets.py:427:4: W0105: String statement has no effect (pointless-string-statement)
+src/OpenStudioLandscapes/Kitsu/assets.py:528:4: W0105: String statement has no effect (pointless-string-statement)
+src/OpenStudioLandscapes/Kitsu/assets.py:548:4: W0105: String statement has no effect (pointless-string-statement)
+src/OpenStudioLandscapes/Kitsu/assets.py:708:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+src/OpenStudioLandscapes/Kitsu/assets.py:866:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+src/OpenStudioLandscapes/Kitsu/assets.py:907:0: C0112: Empty function docstring (empty-docstring)
+src/OpenStudioLandscapes/Kitsu/assets.py:907:0: R0913: Too many arguments (6/5) (too-many-arguments)
+src/OpenStudioLandscapes/Kitsu/assets.py:907:0: R0917: Too many positional arguments (6/5) (too-many-positional-arguments)
+src/OpenStudioLandscapes/Kitsu/assets.py:907:0: R0914: Too many local variables (24/15) (too-many-locals)
+src/OpenStudioLandscapes/Kitsu/assets.py:1024:25: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+src/OpenStudioLandscapes/Kitsu/assets.py:1090:0: C0112: Empty function docstring (empty-docstring)
+src/OpenStudioLandscapes/Kitsu/assets.py:1090:0: R0914: Too many local variables (20/15) (too-many-locals)
+src/OpenStudioLandscapes/Kitsu/assets.py:1200:25: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+src/OpenStudioLandscapes/Kitsu/assets.py:1239:0: C0116: Missing function or method docstring (missing-function-docstring)
 ************* Module OpenStudioLandscapes.Kitsu.definitions
 src/OpenStudioLandscapes/Kitsu/definitions.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+src/OpenStudioLandscapes/Kitsu/definitions.py:14:0: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src/OpenStudioLandscapes/Kitsu/definitions.py:20:0: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src/OpenStudioLandscapes/Kitsu/definitions.py:28:0: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
 src/OpenStudioLandscapes/Kitsu/definitions.py:1:0: W0611: Unused import os (unused-import)
 ************* Module OpenStudioLandscapes.Kitsu.readme_feature
 src/OpenStudioLandscapes/Kitsu/readme_feature.py:29:0: C0301: Line too long (194/100) (line-too-long)
@@ -115,28 +55,32 @@ src/OpenStudioLandscapes/Kitsu/constants.py:1:0: C0114: Missing module docstring
 ************* Module OpenStudioLandscapes.Kitsu._definitions_with_upstream_specs
 src/OpenStudioLandscapes/Kitsu/_definitions_with_upstream_specs.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 ************* Module OpenStudioLandscapes.Kitsu.__init__
-src/OpenStudioLandscapes/Kitsu/__init__.py:6:5: W0511: TODO: Import directly (no need for conditional) when `python_requires = >= 3.8` (fixme)
+src/OpenStudioLandscapes/Kitsu/__init__.py:15:5: W0511: TODO: Import directly (no need for conditional) when `python_requires = >= 3.8` (fixme)
 ************* Module OpenStudioLandscapes.Kitsu
 src/OpenStudioLandscapes/Kitsu/__init__.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 src/OpenStudioLandscapes/Kitsu/__init__.py:1:0: C0103: Module name "Kitsu" doesn't conform to snake_case naming style (invalid-name)
-src/OpenStudioLandscapes/Kitsu/__init__.py:25:4: E0401: Unable to import 'OpenStudioLandscapes.engine.logging.loggers' (import-error)
-src/OpenStudioLandscapes/Kitsu/__init__.py:25:4: E0611: No name 'logging' in module 'OpenStudioLandscapes.engine' (no-name-in-module)
 ************* Module OpenStudioLandscapes.Kitsu.config.models
-src/OpenStudioLandscapes/Kitsu/config/models.py:834:0: C0301: Line too long (120/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/config/models.py:898:0: C0301: Line too long (124/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/config/models.py:1:0: C0302: Too many lines in module (1003/1000) (too-many-lines)
-src/OpenStudioLandscapes/Kitsu/config/models.py:886:5: W0511: Todo (fixme)
+src/OpenStudioLandscapes/Kitsu/config/models.py:838:0: C0301: Line too long (120/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/config/models.py:902:0: C0301: Line too long (124/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/config/models.py:1:0: C0302: Too many lines in module (1007/1000) (too-many-lines)
+src/OpenStudioLandscapes/Kitsu/config/models.py:890:5: W0511: Todo (fixme)
 src/OpenStudioLandscapes/Kitsu/config/models.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:819:0: C0115: Missing class docstring (missing-class-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:904:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:905:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
-src/OpenStudioLandscapes/Kitsu/config/models.py:916:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:917:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
-src/OpenStudioLandscapes/Kitsu/config/models.py:928:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:929:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
-src/OpenStudioLandscapes/Kitsu/config/models.py:939:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:958:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:977:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:823:0: C0115: Missing class docstring (missing-class-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:908:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:909:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+src/OpenStudioLandscapes/Kitsu/config/models.py:920:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:921:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+src/OpenStudioLandscapes/Kitsu/config/models.py:932:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:933:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+src/OpenStudioLandscapes/Kitsu/config/models.py:943:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:944:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src/OpenStudioLandscapes/Kitsu/config/models.py:948:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src/OpenStudioLandscapes/Kitsu/config/models.py:962:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:963:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src/OpenStudioLandscapes/Kitsu/config/models.py:967:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src/OpenStudioLandscapes/Kitsu/config/models.py:981:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:982:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src/OpenStudioLandscapes/Kitsu/config/models.py:986:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
 src/OpenStudioLandscapes/Kitsu/config/models.py:6:0: C0411: third party import "pydantic.EmailStr" should be placed before first party import "OpenStudioLandscapes.engine.config.models.FeatureBaseModel"  (wrong-import-order)
 src/OpenStudioLandscapes/Kitsu/config/models.py:13:0: C0412: Imports from package OpenStudioLandscapes are not grouped (ungrouped-imports)
 ************* Module OpenStudioLandscapes.Kitsu.doc.readme
@@ -162,8 +106,84 @@ src/OpenStudioLandscapes/Kitsu/doc/readme.py:1:0: R0801: Similar lines in 2 file
     doc.add_paragraph(
         snakemd.Inline(
             text=textwrap.dedent("""\
-                Logo Kitsu\ (duplicate-code)
+                Logo Kitsu\
+                """),
+            image={
+                "Kitsu": "https://camo.githubusercontent.com/023fe0d7cf9dc4bd4258a299a718a8c98d94be4357d72dfda0fcb0217ba1582c/68747470733a2f2f7a6f752e63672d776972652e636f6d2f6b697473752e706e67",
+            }["Kitsu"],
+            link="https://github.com/cgwire/zou",
+        ).__str__()
+    )
+
+    doc.add_paragraph(text=textwrap.dedent("""\
+            Kitsu is written and maintained by CGWire, a company based
+            in France:\
+            """))
+
+    # Logo
+
+    doc.add_paragraph(
+        snakemd.Inline(
+            text=textwrap.dedent("""\
+                Logo CGWire\
+                """),
+            image={
+                "CGWire": "https://www.cg-wire.com/_nuxt/logo.4d5a2d7e.png",
+            }["CGWire"],
+            link="https://www.cg-wire.com",
+        ).__str__()
+    )
+
+    doc.add_paragraph(text=textwrap.dedent("""\
+            Kitsu itself consists of two modules:\
+            """))
+
+    doc.add_ordered_list(
+        [
+            "[Gazu - Kitsu Python Client](https://gazu.cg-wire.com)",
+            "[Zou - Kitsu Python API](https://zou.cg-wire.com)",
+        ]
+    )
+
+    doc.add_paragraph(text=textwrap.dedent("""\
+            `OpenStudioLandscapes-Kitsu` is based on the Kitsu provided
+            Docker image:\
+            """))
+
+    doc.add_unordered_list(
+        [
+            "[https://kitsu.cg-wire.com/installation/#using-docker-image](https://kitsu.cg-wire.com/installation/#using-docker-image)",
+            "[https://hub.docker.com/r/cgwire/cgwire](https://hub.docker.com/r/cgwire/cgwire)",
+        ]
+    )
+
+    doc.add_paragraph(text=textwrap.dedent("""\
+            The default credentials are:\
+            """))
+
+    doc.add_unordered_list(
+        [
+            "User: `admin@example.com`",
+            "Password: `mysecretpassword`",
+        ]
+    )
+
+    # doc.add_paragraph(
+    #     text=textwrap.dedent(
+    #         """\
+    #         You can override the default credentials by setting:\
+    #         """
+    #     )
+    # )
+    #
+    # doc.add_unordered_list(
+    #     [
+    #         "`KITSU_ADMIN_USER`",
+    #         "`KITSU_DB_PASSWORD`",
+    #     ]
+    # )
+ (duplicate-code)
 
 ------------------------------------------------------------------
-Your code has been rated at 5.08/10 (previous run: 6.47/10, -1.38)
+Your code has been rated at 7.20/10 (previous run: 7.73/10, -0.53)
 

@@ -11,9 +11,9 @@ from pydantic import (
 )
 
 from OpenStudioLandscapes.Kitsu import (
-    dist,
     LOGGER,
     constants,
+    dist,
 )
 
 POSTGRES_CONF_STR = textwrap.dedent("""

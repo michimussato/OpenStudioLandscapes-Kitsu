@@ -7,8 +7,8 @@ from dagster import (
 
 import OpenStudioLandscapes.Kitsu.assets
 from OpenStudioLandscapes.Kitsu import (
-    dist,
     LOGGER,
+    dist,
 )
 
 LOGGER.info(f"Loading {dist.name} assets...")
