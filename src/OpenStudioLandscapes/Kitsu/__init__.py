@@ -1,3 +1,12 @@
+__all__ = [
+    "namespace",
+    "dist",
+    "LOGGER",
+    "__version__",
+    "constants",
+    "config",
+]
+
 import sys
 from importlib import metadata
 from pathlib import Path
@@ -20,11 +29,18 @@ try:
     # NukeRLM_8
     dist: Distribution = metadata.distribution(".".join((namespace, package)))
 
+    # difference to dist.version?
     __version__: str = version(dist.name)
 
     from OpenStudioLandscapes.engine.logging.loggers import get_feature_logger
 
     LOGGER = get_feature_logger(dist=dist)
+
+    LOGGER.info("Distribution: %s", dist.name)
+    LOGGER.info("Namespace:    %s", namespace)
+    LOGGER.info("Package:      %s", package)
+    LOGGER.info("Version:      %s", __version__)
+
 except PackageNotFoundError:  # pragma: no cover
     __version__: str = "unknown"
 finally:
