@@ -2970,7 +2970,7 @@
       "version": "1.3.0"
     },
     {
-      "bom-ref": "urllib3==2.6.3",
+      "bom-ref": "urllib3==2.7.0",
       "description": "HTTP library with thread-safe connection pooling, file post, and more.",
       "externalReferences": [
         {
@@ -3003,9 +3003,9 @@
         }
       ],
       "name": "urllib3",
-      "purl": "pkg:pypi/urllib3@2.6.3",
+      "purl": "pkg:pypi/urllib3@2.7.0",
       "type": "library",
-      "version": "2.6.3"
+      "version": "2.7.0"
     },
     {
       "bom-ref": "watchdog==5.0.3",
@@ -3347,7 +3347,7 @@
         "Jinja2==3.1.6",
         "requests==2.33.1",
         "tqdm==4.67.3",
-        "urllib3==2.6.3"
+        "urllib3==2.7.0"
       ],
       "ref": "fsspec==2026.4.0"
     },
@@ -3544,7 +3544,7 @@
         "chardet==5.2.0",
         "charset-normalizer==3.4.7",
         "idna==3.13",
-        "urllib3==2.6.3"
+        "urllib3==2.7.0"
       ],
       "ref": "requests==2.33.1"
     },
@@ -3642,7 +3642,7 @@
       "ref": "uri-template==1.3.0"
     },
     {
-      "ref": "urllib3==2.6.3"
+      "ref": "urllib3==2.7.0"
     },
     {
       "dependsOn": [
@@ -3661,7 +3661,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2026-05-07T15:39:50.626196+00:00",
+    "timestamp": "2026-05-09T10:51:17.542016+00:00",
     "tools": {
       "components": [
         {
@@ -3765,7 +3765,7 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:3b93ac67-7f00-493e-81cc-a57f759e3260",
+  "serialNumber": "urn:uuid:85defe5f-f566-4129-ae97-a98adaf82ded",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",

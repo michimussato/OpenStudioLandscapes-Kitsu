@@ -624,32 +624,6 @@
         "message-id": "C2801"
     },
     {
-        "type": "warning",
-        "module": "OpenStudioLandscapes.Kitsu.constants",
-        "obj": "",
-        "line": 9,
-        "column": 1,
-        "endLine": null,
-        "endColumn": null,
-        "path": "src/OpenStudioLandscapes/Kitsu/constants.py",
-        "symbol": "fixme",
-        "message": "Todo",
-        "message-id": "W0511"
-    },
-    {
-        "type": "convention",
-        "module": "OpenStudioLandscapes.Kitsu.constants",
-        "obj": "",
-        "line": 1,
-        "column": 0,
-        "endLine": null,
-        "endColumn": null,
-        "path": "src/OpenStudioLandscapes/Kitsu/constants.py",
-        "symbol": "missing-module-docstring",
-        "message": "Missing module docstring",
-        "message-id": "C0114"
-    },
-    {
         "type": "convention",
         "module": "OpenStudioLandscapes.Kitsu._definitions_with_upstream_specs",
         "obj": "",
@@ -699,6 +673,19 @@
         "path": "src/OpenStudioLandscapes/Kitsu/__init__.py",
         "symbol": "invalid-name",
         "message": "Module name \"Kitsu\" doesn't conform to snake_case naming style",
+        "message-id": "C0103"
+    },
+    {
+        "type": "convention",
+        "module": "OpenStudioLandscapes.Kitsu",
+        "obj": "",
+        "line": 39,
+        "column": 4,
+        "endLine": 39,
+        "endColumn": 8,
+        "path": "src/OpenStudioLandscapes/Kitsu/__init__.py",
+        "symbol": "invalid-name",
+        "message": "Constant name \"fill\" doesn't conform to UPPER_CASE naming style",
         "message-id": "C0103"
     },
     {

@@ -49,9 +49,6 @@ src/OpenStudioLandscapes/Kitsu/readme_feature.py:1:0: C0114: Missing module docs
 src/OpenStudioLandscapes/Kitsu/readme_feature.py:6:0: C0116: Missing function or method docstring (missing-function-docstring)
 src/OpenStudioLandscapes/Kitsu/readme_feature.py:24:8: C2801: Unnecessarily calls dunder method __str__. Use str built-in function. (unnecessary-dunder-call)
 src/OpenStudioLandscapes/Kitsu/readme_feature.py:43:8: C2801: Unnecessarily calls dunder method __str__. Use str built-in function. (unnecessary-dunder-call)
-************* Module OpenStudioLandscapes.Kitsu.constants
-src/OpenStudioLandscapes/Kitsu/constants.py:9:1: W0511: Todo (fixme)
-src/OpenStudioLandscapes/Kitsu/constants.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 ************* Module OpenStudioLandscapes.Kitsu._definitions_with_upstream_specs
 src/OpenStudioLandscapes/Kitsu/_definitions_with_upstream_specs.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 ************* Module OpenStudioLandscapes.Kitsu.__init__
@@ -59,6 +56,7 @@ src/OpenStudioLandscapes/Kitsu/__init__.py:15:5: W0511: TODO: Import directly (n
 ************* Module OpenStudioLandscapes.Kitsu
 src/OpenStudioLandscapes/Kitsu/__init__.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 src/OpenStudioLandscapes/Kitsu/__init__.py:1:0: C0103: Module name "Kitsu" doesn't conform to snake_case naming style (invalid-name)
+src/OpenStudioLandscapes/Kitsu/__init__.py:39:4: C0103: Constant name "fill" doesn't conform to UPPER_CASE naming style (invalid-name)
 ************* Module OpenStudioLandscapes.Kitsu.config.models
 src/OpenStudioLandscapes/Kitsu/config/models.py:838:0: C0301: Line too long (120/100) (line-too-long)
 src/OpenStudioLandscapes/Kitsu/config/models.py:902:0: C0301: Line too long (124/100) (line-too-long)
@@ -185,5 +183,5 @@ src/OpenStudioLandscapes/Kitsu/doc/readme.py:1:0: R0801: Similar lines in 2 file
  (duplicate-code)
 
 ------------------------------------------------------------------
-Your code has been rated at 7.20/10 (previous run: 7.73/10, -0.53)
+Your code has been rated at 7.21/10 (previous run: 7.76/10, -0.55)
 

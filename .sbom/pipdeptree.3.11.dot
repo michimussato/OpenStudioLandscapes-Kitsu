@@ -188,7 +188,7 @@ digraph {
 	toposort [label="toposort\n1.10"]
 	tqdm [label="tqdm\n4.67.3"]
 	tzdata [label="tzdata\n2026.2"]
-	urllib3 [label="urllib3\n2.6.3"]
+	urllib3 [label="urllib3\n2.7.0"]
 	watchdog [label="watchdog\n5.0.3"]
 	webcolors [label="webcolors\n25.10.0"]
 	wheel -> packaging [label=">=24.0"]
