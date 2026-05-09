@@ -3,8 +3,8 @@ __all__ = [
     "dist",
     "LOGGER",
     "__version__",
-    "constants",
     "config",
+    "ASSET_HEADER",
 ]
 
 import sys
@@ -36,10 +36,22 @@ try:
 
     LOGGER = get_feature_logger(dist=dist)
 
-    LOGGER.info("Distribution: %s", dist.name)
-    LOGGER.info("Namespace:    %s", namespace)
-    LOGGER.info("Package:      %s", package)
-    LOGGER.info("Version:      %s", __version__)
+    fill = 20
+
+    LOGGER.info("%s: %s", "Distribution".ljust(fill), dist.name)
+    LOGGER.info("%s: %s", "Namespace".ljust(fill), namespace)
+    LOGGER.info("%s: %s", "Package".ljust(fill), package)
+    LOGGER.info("%s: %s", "Version".ljust(fill), __version__)
+
+    from OpenStudioLandscapes.engine.utils import (
+        get_asset_header,
+    )
+
+    ASSET_HEADER = get_asset_header(
+        dist=dist,
+    )
+
+    LOGGER.info("%s: %s", "ASSET_HEADER".ljust(fill), ASSET_HEADER)
 
 except PackageNotFoundError:  # pragma: no cover
     __version__: str = "unknown"

@@ -11,8 +11,8 @@ from pydantic import (
 )
 
 from OpenStudioLandscapes.Kitsu import (
+    ASSET_HEADER,
     LOGGER,
-    constants,
     dist,
 )
 
@@ -823,9 +823,9 @@ POSTGRES_CONF_STR = textwrap.dedent("""
 class Config(FeatureBaseModel):
     feature_name: str = dist.name
 
-    group_name: str = constants.ASSET_HEADER["group_name"]
+    group_name: str = ASSET_HEADER["group_name"]
 
-    key_prefixes: List[str] = constants.ASSET_HEADER["key_prefix"]
+    key_prefixes: List[str] = ASSET_HEADER["key_prefix"]
 
     docker_image: str = Field(
         default="docker.io/cgwire/cgwire:1.0.11",
