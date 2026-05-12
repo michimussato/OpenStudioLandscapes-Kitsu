@@ -1,6 +1,6 @@
 import pathlib
 import textwrap
-from typing import List
+from typing import List, Dict
 
 from OpenStudioLandscapes.engine.config.models import FeatureBaseModel
 from pydantic import (
@@ -998,10 +998,11 @@ class Config(FeatureBaseModel):
 
 
 if __name__ == "__main__":
-    CONFIG_STR = Config.get_docs()
+    CONFIG_STR: str = Config.get_docs()
 else:
     import yaml
 
-    CONFIG_STR = yaml.dump(
-        Config.model_json_schema(mode="serialization"),
-    )
+    schema: Dict = Config.model_json_schema(mode="serialization")
+    properties: Dict = schema.get("properties", {})
+
+    CONFIG_STR: str = yaml.dump(properties)

@@ -82,132 +82,129 @@ The following settings are available in `OpenStudioLandscapes-Kitsu` and are bas
 
 
 ```yaml
-properties:
-  compose_scope:
-    default: default
-    examples:
-    - default
-    - license_server
-    - worker
-    title: Compose Scope
+compose_scope:
+  default: default
+  examples:
+  - default
+  - license_server
+  - worker
+  title: Compose Scope
+  type: string
+docker_compose:
+  default: '{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/docker_compose/docker-compose.yml'
+  description: The path to the `docker-compose.yml` file.
+  format: path
+  title: Docker Compose
+  type: string
+docker_image:
+  default: docker.io/cgwire/cgwire:1.0.11
+  description: The Docker image to use
+  title: Docker Image
+  type: string
+enabled:
+  default: true
+  description: Whether the Feature is enabled or not.
+  title: Enabled
+  type: boolean
+env:
+  additionalProperties: true
+  title: Env
+  type: object
+feature_name:
+  default: OpenStudioLandscapes-Kitsu
+  title: Feature Name
+  type: string
+group_name:
+  default: OpenStudioLandscapes_Kitsu
+  title: Group Name
+  type: string
+key_prefixes:
+  default:
+  - OpenStudioLandscapes_Kitsu
+  items:
     type: string
-  docker_compose:
-    default: '{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/docker_compose/docker-compose.yml'
-    description: The path to the `docker-compose.yml` file.
-    format: path
-    title: Docker Compose
+  title: Key Prefixes
+  type: array
+kitsu_admin_user:
+  default: admin@example.com
+  description: 'Bug Report: https://github.com/cgwire/zou/issues/960); Changing these
+    values does not seem to have an effect Hence, they are locked to the following
+    values for now.'
+  format: email
+  title: Kitsu Admin User
+  type: string
+kitsu_database_install_destination:
+  default: '{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/postgresql'
+  description: The host side Kitsu database installation destination.
+  format: path
+  title: Kitsu Database Install Destination
+  type: string
+kitsu_db_inside_container:
+  default: false
+  description: The Kitsu database inside container; the database will not be persistent.
+    Helpful for testing.
+  title: Kitsu Db Inside Container
+  type: boolean
+kitsu_db_password:
+  default: mysecretpassword
+  description: The Postgres database password.
+  title: Kitsu Db Password
+  type: string
+kitsu_enable_job_queue:
+  default: true
+  description: Enable Kitsu Job Queue?
+  title: Kitsu Enable Job Queue
+  type: boolean
+kitsu_port_container:
+  default: 80
+  description: The Kitsu container port.
+  exclusiveMinimum: 0
+  title: Kitsu Port Container
+  type: integer
+kitsu_port_host:
+  default: 4545
+  description: The Kitsu host port.
+  exclusiveMinimum: 0
+  title: Kitsu Port Host
+  type: integer
+kitsu_preview_folder:
+  default: '{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/previews'
+  description: The Kitsu Preview folder (/opt/zou/previews).
+  format: path
+  title: Kitsu Preview Folder
+  type: string
+kitsu_secret_key:
+  default: yourrandomsecretkey
+  description: Kitsu Secret Key.
+  title: Kitsu Secret Key
+  type: string
+kitsu_tmp_dir:
+  default: '{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/tmp'
+  description: Kitsu TMP directory (/opt/zou/tmp).
+  format: path
+  title: Kitsu Tmp Dir
+  type: string
+local_bind_volumes:
+  description: Here you can define Feature specific, arbitrary, absolute bind volume
+    mappings.
+  items:
     type: string
-  docker_image:
-    default: docker.io/cgwire/cgwire:1.0.11
-    description: The Docker image to use
-    title: Docker Image
+  title: Local Bind Volumes
+  type: array
+local_environment_variables:
+  additionalProperties:
     type: string
-  enabled:
-    default: true
-    description: Whether the Feature is enabled or not.
-    title: Enabled
-    type: boolean
-  env:
-    additionalProperties: true
-    title: Env
-    type: object
-  feature_name:
-    default: OpenStudioLandscapes-Kitsu
-    title: Feature Name
+  description: Here you can define Feature specific, arbitrary environment variables.
+  title: Local Environment Variables
+  type: object
+pip_packages:
+  default:
+  - boto3
+  description: '`boto3` is required if `kitsu_enable_job_queue` is `true`. [Reference](https://zou.cg-wire.com/jobs/)'
+  items:
     type: string
-  group_name:
-    default: OpenStudioLandscapes_Kitsu
-    title: Group Name
-    type: string
-  key_prefixes:
-    default:
-    - OpenStudioLandscapes_Kitsu
-    items:
-      type: string
-    title: Key Prefixes
-    type: array
-  kitsu_admin_user:
-    default: admin@example.com
-    description: 'Bug Report: https://github.com/cgwire/zou/issues/960); Changing
-      these values does not seem to have an effect Hence, they are locked to the following
-      values for now.'
-    format: email
-    title: Kitsu Admin User
-    type: string
-  kitsu_database_install_destination:
-    default: '{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/postgresql'
-    description: The host side Kitsu database installation destination.
-    format: path
-    title: Kitsu Database Install Destination
-    type: string
-  kitsu_db_inside_container:
-    default: false
-    description: The Kitsu database inside container; the database will not be persistent.
-      Helpful for testing.
-    title: Kitsu Db Inside Container
-    type: boolean
-  kitsu_db_password:
-    default: mysecretpassword
-    description: The Postgres database password.
-    title: Kitsu Db Password
-    type: string
-  kitsu_enable_job_queue:
-    default: true
-    description: Enable Kitsu Job Queue?
-    title: Kitsu Enable Job Queue
-    type: boolean
-  kitsu_port_container:
-    default: 80
-    description: The Kitsu container port.
-    exclusiveMinimum: 0
-    title: Kitsu Port Container
-    type: integer
-  kitsu_port_host:
-    default: 4545
-    description: The Kitsu host port.
-    exclusiveMinimum: 0
-    title: Kitsu Port Host
-    type: integer
-  kitsu_preview_folder:
-    default: '{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/previews'
-    description: The Kitsu Preview folder (/opt/zou/previews).
-    format: path
-    title: Kitsu Preview Folder
-    type: string
-  kitsu_secret_key:
-    default: yourrandomsecretkey
-    description: Kitsu Secret Key.
-    title: Kitsu Secret Key
-    type: string
-  kitsu_tmp_dir:
-    default: '{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/tmp'
-    description: Kitsu TMP directory (/opt/zou/tmp).
-    format: path
-    title: Kitsu Tmp Dir
-    type: string
-  local_bind_volumes:
-    description: Here you can define Feature specific, arbitrary, absolute bind volume
-      mappings.
-    items:
-      type: string
-    title: Local Bind Volumes
-    type: array
-  local_environment_variables:
-    additionalProperties:
-      type: string
-    description: Here you can define Feature specific, arbitrary environment variables.
-    title: Local Environment Variables
-    type: object
-  pip_packages:
-    default:
-    - boto3
-    description: '`boto3` is required if `kitsu_enable_job_queue` is `true`. [Reference](https://zou.cg-wire.com/jobs/)'
-    items:
-      type: string
-    title: Pip Packages
-    type: array
-title: Config
-type: object
+  title: Pip Packages
+  type: array
 
 ```
 
@@ -292,4 +289,4 @@ To follow up on the previous LinkedIn publications, visit:
 
 ***
 
-Last changed: **2026-05-09 11:22:01 UTC**
+Last changed: **2026-05-12 09:53:23 UTC**
