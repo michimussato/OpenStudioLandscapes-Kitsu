@@ -129,7 +129,7 @@ digraph {
 	grpcio -> "typing-extensions" [label="~=4.12"]
 	grpcio [label="grpcio\n1.80.0"]
 	humanfriendly [label="humanfriendly\n10.0"]
-	idna [label="idna\n3.14"]
+	idna [label="idna\n3.15"]
 	isoduration -> arrow [label=">=0.15.0"]
 	isoduration [label="isoduration\n20.11.0"]
 	jinja2 -> markupsafe [label=">=2.0"]
