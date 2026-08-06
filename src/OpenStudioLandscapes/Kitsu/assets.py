@@ -172,8 +172,6 @@ def write_dockerfile(
 
     env: Dict = CONFIG.env
 
-    docker_config: DockerConfigurableResource = config_DockerConfigurableResource
-
     docker_image: Dict = feature_in.openstudiolandscapes_base.docker_image_base
 
     docker_file = pathlib.Path(
@@ -199,7 +197,7 @@ def write_dockerfile(
     ) = get_image_metadata(
         context=context,
         docker_image=docker_image,
-        docker_config=docker_config,
+        docker_config=config_DockerConfigurableResource,
         config_DockerRegistryConfigurableResource=config_DockerRegistryConfigurableResource,
         env=env,
     )
@@ -300,8 +298,6 @@ def build_docker_image(
         feature_in.openstudiolandscapes_base.docker_config_json
     )
 
-    docker_config: DockerConfigurableResource = config_DockerConfigurableResource
-
     docker_image: Dict = feature_in.openstudiolandscapes_base.docker_image_base
 
     #################################################
@@ -316,7 +312,7 @@ def build_docker_image(
     ) = get_image_metadata(
         context=context,
         docker_image=docker_image,
-        docker_config=docker_config,
+        docker_config=config_DockerConfigurableResource,
         config_DockerRegistryConfigurableResource=config_DockerRegistryConfigurableResource,
         env=env,
     )
@@ -329,7 +325,7 @@ def build_docker_image(
         image_prefixes=image_prefixes,
         tags=tags,
         docker_image=docker_image,
-        docker_config=docker_config,
+        docker_config=config_DockerConfigurableResource,
         config_DockerRegistryConfigurableResource=config_DockerRegistryConfigurableResource,
         docker_config_json=docker_config_json,
         docker_file=write_dockerfile,
