@@ -27,7 +27,9 @@ from OpenStudioLandscapes.engine.common_assets import (
     group_in,
     group_out,
 )
-from OpenStudioLandscapes.engine.config.models import ConfigEngine, DockerConfigModel
+from OpenStudioLandscapes.engine.env.configurable_resources.config_engine import ConfigEngineConfigurableResource
+from OpenStudioLandscapes.engine.base.configurable_resources.docker_registry_resource import DockerRegistryConfigurableResource
+from OpenStudioLandscapes.engine.base.configurable_resources.docker_resource import DockerConfigurableResource
 from OpenStudioLandscapes.engine.constants import (
     ASSET_HEADER_BASE,
     ConfigParent,
@@ -161,16 +163,14 @@ def compose_networks(
 )
 def write_dockerfile(
     context: AssetExecutionContext,
+    config_DockerRegistryConfigurableResource: DockerRegistryConfigurableResource,
+    config_DockerConfigurableResource: DockerConfigurableResource,
     feature_in: OpenStudioLandscapesFeatureIn,  # pylint: disable=redefined-outer-name
     CONFIG: config.models.Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
 
     env: Dict = CONFIG.env
-
-    config_engine: ConfigEngine = CONFIG.config_engine
-
-    docker_config: DockerConfigModel = config_engine.openstudiolandscapes__docker_config
 
     docker_image: Dict = feature_in.openstudiolandscapes_base.docker_image_base
 
@@ -197,7 +197,8 @@ def write_dockerfile(
     ) = get_image_metadata(
         context=context,
         docker_image=docker_image,
-        docker_config=docker_config,
+        docker_config=config_DockerConfigurableResource,
+        config_DockerRegistryConfigurableResource=config_DockerRegistryConfigurableResource,
         env=env,
     )
 
@@ -283,6 +284,8 @@ def write_dockerfile(
 )
 def build_docker_image(
     context: AssetExecutionContext,
+    config_DockerRegistryConfigurableResource: DockerRegistryConfigurableResource,
+    config_DockerConfigurableResource: DockerConfigurableResource,
     feature_in: OpenStudioLandscapesFeatureIn,  # pylint: disable=redefined-outer-name
     CONFIG: config.models.Config,  # pylint: disable=redefined-outer-name
     write_dockerfile: pathlib.Path,  # pylint: disable=redefined-outer-name
@@ -294,10 +297,6 @@ def build_docker_image(
     docker_config_json: pathlib.Path = (
         feature_in.openstudiolandscapes_base.docker_config_json
     )
-
-    config_engine: ConfigEngine = CONFIG.config_engine
-
-    docker_config: DockerConfigModel = config_engine.openstudiolandscapes__docker_config
 
     docker_image: Dict = feature_in.openstudiolandscapes_base.docker_image_base
 
@@ -313,7 +312,8 @@ def build_docker_image(
     ) = get_image_metadata(
         context=context,
         docker_image=docker_image,
-        docker_config=docker_config,
+        docker_config=config_DockerConfigurableResource,
+        config_DockerRegistryConfigurableResource=config_DockerRegistryConfigurableResource,
         env=env,
     )
 
@@ -325,7 +325,8 @@ def build_docker_image(
         image_prefixes=image_prefixes,
         tags=tags,
         docker_image=docker_image,
-        docker_config=docker_config,
+        config_DockerConfigurableResource=config_DockerConfigurableResource,
+        config_DockerRegistryConfigurableResource=config_DockerRegistryConfigurableResource,
         docker_config_json=docker_config_json,
         docker_file=write_dockerfile,
     )
@@ -906,6 +907,7 @@ def supervisord_conf(
 )
 def compose_kitsu(
     context: AssetExecutionContext,
+    config_ConfigEngineConfigurableResource: ConfigEngineConfigurableResource,
     CONFIG: config.models.Config,  # pylint: disable=redefined-outer-name
     build: Dict,  # pylint: disable=redefined-outer-name
     compose_networks: Dict,  # pylint: disable=redefined-outer-name
@@ -915,8 +917,6 @@ def compose_kitsu(
     """ """
 
     env: Dict = CONFIG.env
-
-    config_engine: ConfigEngine = CONFIG.config_engine
 
     network_dict = {}
     ports_dict = {}
@@ -984,7 +984,7 @@ def compose_kitsu(
         "volumes": list(
             {
                 *_volume_relative,
-                *config_engine.global_bind_volumes,
+                *config_ConfigEngineConfigurableResource.global_bind_volumes,
                 *CONFIG.local_bind_volumes,
             }
         )
@@ -995,7 +995,7 @@ def compose_kitsu(
         context=context,
         service_name=service_name,
         landscape_id=env.get("LANDSCAPE", "default"),
-        domain_lan=config_engine.openstudiolandscapes__domain_lan,
+        domain_lan=config_ConfigEngineConfigurableResource.openstudiolandscapes__domain_lan,
     )
 
     docker_dict = {
@@ -1003,10 +1003,10 @@ def compose_kitsu(
             service_name: {
                 "container_name": container_name,
                 "hostname": host_name,
-                "domainname": config_engine.openstudiolandscapes__domain_lan,
+                "domainname": config_ConfigEngineConfigurableResource.openstudiolandscapes__domain_lan,
                 "restart": DockerComposePolicies.RESTART_POLICY.ALWAYS.value,
                 "environment": {
-                    "TZ": config_engine.tz,
+                    "TZ": config_ConfigEngineConfigurableResource.tz,
                     # https://zou.cg-wire.com/
                     # "LC_ALL": "C.UTF-8",
                     # "LANG": "C.UTF-8",
@@ -1016,7 +1016,7 @@ def compose_kitsu(
                     "PREVIEW_FOLDER": "/opt/zou/previews",
                     "TMP_DIR": "/opt/zou/tmp",
                     "ENABLE_JOB_QUEUE": CONFIG.kitsu_enable_job_queue,
-                    **config_engine.global_environment_variables,
+                    **config_ConfigEngineConfigurableResource.global_environment_variables,
                     **CONFIG.local_environment_variables,
                 },
                 # "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"
@@ -1089,6 +1089,7 @@ def compose_kitsu(
 )
 def compose_init_db(
     context: AssetExecutionContext,
+    config_ConfigEngineConfigurableResource: ConfigEngineConfigurableResource,
     build: Dict,  # pylint: disable=redefined-outer-name
     script_init_db: pathlib.Path,  # pylint: disable=redefined-outer-name
     postgres_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
@@ -1097,8 +1098,6 @@ def compose_init_db(
     """ """
 
     env: Dict = CONFIG.env
-
-    config_engine: ConfigEngine = CONFIG.config_engine
 
     # network_dict = {}
     # ports_dict = {}
@@ -1161,7 +1160,7 @@ def compose_init_db(
         "volumes": list(
             {
                 *_volume_relative,
-                *config_engine.global_bind_volumes,
+                *config_ConfigEngineConfigurableResource.global_bind_volumes,
                 *CONFIG.local_bind_volumes,
             }
         )
@@ -1172,7 +1171,7 @@ def compose_init_db(
         context=context,
         service_name=service_name,
         landscape_id=env.get("LANDSCAPE", "default"),
-        domain_lan=config_engine.openstudiolandscapes__domain_lan,
+        domain_lan=config_ConfigEngineConfigurableResource.openstudiolandscapes__domain_lan,
     )
 
     docker_dict = {
@@ -1180,9 +1179,9 @@ def compose_init_db(
             service_name: {
                 "container_name": container_name,
                 "hostname": host_name,
-                "domainname": config_engine.openstudiolandscapes__domain_lan,
+                "domainname": config_ConfigEngineConfigurableResource.openstudiolandscapes__domain_lan,
                 "environment": {
-                    "TZ": config_engine.tz,
+                    "TZ": config_ConfigEngineConfigurableResource.tz,
                     # https://zou.cg-wire.com/
                     # "LC_ALL": "C.UTF-8",
                     # "LANG": "C.UTF-8",
@@ -1191,7 +1190,7 @@ def compose_init_db(
                     "SECRET_KEY": CONFIG.kitsu_secret_key,
                     "PREVIEW_FOLDER": "/opt/zou/previews",
                     "TMP_DIR": "/opt/zou/tmp",
-                    **config_engine.global_environment_variables,
+                    **config_ConfigEngineConfigurableResource.global_environment_variables,
                     **CONFIG.local_environment_variables,
                 },
                 "restart": DockerComposePolicies.RESTART_POLICY.NO.value,
