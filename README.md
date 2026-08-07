@@ -239,8 +239,29 @@ This is for isolated development, unit testing and debugging. Instead of the [`O
 python3.11 -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip setuptools setuptools_scm wheel
-pip install --editable .[dev]
+pip install --editable ".[dev]"
 dagster dev --workspace workspace.yaml
+# ModuleNotFoundError: No module named 'OpenStudioLandscapes.engine'
+#   File "/home/michael/git/repos/OpenStudioLandscapes/.features/OpenStudioLandscapes-Kitsu/.venv/lib/python3.11/site-packages/dagster/_core/code_pointer.py", line 135, in load_python_module
+#     return importlib.import_module(module_name)
+#            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#   File "/usr/lib/python3.11/importlib/__init__.py", line 126, in import_module
+#     return _bootstrap._gcd_import(name[level:], package, level)
+#            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#   File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+#   File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+#   File "<frozen importlib._bootstrap>", line 1126, in _find_and_load_unlocked
+#   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+#   File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+#   File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+#   File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+#   File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+#   File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+#   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+#   File "/home/michael/git/repos/OpenStudioLandscapes/.features/OpenStudioLandscapes-Kitsu/src/OpenStudioLandscapes/Kitsu/__init__.py", line 35, in <module>
+#     from OpenStudioLandscapes.engine.logging.loggers import get_feature_logger
+#
+# pip install --editable "../../"
 ```
 
 ***
