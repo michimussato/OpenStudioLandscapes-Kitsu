@@ -44,6 +44,7 @@ dev = [
     "OpenStudioLandscapes-Kitsu[lint]",
     "OpenStudioLandscapes-Kitsu[readme]",
     "OpenStudioLandscapes-Kitsu[sbom]",
+    "dagster-webserver==1.9.11",
 ]
 graphviz = [
     "graphviz",
