@@ -11,6 +11,8 @@ from OpenStudioLandscapes.Kitsu import (
     dist,
 )
 
+from OpenStudioLandscapes.Kitsu.configurable_resources.config_feature import config_feature
+
 LOGGER.info(f"Loading {dist.name} assets...")
 
 
@@ -20,9 +22,18 @@ assets_base = load_assets_from_modules(
 LOGGER.debug(f"{assets_base = }")
 
 
+resources_base = {
+    "config_feature": config_feature,
+}
+
+
 defs = Definitions(
     assets=[
         *assets_base,
     ],
+    resources={
+        **resources_base,
+    },
 )
+
 LOGGER.debug(f"{defs = }")

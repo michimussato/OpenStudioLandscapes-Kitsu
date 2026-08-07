@@ -22,7 +22,6 @@ from OpenStudioLandscapes.engine.common_assets import (
     cmd,
     compose,
     docker_compose_graph,
-    feature,
     feature_out,
     group_in,
     group_out,
@@ -51,9 +50,10 @@ from OpenStudioLandscapes.engine.utils.docker.compose_dicts import (
     get_network_dicts,
 )
 
+from OpenStudioLandscapes.Kitsu.configurable_resources.config_feature import ConfigFeature
+
 from OpenStudioLandscapes.Kitsu import (
     ASSET_HEADER,
-    config,
     dist,
 )
 
@@ -66,12 +66,6 @@ yaml.SafeDumper.add_multi_representer(
 
 cmd: AssetsDefinition = cmd.get_feature__cmd(
     ASSET_HEADER=ASSET_HEADER,
-)
-
-CONFIG: AssetsDefinition = feature.get_feature__CONFIG(
-    ASSET_HEADER=ASSET_HEADER,
-    CONFIG_STR=config.models.CONFIG_STR,
-    search_model_of_type=config.models.Config,
 )
 
 feature_in: AssetsDefinition = group_in.get_feature_in(
@@ -112,22 +106,17 @@ feature_in_parent: Union[AssetsDefinition, None] = group_in.get_feature_in_paren
 
 @asset(
     **ASSET_HEADER,
-    ins={
-        "CONFIG": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
-        ),
-    },
 )
 def compose_networks(
     context: AssetExecutionContext,
-    CONFIG: config.models.Config,  # pylint: disable=redefined-outer-name
+    config_feature: ConfigFeature,
 ) -> Generator[
     Output[Dict[str, Dict[str, Dict[str, str]]]] | AssetMaterialization,
     None,
     None,
 ]:
 
-    env: Dict = CONFIG.env
+    env: Dict = config_feature.env
 
     compose_network_mode = DockerComposePolicies.NETWORK_MODE.BRIDGE
 
@@ -156,21 +145,18 @@ def compose_networks(
         "feature_in": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "feature_in"]),
         ),
-        "CONFIG": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
-        ),
     },
 )
 def write_dockerfile(
     context: AssetExecutionContext,
+    config_feature: ConfigFeature,
     config_DockerRegistryConfigurableResource: DockerRegistryConfigurableResource,
     config_DockerConfigurableResource: DockerConfigurableResource,
     feature_in: OpenStudioLandscapesFeatureIn,  # pylint: disable=redefined-outer-name
-    CONFIG: config.models.Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
 
-    env: Dict = CONFIG.env
+    env: Dict = config_feature.env
 
     docker_image: Dict = feature_in.openstudiolandscapes_base.docker_image_base
 
@@ -212,7 +198,7 @@ def write_dockerfile(
     # the Python interpreter for the Kitsu Docker image is nothing
     # we are in charge of
     pip_install_str: str = get_pip_install_str(
-        pip_install_packages=CONFIG.pip_packages, python_str="/opt/zou/env/bin/python"
+        pip_install_packages=config_feature.pip_packages, python_str="/opt/zou/env/bin/python"
     )
 
     # @formatter:off
@@ -241,7 +227,7 @@ def write_dockerfile(
         image_name=image_name,
         # # Todo: this won't work as expected if len(tags) > 1
         # parent_image=f"{build_base_parent_image_prefix}{build_base_parent_image_name}:{build_base_parent_image_tags[0]}",
-        parent_image=CONFIG.docker_image,
+        parent_image=config_feature.docker_image,
         **env,
     )
     # @formatter:on
@@ -273,9 +259,6 @@ def write_dockerfile(
         "feature_in": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "feature_in"]),
         ),
-        "CONFIG": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
-        ),
         "write_dockerfile": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "write_dockerfile"])
         ),
@@ -284,15 +267,15 @@ def write_dockerfile(
 )
 def build_docker_image(
     context: AssetExecutionContext,
+    config_feature: ConfigFeature,
     config_DockerRegistryConfigurableResource: DockerRegistryConfigurableResource,
     config_DockerConfigurableResource: DockerConfigurableResource,
     feature_in: OpenStudioLandscapesFeatureIn,  # pylint: disable=redefined-outer-name
-    CONFIG: config.models.Config,  # pylint: disable=redefined-outer-name
     write_dockerfile: pathlib.Path,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[Dict] | AssetMaterialization, None, None]:
     """ """
 
-    env: Dict = CONFIG.env
+    env: Dict = config_feature.env
 
     docker_config_json: pathlib.Path = (
         feature_in.openstudiolandscapes_base.docker_config_json
@@ -354,20 +337,15 @@ def build_docker_image(
 
 @asset(
     **ASSET_HEADER,
-    ins={
-        "CONFIG": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
-        ),
-    },
     description="",
 )
 def postgres_conf(
     context: AssetExecutionContext,
-    CONFIG: config.models.Config,  # pylint: disable=redefined-outer-name
+    config_feature: ConfigFeature,
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
 
-    env: Dict = CONFIG.env
+    env: Dict = config_feature.env
 
     postgres_conf_script = pathlib.Path(
         env["DOT_LANDSCAPES"],
@@ -384,7 +362,7 @@ def postgres_conf(
             file=postgres_conf_script,
             mode="w",
         ) as fw:
-            fw.write(CONFIG.kitsu_postgres_conf_str)
+            fw.write(config_feature.kitsu_postgres_conf_str)
     except PermissionError as e:
         context.log.warning(
             f"File permissions have already been assigned to `postgres:postgres`, "
@@ -400,7 +378,7 @@ def postgres_conf(
         metadata={
             "__".join(context.asset_key.path): MetadataValue.path(postgres_conf_script),
             "postgres_conf": MetadataValue.md(
-                f"```markdown\n{CONFIG.kitsu_postgres_conf_str}\n```"
+                f"```markdown\n{config_feature.kitsu_postgres_conf_str}\n```"
             ),
         },
     )
@@ -408,20 +386,15 @@ def postgres_conf(
 
 @asset(
     **ASSET_HEADER,
-    ins={
-        "CONFIG": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
-        ),
-    },
     description="",
 )
 def script_init_db(
     context: AssetExecutionContext,
-    CONFIG: config.models.Config,  # pylint: disable=redefined-outer-name
+    config_feature: ConfigFeature,
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
 
-    env: Dict = CONFIG.env
+    env: Dict = config_feature.env
 
     init_db = {}
 
@@ -726,16 +699,11 @@ def script_init_db(
 
 @asset(
     **ASSET_HEADER,
-    ins={
-        "CONFIG": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
-        ),
-    },
     description="",
 )
 def supervisord_conf(
     context: AssetExecutionContext,
-    CONFIG: config.models.Config,  # pylint: disable=redefined-outer-name
+    config_feature: ConfigFeature,
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """
     We create a custom `/etc/supervisord.conf` file that launches `rq worker` if
@@ -819,7 +787,7 @@ def supervisord_conf(
         stderr_logfile=NONE
         """)
 
-    if CONFIG.kitsu_enable_job_queue:
+    if config_feature.kitsu_enable_job_queue:
         supervisord_conf_str += textwrap.dedent("""
             [program:kitsu-job-queue]
             command=/opt/zou/env/bin/rq worker -c zou.job_settings
@@ -855,9 +823,9 @@ def supervisord_conf(
         """)
 
     supervisord_conf_script = pathlib.Path(
-        CONFIG.env["DOT_LANDSCAPES"],
-        CONFIG.env.get("LANDSCAPE", "default"),
-        CONFIG.feature_name,
+        config_feature.env["DOT_LANDSCAPES"],
+        config_feature.env.get("LANDSCAPE", "default"),
+        config_feature.feature_name,
         "__".join(context.asset_key.path),
         "supervisord.conf",
     )
@@ -888,9 +856,6 @@ def supervisord_conf(
 @asset(
     **ASSET_HEADER,
     ins={
-        "CONFIG": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
-        ),
         "build": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "build_docker_image"]),
         ),
@@ -907,8 +872,8 @@ def supervisord_conf(
 )
 def compose_kitsu(
     context: AssetExecutionContext,
+    config_feature: ConfigFeature,
     config_ConfigEngineConfigurableResource: ConfigEngineConfigurableResource,
-    CONFIG: config.models.Config,  # pylint: disable=redefined-outer-name
     build: Dict,  # pylint: disable=redefined-outer-name
     compose_networks: Dict,  # pylint: disable=redefined-outer-name
     supervisord_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
@@ -916,7 +881,7 @@ def compose_kitsu(
 ) -> Generator[Output[Dict] | AssetMaterialization, None, None]:
     """ """
 
-    env: Dict = CONFIG.env
+    env: Dict = config_feature.env
 
     network_dict = {}
     ports_dict = {}
@@ -925,7 +890,7 @@ def compose_kitsu(
         network_dict = {"networks": list(compose_networks.get("networks", {}).keys())}
         ports_dict = {
             "ports": [
-                f"{CONFIG.kitsu_port_host}:{CONFIG.kitsu_port_container}",
+                f"{config_feature.kitsu_port_host}:{config_feature.kitsu_port_container}",
             ]
         }
     elif "network_mode" in compose_networks:
@@ -937,17 +902,17 @@ def compose_kitsu(
         ]
     }
 
-    if not CONFIG.kitsu_db_inside_container:
+    if not config_feature.kitsu_db_inside_container:
 
-        kitsu_db_dir_host = CONFIG.kitsu_database_install_destination_expanded
+        kitsu_db_dir_host = config_feature.kitsu_database_install_destination_expanded
         kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
         context.log.info(f"Directory {kitsu_db_dir_host.as_posix()} created.")
 
-        kitsu_preview_dir_host = CONFIG.kitsu_preview_folder_expanded
+        kitsu_preview_dir_host = config_feature.kitsu_preview_folder_expanded
         kitsu_preview_dir_host.mkdir(parents=True, exist_ok=True)
         context.log.info(f"Directory {kitsu_preview_dir_host.as_posix()} created.")
 
-        kitsu_tmp_dir_host = CONFIG.kitsu_tmp_dir_expanded
+        kitsu_tmp_dir_host = config_feature.kitsu_tmp_dir_expanded
         kitsu_tmp_dir_host.mkdir(parents=True, exist_ok=True)
         context.log.info(f"Directory {kitsu_tmp_dir_host.as_posix()} created.")
 
@@ -971,7 +936,7 @@ def compose_kitsu(
 
         volume_dir_host_rel_path = get_relative_path_via_common_root(
             context=context,
-            path_src=CONFIG.docker_compose_expanded,
+            path_src=config_feature.docker_compose_expanded,
             path_dst=pathlib.Path(host),
             path_common_root=pathlib.Path(env["DOT_LANDSCAPES"]),
         )
@@ -985,7 +950,7 @@ def compose_kitsu(
             {
                 *_volume_relative,
                 *config_ConfigEngineConfigurableResource.global_bind_volumes,
-                *CONFIG.local_bind_volumes,
+                *config_feature.local_bind_volumes,
             }
         )
     }
@@ -1010,14 +975,14 @@ def compose_kitsu(
                     # https://zou.cg-wire.com/
                     # "LC_ALL": "C.UTF-8",
                     # "LANG": "C.UTF-8",
-                    "KITSU_ADMIN": CONFIG.kitsu_admin_user,
-                    "DB_PASSWORD": CONFIG.kitsu_db_password,
-                    "SECRET_KEY": CONFIG.kitsu_secret_key,
+                    "KITSU_ADMIN": config_feature.kitsu_admin_user,
+                    "DB_PASSWORD": config_feature.kitsu_db_password,
+                    "SECRET_KEY": config_feature.kitsu_secret_key,
                     "PREVIEW_FOLDER": "/opt/zou/previews",
                     "TMP_DIR": "/opt/zou/tmp",
-                    "ENABLE_JOB_QUEUE": CONFIG.kitsu_enable_job_queue,
+                    "ENABLE_JOB_QUEUE": config_feature.kitsu_enable_job_queue,
                     **config_ConfigEngineConfigurableResource.global_environment_variables,
-                    **CONFIG.local_environment_variables,
+                    **config_feature.local_environment_variables,
                 },
                 # "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"
                 # % (build["image_name"], build["image_tags"][0]),
@@ -1077,9 +1042,6 @@ def compose_kitsu(
         "postgres_conf": AssetIn(
             AssetKey([*ASSET_HEADER["key_prefix"], "postgres_conf"]),
         ),
-        "CONFIG": AssetIn(
-            AssetKey([*ASSET_HEADER["key_prefix"], "CONFIG"]),
-        ),
     },
     deps=[
         AssetKey([*ASSET_HEADER["key_prefix"], "script_init_db"]),
@@ -1089,15 +1051,15 @@ def compose_kitsu(
 )
 def compose_init_db(
     context: AssetExecutionContext,
+    config_feature: ConfigFeature,
     config_ConfigEngineConfigurableResource: ConfigEngineConfigurableResource,
     build: Dict,  # pylint: disable=redefined-outer-name
     script_init_db: pathlib.Path,  # pylint: disable=redefined-outer-name
     postgres_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
-    CONFIG: config.models.Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[Dict] | AssetMaterialization, None, None]:
     """ """
 
-    env: Dict = CONFIG.env
+    env: Dict = config_feature.env
 
     # network_dict = {}
     # ports_dict = {}
@@ -1119,7 +1081,7 @@ def compose_init_db(
     #     network_dict = {}
     #     ports_dict = {}
 
-    kitsu_db_dir_host = CONFIG.kitsu_database_install_destination_expanded
+    kitsu_db_dir_host = config_feature.kitsu_database_install_destination_expanded
     kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
     context.log.info(f"Directory {kitsu_db_dir_host.as_posix()} created.")
 
@@ -1147,7 +1109,7 @@ def compose_init_db(
 
         volume_dir_host_rel_path = get_relative_path_via_common_root(
             context=context,
-            path_src=CONFIG.docker_compose_expanded,
+            path_src=config_feature.docker_compose_expanded,
             path_dst=pathlib.Path(host),
             path_common_root=pathlib.Path(env["DOT_LANDSCAPES"]),
         )
@@ -1161,7 +1123,7 @@ def compose_init_db(
             {
                 *_volume_relative,
                 *config_ConfigEngineConfigurableResource.global_bind_volumes,
-                *CONFIG.local_bind_volumes,
+                *config_feature.local_bind_volumes,
             }
         )
     }
@@ -1185,13 +1147,13 @@ def compose_init_db(
                     # https://zou.cg-wire.com/
                     # "LC_ALL": "C.UTF-8",
                     # "LANG": "C.UTF-8",
-                    "KITSU_ADMIN": CONFIG.kitsu_admin_user,
-                    "DB_PASSWORD": CONFIG.kitsu_db_password,
-                    "SECRET_KEY": CONFIG.kitsu_secret_key,
+                    "KITSU_ADMIN": config_feature.kitsu_admin_user,
+                    "DB_PASSWORD": config_feature.kitsu_db_password,
+                    "SECRET_KEY": config_feature.kitsu_secret_key,
                     "PREVIEW_FOLDER": "/opt/zou/previews",
                     "TMP_DIR": "/opt/zou/tmp",
                     **config_ConfigEngineConfigurableResource.global_environment_variables,
-                    **CONFIG.local_environment_variables,
+                    **config_feature.local_environment_variables,
                 },
                 "restart": DockerComposePolicies.RESTART_POLICY.NO.value,
                 # "image": "${DOT_OVERRIDES_REGISTRY_NAMESPACE:-docker.io/openstudiolandscapes}/%s:%s"
