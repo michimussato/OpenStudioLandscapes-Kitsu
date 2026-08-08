@@ -13,16 +13,17 @@ from pydantic import (
     field_validator
 )
 
-from dagster import (
-    ConfigurableResource,
-)
+#
 
 from OpenStudioLandscapes.engine.discovery.discovery import (
     dump_yaml,
     load_yaml,
 )
 
+from OpenStudioLandscapes.engine.config.models import FeatureBaseResource
+
 # from OpenStudioLandscapes.engine import dist as dist_engine
+from OpenStudioLandscapes.engine.base.configurable_resources.env_resource import EnvConfigurableResource
 from OpenStudioLandscapes.engine.logging.loggers import DISCOVERY_LOGGER as LOGGER
 # from OpenStudioLandscapes.engine.config.models import (
 #     DockerRegistryAccess,
@@ -840,30 +841,30 @@ POSTGRES_CONF_STR = textwrap.dedent("""
     """)
 
 
-class ConfigFeature(ConfigurableResource):
+class ConfigFeature(FeatureBaseResource):
 
-    docker_compose: str = Field(
-        default=pathlib.Path(
-            "{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/docker_compose/docker-compose.yml"
-        ).as_posix(),
-        description="The path to the `docker-compose.yml` file.",
-    )
+    # docker_compose: str = Field(
+    #     default=pathlib.Path(
+    #         "{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/docker_compose/docker-compose.yml"
+    #     ).as_posix(),
+    #     description="The path to the `docker-compose.yml` file.",
+    # )
 
-    env: Dict[str, str] = Field(
-        default_factory=dict,
-    )
+    # env: Dict[str, str] = Field(
+    #     default_factory=dict,
+    # )
+
+    # # This does not raise errors because each Feature subclasses this class.
+    # local_bind_volumes: List[str] = Field(
+    #     default_factory=list,
+    #     description="Here you can define Feature specific, arbitrary, absolute bind volume mappings.",
+    # )
 
     # This does not raise errors because each Feature subclasses this class.
-    local_bind_volumes: List[str] = Field(
-        default_factory=list,
-        description="Here you can define Feature specific, arbitrary, absolute bind volume mappings.",
-    )
-
-    # This does not raise errors because each Feature subclasses this class.
-    local_environment_variables: Dict[str, str] = Field(
-        default_factory=dict,
-        description="Here you can define Feature specific, arbitrary environment variables.",
-    )
+    # local_environment_variables: Dict[str, str] = Field(
+    #     default_factory=dict,
+    #     description="Here you can define Feature specific, arbitrary environment variables.",
+    # )
 
     feature_name: str = dist.name
 
@@ -983,25 +984,28 @@ class ConfigFeature(ConfigurableResource):
             )
 
     # EXPANDABLE PATHS
-    @property
-    def docker_compose_expanded(self) -> pathlib.Path:
+    def docker_compose_expanded(
+        self,
+        env: EnvConfigurableResource,
+    ) -> pathlib.Path:
         ret = pathlib.Path(
             pathlib.Path(self.docker_compose).expanduser()  # pylint: disable=E1101
             .as_posix()
             .format(
                 **{
                     "FEATURE": self.feature_name,
-                    **self.env,
+                    **env.model_dump(),
                 }
             )
         )
         return ret
 
-    @property
-    def kitsu_database_install_destination_expanded(self) -> pathlib.Path:
-        LOGGER.debug(f"{self.env = }")
-        if self.env is None:
-            raise KeyError("`env` is `None`.")
+    # @property
+    def kitsu_database_install_destination_expanded(
+        self,
+        env: EnvConfigurableResource,
+    ) -> pathlib.Path:
+        LOGGER.debug(f"{env.model_dump() = }")
 
         LOGGER.debug(f"Expanding {self.kitsu_database_install_destination}...")
         ret = pathlib.Path(
@@ -1010,17 +1014,17 @@ class ConfigFeature(ConfigurableResource):
             .format(
                 **{
                     "FEATURE": self.feature_name,
-                    **self.env,
+                    **env.model_dump(),
                 }
             )
         )
         return ret
 
-    @property
-    def kitsu_preview_folder_expanded(self) -> pathlib.Path:
-        LOGGER.debug(f"{self.env = }")
-        if self.env is None:
-            raise KeyError("`env` is `None`.")
+    def kitsu_preview_folder_expanded(
+        self,
+        env: EnvConfigurableResource,
+    ) -> pathlib.Path:
+        LOGGER.debug(f"{env.model_dump() = }")
 
         LOGGER.debug(f"Expanding {self.kitsu_preview_folder}...")
         ret = pathlib.Path(
@@ -1029,17 +1033,17 @@ class ConfigFeature(ConfigurableResource):
             .format(
                 **{
                     "FEATURE": self.feature_name,
-                    **self.env,
+                    **env.model_dump(),
                 }
             )
         )
         return ret
 
-    @property
-    def kitsu_tmp_dir_expanded(self) -> pathlib.Path:
-        LOGGER.debug(f"{self.env = }")
-        if self.env is None:
-            raise KeyError("`env` is `None`.")
+    def kitsu_tmp_dir_expanded(
+        self,
+        env: EnvConfigurableResource,
+    ) -> pathlib.Path:
+        LOGGER.debug(f"{env.model_dump()}")
 
         LOGGER.debug(f"Expanding {self.kitsu_tmp_dir}...")
         ret = pathlib.Path(
@@ -1048,7 +1052,7 @@ class ConfigFeature(ConfigurableResource):
             .format(
                 **{
                     "FEATURE": self.feature_name,
-                    **self.env,
+                    **env.model_dump(),
                 }
             )
         )

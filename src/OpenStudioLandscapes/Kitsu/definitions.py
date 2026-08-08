@@ -22,8 +22,11 @@ assets_base = load_assets_from_modules(
 LOGGER.debug(f"{assets_base = }")
 
 
+sig = f"config_{dist.name}_feature"
+
+
 resources_base = {
-    "config_feature": config_feature,
+    f"config_feature": config_feature,
 }
 
 
