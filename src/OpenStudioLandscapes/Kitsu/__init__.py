@@ -3,7 +3,7 @@ __all__ = [
     "dist",
     "LOGGER",
     "__version__",
-    "config",
+    "models",
     "ASSET_HEADER",
 ]
 
@@ -50,6 +50,8 @@ try:
     ASSET_HEADER = get_asset_header(
         dist=dist,
     )
+
+    from OpenStudioLandscapes.Kitsu.config import models
 
     LOGGER.info("%s: %s", "ASSET_HEADER".ljust(fill), ASSET_HEADER)
 

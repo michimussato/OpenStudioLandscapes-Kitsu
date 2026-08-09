@@ -832,7 +832,7 @@ class Config(FeatureBaseModel):
         description="The Docker image to use",
     )
 
-    kitsu_admin_user: EmailStr = Field(
+    kitsu_admin_user: str = Field(
         default="admin@example.com",
         description="Bug Report: https://github.com/cgwire/zou/issues/960); "
         "Changing these values does not seem to have an effect Hence, they are locked to the following values for now.",
@@ -855,12 +855,12 @@ class Config(FeatureBaseModel):
         description="Enable Kitsu Job Queue?",
         default=True,
     )
-    kitsu_port_container: PositiveInt = Field(
+    kitsu_port_container: int = Field(
         default=80,
         description="The Kitsu container port.",
         frozen=True,
     )
-    kitsu_port_host: PositiveInt = Field(
+    kitsu_port_host: int = Field(
         default=4545,
         description="The Kitsu host port.",
         frozen=False,
@@ -870,17 +870,17 @@ class Config(FeatureBaseModel):
         description="The Kitsu database inside container; the database will "
         "not be persistent. Helpful for testing.",
     )
-    kitsu_database_install_destination: pathlib.Path = Field(
+    kitsu_database_install_destination: str = Field(
         description="The host side Kitsu database installation destination.",
-        default=pathlib.Path("{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/postgresql"),
+        default=pathlib.Path("{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/postgresql").as_posix(),
     )
-    kitsu_preview_folder: pathlib.Path = Field(
+    kitsu_preview_folder: str = Field(
         description="The Kitsu Preview folder (/opt/zou/previews).",
-        default=pathlib.Path("{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/previews"),
+        default=pathlib.Path("{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/previews").as_posix(),
     )
-    kitsu_tmp_dir: pathlib.Path = Field(
+    kitsu_tmp_dir: str = Field(
         description="Kitsu TMP directory (/opt/zou/tmp).",
-        default=pathlib.Path("{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/tmp"),
+        default=pathlib.Path("{DOT_LANDSCAPES}/{LANDSCAPE}/{FEATURE}/data/tmp").as_posix(),
     )
     kitsu_secret_key: str = Field(
         description="Kitsu Secret Key.",
@@ -938,63 +938,63 @@ class Config(FeatureBaseModel):
                 "to 80 for now. Other values will render Kitsu inoperable."
             )
 
-    # EXPANDABLE PATHS
-    @property
-    def kitsu_database_install_destination_expanded(self) -> pathlib.Path:
-        LOGGER.debug(f"{self.env = }")
-        if self.env is None:
-            raise KeyError("`env` is `None`.")
-
-        LOGGER.debug(f"Expanding {self.kitsu_database_install_destination}...")
-        ret = pathlib.Path(
-            self.kitsu_database_install_destination.expanduser()  # pylint: disable=E1101
-            .as_posix()
-            .format(
-                **{
-                    "FEATURE": self.feature_name,
-                    **self.env,
-                }
-            )
-        )
-        return ret
-
-    @property
-    def kitsu_preview_folder_expanded(self) -> pathlib.Path:
-        LOGGER.debug(f"{self.env = }")
-        if self.env is None:
-            raise KeyError("`env` is `None`.")
-
-        LOGGER.debug(f"Expanding {self.kitsu_preview_folder}...")
-        ret = pathlib.Path(
-            self.kitsu_preview_folder.expanduser()  # pylint: disable=E1101
-            .as_posix()
-            .format(
-                **{
-                    "FEATURE": self.feature_name,
-                    **self.env,
-                }
-            )
-        )
-        return ret
-
-    @property
-    def kitsu_tmp_dir_expanded(self) -> pathlib.Path:
-        LOGGER.debug(f"{self.env = }")
-        if self.env is None:
-            raise KeyError("`env` is `None`.")
-
-        LOGGER.debug(f"Expanding {self.kitsu_tmp_dir}...")
-        ret = pathlib.Path(
-            self.kitsu_tmp_dir.expanduser()  # pylint: disable=E1101
-            .as_posix()
-            .format(
-                **{
-                    "FEATURE": self.feature_name,
-                    **self.env,
-                }
-            )
-        )
-        return ret
+    # # EXPANDABLE PATHS
+    # @property
+    # def kitsu_database_install_destination_expanded(self) -> pathlib.Path:
+    #     LOGGER.debug(f"{self.env = }")
+    #     if self.env is None:
+    #         raise KeyError("`env` is `None`.")
+    #
+    #     LOGGER.debug(f"Expanding {self.kitsu_database_install_destination}...")
+    #     ret = pathlib.Path(
+    #         self.kitsu_database_install_destination.expanduser()  # pylint: disable=E1101
+    #         .as_posix()
+    #         .format(
+    #             **{
+    #                 "FEATURE": self.feature_name,
+    #                 **self.env,
+    #             }
+    #         )
+    #     )
+    #     return ret
+    #
+    # @property
+    # def kitsu_preview_folder_expanded(self) -> pathlib.Path:
+    #     LOGGER.debug(f"{self.env = }")
+    #     if self.env is None:
+    #         raise KeyError("`env` is `None`.")
+    #
+    #     LOGGER.debug(f"Expanding {self.kitsu_preview_folder}...")
+    #     ret = pathlib.Path(
+    #         self.kitsu_preview_folder.expanduser()  # pylint: disable=E1101
+    #         .as_posix()
+    #         .format(
+    #             **{
+    #                 "FEATURE": self.feature_name,
+    #                 **self.env,
+    #             }
+    #         )
+    #     )
+    #     return ret
+    #
+    # @property
+    # def kitsu_tmp_dir_expanded(self) -> pathlib.Path:
+    #     LOGGER.debug(f"{self.env = }")
+    #     if self.env is None:
+    #         raise KeyError("`env` is `None`.")
+    #
+    #     LOGGER.debug(f"Expanding {self.kitsu_tmp_dir}...")
+    #     ret = pathlib.Path(
+    #         self.kitsu_tmp_dir.expanduser()  # pylint: disable=E1101
+    #         .as_posix()
+    #         .format(
+    #             **{
+    #                 "FEATURE": self.feature_name,
+    #                 **self.env,
+    #             }
+    #         )
+    #     )
+    #     return ret
 
 
 if __name__ == "__main__":

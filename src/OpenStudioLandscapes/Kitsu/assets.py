@@ -27,7 +27,8 @@ from OpenStudioLandscapes.engine.common_assets import (
     group_in,
     group_out,
 )
-from OpenStudioLandscapes.engine.env.configurable_resources.config_engine import ConfigEngineConfigurableResource
+# from OpenStudioLandscapes.engine.base.configurable_resources.env_resource import EnvConfigurableResource
+from OpenStudioLandscapes.engine.base.configurable_resources.config_engine import ConfigEngineConfigurableResource
 from OpenStudioLandscapes.engine.base.configurable_resources.docker_registry_resource import DockerRegistryConfigurableResource
 from OpenStudioLandscapes.engine.base.configurable_resources.docker_resource import DockerConfigurableResource
 from OpenStudioLandscapes.engine.constants import (
@@ -37,6 +38,7 @@ from OpenStudioLandscapes.engine.constants import (
 from OpenStudioLandscapes.engine.enums import (
     DockerComposePolicies,
 )
+from OpenStudioLandscapes.engine.config.models import interpolate
 from OpenStudioLandscapes.engine.link.models import OpenStudioLandscapesFeatureIn
 from OpenStudioLandscapes.engine.policies.retry import build_docker_image_retry_policy
 from OpenStudioLandscapes.engine.utils import (
@@ -53,9 +55,10 @@ from OpenStudioLandscapes.engine.utils.docker.compose_dicts import (
 
 from OpenStudioLandscapes.Kitsu import (
     ASSET_HEADER,
-    config,
+    models,
     dist,
 )
+from OpenStudioLandscapes.Kitsu.configurable_resources.config_feature import ConfigFeature, config_feature
 
 # https://github.com/yaml/pyyaml/issues/722#issuecomment-1969292770
 yaml.SafeDumper.add_multi_representer(
@@ -70,8 +73,7 @@ cmd: AssetsDefinition = cmd.get_feature__cmd(
 
 CONFIG: AssetsDefinition = feature.get_feature__CONFIG(
     ASSET_HEADER=ASSET_HEADER,
-    CONFIG_STR=config.models.CONFIG_STR,
-    search_model_of_type=config.models.Config,
+    resource=config_feature,
 )
 
 feature_in: AssetsDefinition = group_in.get_feature_in(
@@ -120,7 +122,7 @@ feature_in_parent: Union[AssetsDefinition, None] = group_in.get_feature_in_paren
 )
 def compose_networks(
     context: AssetExecutionContext,
-    CONFIG: config.models.Config,  # pylint: disable=redefined-outer-name
+    CONFIG: models.Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[
     Output[Dict[str, Dict[str, Dict[str, str]]]] | AssetMaterialization,
     None,
@@ -166,7 +168,7 @@ def write_dockerfile(
     config_DockerRegistryConfigurableResource: DockerRegistryConfigurableResource,
     config_DockerConfigurableResource: DockerConfigurableResource,
     feature_in: OpenStudioLandscapesFeatureIn,  # pylint: disable=redefined-outer-name
-    CONFIG: config.models.Config,  # pylint: disable=redefined-outer-name
+    CONFIG: models.Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
 
@@ -287,7 +289,7 @@ def build_docker_image(
     config_DockerRegistryConfigurableResource: DockerRegistryConfigurableResource,
     config_DockerConfigurableResource: DockerConfigurableResource,
     feature_in: OpenStudioLandscapesFeatureIn,  # pylint: disable=redefined-outer-name
-    CONFIG: config.models.Config,  # pylint: disable=redefined-outer-name
+    CONFIG: models.Config,  # pylint: disable=redefined-outer-name
     write_dockerfile: pathlib.Path,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[Dict] | AssetMaterialization, None, None]:
     """ """
@@ -363,7 +365,7 @@ def build_docker_image(
 )
 def postgres_conf(
     context: AssetExecutionContext,
-    CONFIG: config.models.Config,  # pylint: disable=redefined-outer-name
+    CONFIG: models.Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
 
@@ -417,7 +419,7 @@ def postgres_conf(
 )
 def script_init_db(
     context: AssetExecutionContext,
-    CONFIG: config.models.Config,  # pylint: disable=redefined-outer-name
+    CONFIG: models.Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """ """
 
@@ -735,7 +737,7 @@ def script_init_db(
 )
 def supervisord_conf(
     context: AssetExecutionContext,
-    CONFIG: config.models.Config,  # pylint: disable=redefined-outer-name
+    CONFIG: models.Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[pathlib.Path] | AssetMaterialization, None, None]:
     """
     We create a custom `/etc/supervisord.conf` file that launches `rq worker` if
@@ -907,8 +909,9 @@ def supervisord_conf(
 )
 def compose_kitsu(
     context: AssetExecutionContext,
+    # config_EnvConfigurableResource: EnvConfigurableResource,
     config_ConfigEngineConfigurableResource: ConfigEngineConfigurableResource,
-    CONFIG: config.models.Config,  # pylint: disable=redefined-outer-name
+    CONFIG: ConfigFeature,  # pylint: disable=redefined-outer-name
     build: Dict,  # pylint: disable=redefined-outer-name
     compose_networks: Dict,  # pylint: disable=redefined-outer-name
     supervisord_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
@@ -916,7 +919,7 @@ def compose_kitsu(
 ) -> Generator[Output[Dict] | AssetMaterialization, None, None]:
     """ """
 
-    env: Dict = CONFIG.env
+    # env: Dict = CONFIG.env
 
     network_dict = {}
     ports_dict = {}
@@ -939,15 +942,24 @@ def compose_kitsu(
 
     if not CONFIG.kitsu_db_inside_container:
 
-        kitsu_db_dir_host = CONFIG.kitsu_database_install_destination_expanded
+        kitsu_db_dir_host = interpolate(
+            path=CONFIG.kitsu_database_install_destination,
+            env=config_EnvConfigurableResource.model_dump(),
+        )
         kitsu_db_dir_host.mkdir(parents=True, exist_ok=True)
         context.log.info(f"Directory {kitsu_db_dir_host.as_posix()} created.")
 
-        kitsu_preview_dir_host = CONFIG.kitsu_preview_folder_expanded
+        kitsu_preview_dir_host = interpolate(
+            path=CONFIG.kitsu_preview_folder,
+            env=config_EnvConfigurableResource.model_dump(),
+        )
         kitsu_preview_dir_host.mkdir(parents=True, exist_ok=True)
         context.log.info(f"Directory {kitsu_preview_dir_host.as_posix()} created.")
 
-        kitsu_tmp_dir_host = CONFIG.kitsu_tmp_dir_expanded
+        kitsu_tmp_dir_host = interpolate(
+            path=CONFIG.kitsu_tmp_dir,
+            env=config_EnvConfigurableResource.model_dump(),
+        )
         kitsu_tmp_dir_host.mkdir(parents=True, exist_ok=True)
         context.log.info(f"Directory {kitsu_tmp_dir_host.as_posix()} created.")
 
@@ -971,9 +983,12 @@ def compose_kitsu(
 
         volume_dir_host_rel_path = get_relative_path_via_common_root(
             context=context,
-            path_src=CONFIG.docker_compose_expanded,
+            path_src=interpolate(
+                path=CONFIG.docker_compose,
+                env=config_EnvConfigurableResource.model_dump(),
+            ),
             path_dst=pathlib.Path(host),
-            path_common_root=pathlib.Path(env["DOT_LANDSCAPES"]),
+            path_common_root=pathlib.Path(config_EnvConfigurableResource.DOT_LANDSCAPES),
         )
 
         _volume_relative.append(
@@ -994,7 +1009,7 @@ def compose_kitsu(
     container_name, host_name = get_docker_compose_names(
         context=context,
         service_name=service_name,
-        landscape_id=env.get("LANDSCAPE", "default"),
+        landscape_id=config_EnvConfigurableResource.LANDSCAPE,
         domain_lan=config_ConfigEngineConfigurableResource.openstudiolandscapes__domain_lan,
     )
 
@@ -1093,7 +1108,7 @@ def compose_init_db(
     build: Dict,  # pylint: disable=redefined-outer-name
     script_init_db: pathlib.Path,  # pylint: disable=redefined-outer-name
     postgres_conf: pathlib.Path,  # pylint: disable=redefined-outer-name
-    CONFIG: config.models.Config,  # pylint: disable=redefined-outer-name
+    CONFIG: models.Config,  # pylint: disable=redefined-outer-name
 ) -> Generator[Output[Dict] | AssetMaterialization, None, None]:
     """ """
 
