@@ -22,7 +22,6 @@ from OpenStudioLandscapes.engine.common_assets import (
     cmd,
     compose,
     docker_compose_graph,
-    # feature,
     feature_out,
     group_in,
     group_out,
@@ -55,8 +54,6 @@ from OpenStudioLandscapes.engine.utils.docker.compose_dicts import (
 
 from OpenStudioLandscapes.Kitsu import (
     ASSET_HEADER,
-    # models,
-    # dist,
 )
 from OpenStudioLandscapes.Kitsu.configurable_resources.config_feature import ConfigFeature, config_feature
 
@@ -71,11 +68,6 @@ cmd: AssetsDefinition = cmd.get_feature__cmd(
     ASSET_HEADER=ASSET_HEADER,
 )
 
-# CONFIG: AssetsDefinition = feature.get_feature__CONFIG(
-#     ASSET_HEADER=ASSET_HEADER,
-#     resource=config_feature,
-# )
-
 feature_in: AssetsDefinition = group_in.get_feature_in(
     ASSET_HEADER=ASSET_HEADER,
     ASSET_HEADER_BASE=ASSET_HEADER_BASE,
@@ -84,7 +76,6 @@ feature_in: AssetsDefinition = group_in.get_feature_in(
 
 group_out: AssetsDefinition = group_out.get_group_out(
     ASSET_HEADER=ASSET_HEADER,
-    # resource=config_feature,
 )
 
 
