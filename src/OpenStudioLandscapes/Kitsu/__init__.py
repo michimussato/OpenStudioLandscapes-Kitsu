@@ -51,8 +51,6 @@ try:
         dist=dist,
     )
 
-    from OpenStudioLandscapes.Kitsu.config import models
-
     LOGGER.info("%s: %s", "ASSET_HEADER".ljust(fill), ASSET_HEADER)
 
 except PackageNotFoundError:  # pragma: no cover
