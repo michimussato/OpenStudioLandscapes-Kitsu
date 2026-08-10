@@ -239,7 +239,8 @@ This is for isolated development, unit testing and debugging. Instead of the [`O
 python3.11 -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip setuptools setuptools_scm wheel
-pip install --editable .[dev]
+# pip install --editable ".[dev]"
+pip install -e "../../.[dev]"
 dagster dev --workspace workspace.yaml
 ```
 

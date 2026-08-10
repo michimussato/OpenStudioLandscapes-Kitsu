@@ -3,7 +3,6 @@ __all__ = [
     "dist",
     "LOGGER",
     "__version__",
-    "models",
     "ASSET_HEADER",
 ]
 

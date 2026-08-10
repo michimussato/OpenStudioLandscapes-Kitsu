@@ -5,7 +5,7 @@ import pathlib
 import shutil
 import textwrap
 import urllib.parse
-from typing import Dict, Generator, List, Union
+from typing import Dict, Generator, List
 
 import yaml
 from dagster import (
@@ -32,7 +32,6 @@ from OpenStudioLandscapes.engine.base.configurable_resources.docker_registry_res
 from OpenStudioLandscapes.engine.base.configurable_resources.docker_resource import DockerConfigurableResource
 from OpenStudioLandscapes.engine.constants import (
     ASSET_HEADER_BASE,
-    ConfigParent,
 )
 from OpenStudioLandscapes.engine.enums import (
     DockerComposePolicies,
@@ -93,16 +92,6 @@ compose: AssetsDefinition = compose.get_compose(
 feature_out_v2: AssetsDefinition = feature_out.get_feature_out_v2(
     ASSET_HEADER=ASSET_HEADER,
     resource=config_feature,
-)
-
-
-# Produces
-# - feature_in_parent
-# - CONFIG_PARENT
-# if ConfigParent is or type FeatureBaseModel
-feature_in_parent: Union[AssetsDefinition, None] = group_in.get_feature_in_parent(
-    ASSET_HEADER=ASSET_HEADER,
-    config_parent=ConfigParent,
 )
 
 
