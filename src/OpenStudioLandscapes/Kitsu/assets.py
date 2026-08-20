@@ -49,11 +49,11 @@ from OpenStudioLandscapes.engine.utils.docker.compose_dicts import (
     get_network_dicts,
 )
 
-from OpenStudioLandscapes.Kitsu import (
+from OpenStudioLandscapes.Kitsu.constants import (
     ASSET_HEADER,
-    models,
     dist,
 )
+from OpenStudioLandscapes.Kitsu.config import models
 
 # https://github.com/yaml/pyyaml/issues/722#issuecomment-1969292770
 yaml.SafeDumper.add_multi_representer(
