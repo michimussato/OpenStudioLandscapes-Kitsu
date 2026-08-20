@@ -8,7 +8,7 @@ from pydantic import (
     field_validator,
 )
 
-from OpenStudioLandscapes.Kitsu import (
+from OpenStudioLandscapes.Kitsu.constants import (
     ASSET_HEADER,
     LOGGER,
     dist,
