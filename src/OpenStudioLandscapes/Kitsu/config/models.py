@@ -4,13 +4,11 @@ from typing import Dict, List
 
 from OpenStudioLandscapes.engine.config.models import FeatureBaseModel
 from pydantic import (
-    EmailStr,
     Field,
-    PositiveInt,
     field_validator,
 )
 
-from OpenStudioLandscapes.Kitsu import (
+from OpenStudioLandscapes.Kitsu.constants import (
     ASSET_HEADER,
     LOGGER,
     dist,
@@ -832,7 +830,7 @@ class Config(FeatureBaseModel):
         description="The Docker image to use",
     )
 
-    kitsu_admin_user: EmailStr = Field(
+    kitsu_admin_user: str = Field(
         default="admin@example.com",
         description="Bug Report: https://github.com/cgwire/zou/issues/960); "
         "Changing these values does not seem to have an effect Hence, they are locked to the following values for now.",
@@ -855,12 +853,12 @@ class Config(FeatureBaseModel):
         description="Enable Kitsu Job Queue?",
         default=True,
     )
-    kitsu_port_container: PositiveInt = Field(
+    kitsu_port_container: int = Field(
         default=80,
         description="The Kitsu container port.",
         frozen=True,
     )
-    kitsu_port_host: PositiveInt = Field(
+    kitsu_port_host: int = Field(
         default=4545,
         description="The Kitsu host port.",
         frozen=False,
