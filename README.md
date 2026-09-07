@@ -149,7 +149,6 @@ kitsu_admin_user:
   description: 'Bug Report: https://github.com/cgwire/zou/issues/960); Changing these
     values does not seem to have an effect Hence, they are locked to the following
     values for now.'
-  format: email
   title: Kitsu Admin User
   type: string
 kitsu_database_install_destination:
@@ -177,13 +176,11 @@ kitsu_enable_job_queue:
 kitsu_port_container:
   default: 80
   description: The Kitsu container port.
-  exclusiveMinimum: 0
   title: Kitsu Port Container
   type: integer
 kitsu_port_host:
   default: 4545
   description: The Kitsu host port.
-  exclusiveMinimum: 0
   title: Kitsu Port Host
   type: integer
 kitsu_preview_folder:
@@ -308,4 +305,4 @@ To follow up on the previous LinkedIn publications, visit:
 
 ***
 
-Last changed: **2026-07-20 11:15:52 UTC**
+Last changed: **2026-09-07 08:25:51 UTC**

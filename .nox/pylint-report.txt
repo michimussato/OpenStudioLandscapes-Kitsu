@@ -42,146 +42,45 @@ src/OpenStudioLandscapes/Kitsu/definitions.py:14:0: W1203: Use lazy % formatting
 src/OpenStudioLandscapes/Kitsu/definitions.py:20:0: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
 src/OpenStudioLandscapes/Kitsu/definitions.py:28:0: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
 src/OpenStudioLandscapes/Kitsu/definitions.py:1:0: W0611: Unused import os (unused-import)
-************* Module OpenStudioLandscapes.Kitsu.readme_feature
-src/OpenStudioLandscapes/Kitsu/readme_feature.py:29:0: C0301: Line too long (194/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/readme_feature.py:72:0: C0301: Line too long (135/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/readme_feature.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-src/OpenStudioLandscapes/Kitsu/readme_feature.py:6:0: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/readme_feature.py:24:8: C2801: Unnecessarily calls dunder method __str__. Use str built-in function. (unnecessary-dunder-call)
-src/OpenStudioLandscapes/Kitsu/readme_feature.py:43:8: C2801: Unnecessarily calls dunder method __str__. Use str built-in function. (unnecessary-dunder-call)
+************* Module OpenStudioLandscapes.Kitsu.constants
+src/OpenStudioLandscapes/Kitsu/constants.py:14:5: W0511: TODO: Import directly (no need for conditional) when `python_requires = >= 3.8` (fixme)
+src/OpenStudioLandscapes/Kitsu/constants.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+src/OpenStudioLandscapes/Kitsu/constants.py:38:4: C0103: Constant name "fill" doesn't conform to UPPER_CASE naming style (invalid-name)
 ************* Module OpenStudioLandscapes.Kitsu._definitions_with_upstream_specs
 src/OpenStudioLandscapes/Kitsu/_definitions_with_upstream_specs.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-************* Module OpenStudioLandscapes.Kitsu.__init__
-src/OpenStudioLandscapes/Kitsu/__init__.py:15:5: W0511: TODO: Import directly (no need for conditional) when `python_requires = >= 3.8` (fixme)
 ************* Module OpenStudioLandscapes.Kitsu
-src/OpenStudioLandscapes/Kitsu/__init__.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 src/OpenStudioLandscapes/Kitsu/__init__.py:1:0: C0103: Module name "Kitsu" doesn't conform to snake_case naming style (invalid-name)
-src/OpenStudioLandscapes/Kitsu/__init__.py:39:4: C0103: Constant name "fill" doesn't conform to UPPER_CASE naming style (invalid-name)
 ************* Module OpenStudioLandscapes.Kitsu.config.models
-src/OpenStudioLandscapes/Kitsu/config/models.py:838:0: C0301: Line too long (120/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/config/models.py:902:0: C0301: Line too long (124/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/config/models.py:1:0: C0302: Too many lines in module (1008/1000) (too-many-lines)
-src/OpenStudioLandscapes/Kitsu/config/models.py:890:5: W0511: Todo (fixme)
+src/OpenStudioLandscapes/Kitsu/config/models.py:836:0: C0301: Line too long (120/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/config/models.py:900:0: C0301: Line too long (124/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/config/models.py:1:0: C0302: Too many lines in module (1006/1000) (too-many-lines)
+src/OpenStudioLandscapes/Kitsu/config/models.py:888:5: W0511: Todo (fixme)
 src/OpenStudioLandscapes/Kitsu/config/models.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:823:0: C0115: Missing class docstring (missing-class-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:908:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:909:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
-src/OpenStudioLandscapes/Kitsu/config/models.py:920:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:921:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
-src/OpenStudioLandscapes/Kitsu/config/models.py:932:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:933:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
-src/OpenStudioLandscapes/Kitsu/config/models.py:943:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:944:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
-src/OpenStudioLandscapes/Kitsu/config/models.py:948:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
-src/OpenStudioLandscapes/Kitsu/config/models.py:962:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:963:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
-src/OpenStudioLandscapes/Kitsu/config/models.py:967:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
-src/OpenStudioLandscapes/Kitsu/config/models.py:981:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/config/models.py:982:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
-src/OpenStudioLandscapes/Kitsu/config/models.py:986:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
-src/OpenStudioLandscapes/Kitsu/config/models.py:6:0: C0411: third party import "pydantic.EmailStr" should be placed before first party import "OpenStudioLandscapes.engine.config.models.FeatureBaseModel"  (wrong-import-order)
-src/OpenStudioLandscapes/Kitsu/config/models.py:13:0: C0412: Imports from package OpenStudioLandscapes are not grouped (ungrouped-imports)
+src/OpenStudioLandscapes/Kitsu/config/models.py:821:0: C0115: Missing class docstring (missing-class-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:906:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:907:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+src/OpenStudioLandscapes/Kitsu/config/models.py:918:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:919:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+src/OpenStudioLandscapes/Kitsu/config/models.py:930:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:931:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+src/OpenStudioLandscapes/Kitsu/config/models.py:941:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:942:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src/OpenStudioLandscapes/Kitsu/config/models.py:946:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src/OpenStudioLandscapes/Kitsu/config/models.py:960:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:961:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src/OpenStudioLandscapes/Kitsu/config/models.py:965:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src/OpenStudioLandscapes/Kitsu/config/models.py:979:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/config/models.py:980:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src/OpenStudioLandscapes/Kitsu/config/models.py:984:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src/OpenStudioLandscapes/Kitsu/config/models.py:6:0: C0411: third party import "pydantic.Field" should be placed before first party import "OpenStudioLandscapes.engine.config.models.FeatureBaseModel"  (wrong-import-order)
+src/OpenStudioLandscapes/Kitsu/config/models.py:11:0: C0412: Imports from package OpenStudioLandscapes are not grouped (ungrouped-imports)
 ************* Module OpenStudioLandscapes.Kitsu.doc.readme
 src/OpenStudioLandscapes/Kitsu/doc/readme.py:75:0: C0301: Line too long (135/100) (line-too-long)
 src/OpenStudioLandscapes/Kitsu/doc/readme.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 src/OpenStudioLandscapes/Kitsu/doc/readme.py:6:0: C0116: Missing function or method docstring (missing-function-docstring)
 src/OpenStudioLandscapes/Kitsu/doc/readme.py:27:8: C2801: Unnecessarily calls dunder method __str__. Use str built-in function. (unnecessary-dunder-call)
 src/OpenStudioLandscapes/Kitsu/doc/readme.py:46:8: C2801: Unnecessarily calls dunder method __str__. Use str built-in function. (unnecessary-dunder-call)
-src/OpenStudioLandscapes/Kitsu/doc/readme.py:1:0: R0801: Similar lines in 2 files
-==OpenStudioLandscapes.Kitsu.doc.readme:[14:29]
-==OpenStudioLandscapes.Kitsu.readme_feature:[11:102]
-        level=1,
-    )
-
-    doc.add_unordered_list(
-        [
-            "[https://kitsu.cg-wire.com](https://kitsu.cg-wire.com)",
-        ]
-    )
-
-    # Logo
-
-    doc.add_paragraph(
-        snakemd.Inline(
-            text=textwrap.dedent("""\
-                Logo Kitsu\
-                """),
-            image={
-                "Kitsu": "https://camo.githubusercontent.com/023fe0d7cf9dc4bd4258a299a718a8c98d94be4357d72dfda0fcb0217ba1582c/68747470733a2f2f7a6f752e63672d776972652e636f6d2f6b697473752e706e67",
-            }["Kitsu"],
-            link="https://github.com/cgwire/zou",
-        ).__str__()
-    )
-
-    doc.add_paragraph(text=textwrap.dedent("""\
-            Kitsu is written and maintained by CGWire, a company based
-            in France:\
-            """))
-
-    # Logo
-
-    doc.add_paragraph(
-        snakemd.Inline(
-            text=textwrap.dedent("""\
-                Logo CGWire\
-                """),
-            image={
-                "CGWire": "https://www.cg-wire.com/_nuxt/logo.4d5a2d7e.png",
-            }["CGWire"],
-            link="https://www.cg-wire.com",
-        ).__str__()
-    )
-
-    doc.add_paragraph(text=textwrap.dedent("""\
-            Kitsu itself consists of two modules:\
-            """))
-
-    doc.add_ordered_list(
-        [
-            "[Gazu - Kitsu Python Client](https://gazu.cg-wire.com)",
-            "[Zou - Kitsu Python API](https://zou.cg-wire.com)",
-        ]
-    )
-
-    doc.add_paragraph(text=textwrap.dedent("""\
-            `OpenStudioLandscapes-Kitsu` is based on the Kitsu provided
-            Docker image:\
-            """))
-
-    doc.add_unordered_list(
-        [
-            "[https://kitsu.cg-wire.com/installation/#using-docker-image](https://kitsu.cg-wire.com/installation/#using-docker-image)",
-            "[https://hub.docker.com/r/cgwire/cgwire](https://hub.docker.com/r/cgwire/cgwire)",
-        ]
-    )
-
-    doc.add_paragraph(text=textwrap.dedent("""\
-            The default credentials are:\
-            """))
-
-    doc.add_unordered_list(
-        [
-            "User: `admin@example.com`",
-            "Password: `mysecretpassword`",
-        ]
-    )
-
-    # doc.add_paragraph(
-    #     text=textwrap.dedent(
-    #         """\
-    #         You can override the default credentials by setting:\
-    #         """
-    #     )
-    # )
-    #
-    # doc.add_unordered_list(
-    #     [
-    #         "`KITSU_ADMIN_USER`",
-    #         "`KITSU_DB_PASSWORD`",
-    #     ]
-    # )
- (duplicate-code)
 
 ------------------------------------------------------------------
-Your code has been rated at 7.23/10 (previous run: 7.78/10, -0.55)
+Your code has been rated at 7.32/10 (previous run: 7.79/10, -0.47)
 
