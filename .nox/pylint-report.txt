@@ -1,3 +1,17 @@
+************* Module OpenStudioLandscapes.Kitsu.definitions
+src/OpenStudioLandscapes/Kitsu/definitions.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+src/OpenStudioLandscapes/Kitsu/definitions.py:14:0: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src/OpenStudioLandscapes/Kitsu/definitions.py:20:0: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src/OpenStudioLandscapes/Kitsu/definitions.py:28:0: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src/OpenStudioLandscapes/Kitsu/definitions.py:1:0: W0611: Unused import os (unused-import)
+************* Module OpenStudioLandscapes.Kitsu.constants
+src/OpenStudioLandscapes/Kitsu/constants.py:14:5: W0511: TODO: Import directly (no need for conditional) when `python_requires = >= 3.8` (fixme)
+src/OpenStudioLandscapes/Kitsu/constants.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+src/OpenStudioLandscapes/Kitsu/constants.py:38:4: C0103: Constant name "fill" doesn't conform to UPPER_CASE naming style (invalid-name)
+************* Module OpenStudioLandscapes.Kitsu
+src/OpenStudioLandscapes/Kitsu/__init__.py:1:0: C0103: Module name "Kitsu" doesn't conform to snake_case naming style (invalid-name)
+************* Module OpenStudioLandscapes.Kitsu._definitions_with_upstream_specs
+src/OpenStudioLandscapes/Kitsu/_definitions_with_upstream_specs.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 ************* Module OpenStudioLandscapes.Kitsu.assets
 src/OpenStudioLandscapes/Kitsu/assets.py:1:0: C0302: Too many lines in module (1255/1000) (too-many-lines)
 src/OpenStudioLandscapes/Kitsu/assets.py:248:5: W0511: Todo (fixme)
@@ -36,20 +50,12 @@ src/OpenStudioLandscapes/Kitsu/assets.py:1090:0: C0112: Empty function docstring
 src/OpenStudioLandscapes/Kitsu/assets.py:1090:0: R0914: Too many local variables (20/15) (too-many-locals)
 src/OpenStudioLandscapes/Kitsu/assets.py:1200:25: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
 src/OpenStudioLandscapes/Kitsu/assets.py:1239:0: C0116: Missing function or method docstring (missing-function-docstring)
-************* Module OpenStudioLandscapes.Kitsu.definitions
-src/OpenStudioLandscapes/Kitsu/definitions.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-src/OpenStudioLandscapes/Kitsu/definitions.py:14:0: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
-src/OpenStudioLandscapes/Kitsu/definitions.py:20:0: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
-src/OpenStudioLandscapes/Kitsu/definitions.py:28:0: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
-src/OpenStudioLandscapes/Kitsu/definitions.py:1:0: W0611: Unused import os (unused-import)
-************* Module OpenStudioLandscapes.Kitsu.constants
-src/OpenStudioLandscapes/Kitsu/constants.py:14:5: W0511: TODO: Import directly (no need for conditional) when `python_requires = >= 3.8` (fixme)
-src/OpenStudioLandscapes/Kitsu/constants.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-src/OpenStudioLandscapes/Kitsu/constants.py:38:4: C0103: Constant name "fill" doesn't conform to UPPER_CASE naming style (invalid-name)
-************* Module OpenStudioLandscapes.Kitsu._definitions_with_upstream_specs
-src/OpenStudioLandscapes/Kitsu/_definitions_with_upstream_specs.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-************* Module OpenStudioLandscapes.Kitsu
-src/OpenStudioLandscapes/Kitsu/__init__.py:1:0: C0103: Module name "Kitsu" doesn't conform to snake_case naming style (invalid-name)
+************* Module OpenStudioLandscapes.Kitsu.doc.readme
+src/OpenStudioLandscapes/Kitsu/doc/readme.py:75:0: C0301: Line too long (135/100) (line-too-long)
+src/OpenStudioLandscapes/Kitsu/doc/readme.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+src/OpenStudioLandscapes/Kitsu/doc/readme.py:6:0: C0116: Missing function or method docstring (missing-function-docstring)
+src/OpenStudioLandscapes/Kitsu/doc/readme.py:27:8: C2801: Unnecessarily calls dunder method __str__. Use str built-in function. (unnecessary-dunder-call)
+src/OpenStudioLandscapes/Kitsu/doc/readme.py:46:8: C2801: Unnecessarily calls dunder method __str__. Use str built-in function. (unnecessary-dunder-call)
 ************* Module OpenStudioLandscapes.Kitsu.config.models
 src/OpenStudioLandscapes/Kitsu/config/models.py:836:0: C0301: Line too long (120/100) (line-too-long)
 src/OpenStudioLandscapes/Kitsu/config/models.py:900:0: C0301: Line too long (124/100) (line-too-long)
@@ -74,13 +80,7 @@ src/OpenStudioLandscapes/Kitsu/config/models.py:980:8: W1203: Use lazy % formatt
 src/OpenStudioLandscapes/Kitsu/config/models.py:984:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
 src/OpenStudioLandscapes/Kitsu/config/models.py:6:0: C0411: third party import "pydantic.Field" should be placed before first party import "OpenStudioLandscapes.engine.config.models.FeatureBaseModel"  (wrong-import-order)
 src/OpenStudioLandscapes/Kitsu/config/models.py:11:0: C0412: Imports from package OpenStudioLandscapes are not grouped (ungrouped-imports)
-************* Module OpenStudioLandscapes.Kitsu.doc.readme
-src/OpenStudioLandscapes/Kitsu/doc/readme.py:75:0: C0301: Line too long (135/100) (line-too-long)
-src/OpenStudioLandscapes/Kitsu/doc/readme.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-src/OpenStudioLandscapes/Kitsu/doc/readme.py:6:0: C0116: Missing function or method docstring (missing-function-docstring)
-src/OpenStudioLandscapes/Kitsu/doc/readme.py:27:8: C2801: Unnecessarily calls dunder method __str__. Use str built-in function. (unnecessary-dunder-call)
-src/OpenStudioLandscapes/Kitsu/doc/readme.py:46:8: C2801: Unnecessarily calls dunder method __str__. Use str built-in function. (unnecessary-dunder-call)
 
 ------------------------------------------------------------------
-Your code has been rated at 7.32/10 (previous run: 7.79/10, -0.47)
+Your code has been rated at 7.32/10 (previous run: 5.96/10, +1.36)
 
